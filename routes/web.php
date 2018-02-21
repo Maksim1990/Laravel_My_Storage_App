@@ -17,10 +17,23 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/norights',function(){
+    return view('includes.norights');
+});
+
+
+
 Route::get('/login/{social}','Auth\LoginController@socialLogin')->where('social','twitter|facebook|linkedin|google|github|bitbucket');
 //
 Route::get('/login/{social}/callback','Auth\LoginController@handleProviderCallback')->where('social','twitter|facebook|linkedin|google|github|bitbucket');
 
 //Route::get('login/{social}', 'Auth\LoginController@socialLogin')->where('social','twitter|facebook|linkedin|google|github|bitbucket');
 //Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');
+Route::group(['middleware'=>'admin'], function (){
+
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::resource('/users','UserController');
+
+});
+
