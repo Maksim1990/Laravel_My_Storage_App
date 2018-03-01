@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('General')
+@section('content')
 
     {{$test}}
 
