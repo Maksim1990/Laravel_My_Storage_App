@@ -1,7 +1,10 @@
 
 <script>
-    var openInbox = document.getElementById("myBtn");
-    openInbox.click();
+    // var openInbox = document.getElementById("Link1");
+    // openInbox.click();
+    //
+    // var openInbox2 = document.getElementById("Link2");
+    // openInbox2.click();
 
     function w3_open() {
         document.getElementById("mySidebar").style.display = "block";

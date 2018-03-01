@@ -4,8 +4,8 @@
     <a href="javascript:void(0)" onclick="w3_close()" title="Close Sidemenu"
        class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a>
     <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align" onclick="document.getElementById('id01').style.display='block'">New Message <i class="w3-padding fa fa-pencil"></i></a>
-    <a id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i>Inbox (3)<i class="fa fa-caret-down w3-margin-left"></i></a>
-    <div id="Demo1" class="w3-hide w3-animate-left">
+    <a id="Link1" onclick="myFunc('Link_block_1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i>Inbox (3)<i class="fa fa-caret-down w3-margin-left"></i></a>
+    <div id="Link_block_1" class="w3-hide w3-animate-left">
         <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey" onclick="openMail('Borge');w3_close();" id="firstTab">
             <div class="w3-container">
                 <img class="w3-round w3-margin-right" src="/w3images/avatar3.png" style="width:15%;"><span class="w3-opacity w3-large">Borge Refsnes</span>
@@ -26,7 +26,23 @@
             </div>
         </a>
     </div>
-    <a href="{{URL::to('books/create ')}}" class="w3-bar-item w3-button"><i class="fa fa-paper-plane w3-margin-right"></i>Add book</a></a>
-    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Add movie</a>
-    <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Add sport event</a>
+
+    <a id="Link2" onclick="myFunc('Link_block_2')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i>Inbox (33)<i class="fa fa-caret-down w3-margin-left"></i></a>
+    <div id="Link_block_2" class="w3-hide w3-animate-left">
+        <a href="{{URL::to('books/create ')}}" class="w3-bar-item w3-button"><i class="fa fa-paper-plane w3-margin-right"></i>Add book</a></a>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Add movie</a>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Add sport event</a>
+    </div>
+
+
+
+    <a id="Link3" onclick="myFunc('Link_block_3')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i>Events<i class="fa fa-caret-down w3-margin-left"></i></a>
+    <div id="Link_block_3" class="w3-hide w3-animate-left">
+        <a href="{{URL::to('books/create ')}}" class="w3-bar-item w3-button"><i class="fa fa-paper-plane w3-margin-right"></i>Add book55</a></a>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Add movie55</a>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Add sport event55</a>
+    </div>
+
+
+
 </nav>
