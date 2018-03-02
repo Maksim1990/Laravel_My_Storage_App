@@ -136,7 +136,10 @@
                             count++;
                         }
 
-                        $(' <ul class="pagination">').html(strPagiantionLinks + "</ul>").appendTo('#pagination');
+                        if(count>2){
+                            $(' <ul class="pagination">').html(strPagiantionLinks + "</ul>").appendTo('#pagination');
+                        }
+
                     }
                 });
 

@@ -23,10 +23,19 @@ class BookController extends Controller
         $filterTitle = $request?$request['title']:"";
         $filterId = $request?$request['id']:"";
         $filterAuthor = $request?$request['author']:"";
-        $books=Book::where('active','=','1')->orderBy('id')->paginate(10);
-        if(!empty($filterTitle)) {
-            $books = Book::where('active', '=', '1')->where('title', 'like', '%' . $filterTitle . '%')->orderBy('id')->paginate(10);
+        if($request) {
+
+            if(!empty($filterId)){
+                $books=Book::where('id',$filterId)->where('title','like','%'.$filterTitle.'%')->where('author','like','%'.$filterAuthor.'%')->orderBy('id')->paginate(10);
+            }else{
+                $books=Book::where('title','like','%'.$filterTitle.'%')->where('author','like','%'.$filterAuthor.'%')->orderBy('id')->paginate(10);
+            }
+        }else{
+            $books = Book::where('active', '=', '1')->orderBy('id')->paginate(10);
         }
+
+
+
         $title = 'Add new book';
         $arrFilter=[
             'id'=>$filterId,
