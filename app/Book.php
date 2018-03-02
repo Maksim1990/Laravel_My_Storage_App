@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     protected $fillable = [
-        'user_id','title','description','photo_id','publish_year','active'
+        'user_id','title','description','photo_id','publish_year','active',
+        'author','date'
     ];
 
     public $with=['user'];

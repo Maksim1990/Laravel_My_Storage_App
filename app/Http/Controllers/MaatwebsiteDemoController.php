@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Excel;
@@ -22,7 +24,7 @@ class MaatwebsiteDemoController extends Controller
 //            var_dump($value->title);
 //        }
 
-        $data = Item::get()->toArray();
+        $data = Book::get()->toArray();
         return \Excel::create('itsolutionstuff_example', function($excel) use ($data) {
             $excel->sheet('mySheet', function($sheet) use ($data)
             {
@@ -39,10 +41,10 @@ class MaatwebsiteDemoController extends Controller
             if(!empty($data) && $data->count()){
          
                 foreach ($data as $key => $value) {
-                    $insert[] = ['title' => $value->title, 'author' => $value->author,'date' => $value->date];
+                    $insert[] = ['title' => $value->title, 'author' => $value->author,'active'=>1,'date' => $value->date,'user_id'=>Auth::id()];
                 }
                 if(!empty($insert)){
-                    DB::table('items')->insert($insert);
+                    DB::table('books')->insert($insert);
                     dd('Insert Record successfully.');
                 }
             }

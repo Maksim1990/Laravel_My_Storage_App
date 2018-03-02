@@ -41,5 +41,7 @@ Route::group(['middleware'=>'admin'], function (){
     Route::get('downloadExcel/{type}', 'MaatwebsiteDemoController@downloadExcel');
     Route::post('importExcel', 'MaatwebsiteDemoController@importExcel');
 
+    Route::post('/filter_book_list','BookController@filterBookList');
+
 });
 

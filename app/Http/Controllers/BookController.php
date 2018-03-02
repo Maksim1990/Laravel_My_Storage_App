@@ -8,19 +8,32 @@ use App\ImageBook;
 use App\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 
 class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     *@param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $test = "ttt";
-        return view('books.index', compact('test'));
+        $filterTitle = $request?$request['title']:"";
+        $filterId = $request?$request['id']:"";
+        $filterAuthor = $request?$request['author']:"";
+        $books=Book::where('active','=','1')->orderBy('id')->paginate(10);
+        if(!empty($filterTitle)) {
+            $books = Book::where('active', '=', '1')->where('title', 'like', '%' . $filterTitle . '%')->orderBy('id')->paginate(10);
+        }
+        $title = 'Add new book';
+        $arrFilter=[
+            'id'=>$filterId,
+            'title'=>$filterTitle,
+            'author'=>$filterAuthor
+        ];
+        return view('books.index', compact('title','books','arrFilter'));
     }
 
     /**
@@ -155,4 +168,23 @@ class BookController extends Controller
         $book->delete();
         return redirect('books');
     }
+
+
+
+    public function filterBookList(Request $request)
+    {
+        $intId=$request['id'];
+        $strTitle=!empty($request['title'])?$request['title']:"";
+        $strAuthor=!empty($request['author'])?$request['author']:"";
+        if(!empty($intId)){
+            $books=Book::where('id',$intId)->where('title','like','%'.$strTitle.'%')->where('author','like','%'.$strAuthor.'%')->orderBy('id')->paginate(10);
+        }else{
+            $books=Book::where('title','like','%'.$strTitle.'%')->where('author','like','%'.$strAuthor.'%')->orderBy('id')->paginate(10);
+        }
+
+        return $books;
+    }
+
+
+
 }
