@@ -35,6 +35,7 @@ Route::group(['middleware'=>'admin'], function (){
 
     Route::resource('/users','UserController');
     Route::resource('/books','BookController');
+    Route::resource('/photos','PhotoController');
 
 
     Route::get('importExport', 'MaatwebsiteDemoController@importExport');
@@ -42,6 +43,7 @@ Route::group(['middleware'=>'admin'], function (){
     Route::post('importExcel', 'MaatwebsiteDemoController@importExcel');
 
     Route::post('/filter_book_list','BookController@filterBookList');
+    Route::get('/upload_images/{id}','PhotoController@uploadMultipleImages');
 
 });
 

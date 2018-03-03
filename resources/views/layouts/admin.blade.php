@@ -10,20 +10,20 @@
     @if(isset($title))
         <title>{{$title}}</title>
     @else
-        <title>My Books</title>
+        <title>Meet Mate APP</title>
     @endif
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href='https://fonts.googleapis.com/css?family=RobotoDraft' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
-        .w3-bar-block .w3-bar-item {padding: 16px}
-    </style>
+
     <link href="{{asset('lib/noty.css')}}" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
     <script src="{{asset('lib/noty.js')}}" type="text/javascript"></script>
 
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
@@ -31,11 +31,9 @@
     <link href="{{asset('css/libs.css')}}" rel="stylesheet">
 
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
-    @yield('styles')
-    @yield('scripts_header')
 
-
-
+@yield('styles')
+@yield('scripts_header')
 
 
 <body>
@@ -46,7 +44,8 @@
 
 
 <!-- Overlay effect when opening the side navigation on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu" id="myOverlay"></div>
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer"
+     title="Close Sidemenu" id="myOverlay"></div>
 
 @include('layouts.content')
 @yield('scripts')

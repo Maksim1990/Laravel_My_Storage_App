@@ -1,47 +1,61 @@
 @extends('layouts.admin')
 @section('content')
-    <div class="row">
-        <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
-            <p>All book</p>
-            <h1>All job offers</h1>
+    <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
+        <p>All book</p>
+        <h1>All job offers</h1>
 
-            <table class="w3-table-all w3-bordered w3-hoverable">
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                </tr>
-                <tr class="w3-gray">
-                    <td><input class="w3-input" id="filter_id" type="text" data-type="id"
-                               value="{{$arrFilter['id']?$arrFilter['id']:""}}"></td>
-                    <td><input class="w3-input" id="filter_title" type="text" data-type="title"
-                               value="{{$arrFilter['title']?$arrFilter['title']:""}}"></td>
-                    <td><input class="w3-input" id="filter_author" type="text" data-type="author"
-                               value="{{$arrFilter['author']?$arrFilter['author']:""}}"></td>
-                </tr>
+        <table class="w3-table-all w3-bordered w3-hoverable">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th></th>
+            </tr>
+            <tr class="w3-gray">
 
-                @if(count($books)>0)
-                    <tbody id="books_block">
-                    @foreach($books as $book)
-                        <tr>
-                            <td>{{$book->id}}</td>
-                            <td>{{$book->title}}</td>
-                            <td>{{$book->author}}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                @endif
-            </table>
+                <td><input class="w3-input" id="filter_id" type="text" data-type="id"
+                           value="{{$arrFilter['id']?$arrFilter['id']:""}}"></td>
+                <td><input class="w3-input" id="filter_title" type="text" data-type="title"
+                           value="{{$arrFilter['title']?$arrFilter['title']:""}}"></td>
+                <td><input class="w3-input" id="filter_author" type="text" data-type="author"
+                           value="{{$arrFilter['author']?$arrFilter['author']:""}}"></td>
+
+                <td></td>
+            </tr>
+
+            @if(count($books)>0)
+                <tbody id="books_block">
+                @foreach($books as $book)
+                    <tr>
+                        <td>{{$book->id}}</td>
+                        <td>
+                            <a href="{{URL::to('books/'.$book->id)}}" id="edit_book_{{$book->id}}">
+                                {{$book->title}}</a>
+                        </td>
+                        <td>{{$book->author}}</td>
+
+                        <td><a href="{{URL::to('books/'.$book->id.'/edit ')}}" id="edit_book_{{$book->id}}"><i
+                                    class="fas fa-edit"></i></a></td>
+                    </tr>
+
+                @endforeach
+                </tbody>
+            @endif
+        </table><div class="row">
+
         </div>
     </div>
-    <div class="w3-center" id="pagination">
+    <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
+        <div class="w3-center" id="pagination">
 
-        @if($arrFilter)
-            {!! $books->appends($arrFilter)->links() !!}
-        @else
-            {!! $books->links() !!}
-        @endif
+            @if($arrFilter)
+                {!! $books->appends($arrFilter)->links() !!}
+            @else
+                {!! $books->links() !!}
+            @endif
+        </div>
     </div>
+
 
 
 @stop
@@ -60,7 +74,8 @@
             var arrFilter = [];
             arrFilter['id'] = "{{$arrFilter['id']?$arrFilter['title']:''}}";
             arrFilter['title'] = "{{$arrFilter['title']?$arrFilter['title']:''}}";
-            arrFilter['author'] = "{{$arrFilter['author']?$arrFilter['author']:''}}";;
+            arrFilter['author'] = "{{$arrFilter['author']?$arrFilter['author']:''}}";
+            ;
             var token = '{{\Illuminate\Support\Facades\Session::token()}}';
             $('#filter_id,#filter_title,#filter_author').keyup(function () {
                 var url = '{{ URL::to('filter_book_list') }}';
@@ -88,8 +103,8 @@
                         if (data['data'].length > 0) {
                             for (var i = 0; i < data['data'].length; i++) {
 
-
-                                var booksList = "<td>" + data['data'][i]['id'] + "</td><td>" + data['data'][i]['title'] + "</td><td>" + data['data'][i]['author'] + "</td>";
+                                var strEditButton="<td><a href='books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
+                                var booksList = "<td>" + data['data'][i]['id'] + "</td><td><a href='books/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>"+strEditButton;
 
                                 $('<tr>').html(booksList + "</tr>").appendTo('#books_block');
                             }
@@ -136,7 +151,7 @@
                             count++;
                         }
 
-                        if(count>2){
+                        if (count > 2) {
                             $(' <ul class="pagination">').html(strPagiantionLinks + "</ul>").appendTo('#pagination');
                         }
 

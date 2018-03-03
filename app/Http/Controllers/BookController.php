@@ -15,34 +15,33 @@ class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *@param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $filterTitle = $request?$request['title']:"";
-        $filterId = $request?$request['id']:"";
-        $filterAuthor = $request?$request['author']:"";
-        if($request) {
+        $filterTitle = $request ? $request['title'] : "";
+        $filterId = $request ? $request['id'] : "";
+        $filterAuthor = $request ? $request['author'] : "";
+        if ($request) {
 
-            if(!empty($filterId)){
-                $books=Book::where('id',$filterId)->where('title','like','%'.$filterTitle.'%')->where('author','like','%'.$filterAuthor.'%')->orderBy('id')->paginate(10);
-            }else{
-                $books=Book::where('title','like','%'.$filterTitle.'%')->where('author','like','%'.$filterAuthor.'%')->orderBy('id')->paginate(10);
+            if (!empty($filterId)) {
+                $books = Book::where('id', $filterId)->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate(10);
+            } else {
+                $books = Book::where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate(10);
             }
-        }else{
+        } else {
             $books = Book::where('active', '=', '1')->orderBy('id')->paginate(10);
         }
 
 
-
         $title = 'Add new book';
-        $arrFilter=[
-            'id'=>$filterId,
-            'title'=>$filterTitle,
-            'author'=>$filterAuthor
+        $arrFilter = [
+            'id' => $filterId,
+            'title' => $filterTitle,
+            'author' => $filterAuthor
         ];
-        return view('books.index', compact('title','books','arrFilter'));
+        return view('books.index', compact('title', 'books', 'arrFilter'));
     }
 
     /**
@@ -73,7 +72,7 @@ class BookController extends Controller
             if ($file = $request->file('photo_id')) {
                 $name = time() . "_" . $file->getClientOriginalName();
                 $file->move('images', $name);
-                $photo = Photo::create(['path' => $name, 'user_id' => $user->id]);
+                $photo = Photo::create(['path' => $name, 'user_id' => $user->id, 'module_id' => 1]);
                 $input['photo_id'] = $photo->id;
             }
             $input['user_id'] = $user->id;
@@ -129,36 +128,33 @@ class BookController extends Controller
     public function update(BookCreateRequest $request, $id)
     {
         $book = Book::findOrFail($id);
-        $input = $request->all();
+        $user = Auth::user();
 
-        if ($file = $request->file('photo_id')) {
+        $file = $request->file('photo_id');
+        if ($file) {
             if (!($file->getClientSize() > 2100000)) {
-                if ($book->image->photo) {
-                    unlink(public_path() . $book->image->photo->path);
+                $input = $request->all();
+                $user = Auth::user();
+                if ($file = $request->file('photo_id')) {
+                    $name = time() . "_" . $file->getClientOriginalName();
+                    $file->move('images', $name);
+                    $photo = Photo::create(['path' => $name, 'user_id' => $user->id, 'module_id' => 1]);
+                    $input['photo_id'] = $photo->id;
                 }
-                $photo_user = Photo::findOrFail($book->photo_id);
-                $photo_user->delete();
-
-                $name = time() . "_" . $file->getClientOriginalName();
-                $file->move('images', $name);
-                $photo = Photo::create(['path' => $name]);
-                $input['photo_id'] = $photo->id;
-                $imageAdd = ImageBook::where('book_id', $id)->first();
-                if ($imageAdd) {
-                    $imageAdd->photo_id = $input['photo_id'];
-                    $imageAdd->save();
-                } else {
-                    ImageBook::create(['book_id' => $id, 'photo_id' => $input['photo_id']]);
-                }
-
             } else {
                 Session::flash('book_change', 'Image size should not exceed 2 MB');
                 return redirect('books/' . $id . '/edit');
             }
         }
+        $input['user_id'] = $user->id;
+        $input['active'] = 1;
         $book->update($input);
-        Session::flash('book_change', 'Book has been successfully updated!');
-        return redirect('books/' . $id);
+        Session::flash('book_change', 'New book has been successfully updated!');
+
+        ImageBook::create(['book_id' => $book->id, 'photo_id' => $input['photo_id']]);
+        Session::flash('book_change', 'New book has been successfully updated!');
+        return redirect('books/' . $book->id);
+
     }
 
     /**
@@ -170,30 +166,33 @@ class BookController extends Controller
     public function destroy($id)
     {
         $book = Book::findOrFail($id);
-        unlink(public_path() . $book->photo->path);
-        Photo::findOrfail($book->photo->id)->delete();
-        ImageBook::where('book_id', $book->id)->delete();
+        foreach ($book->photos as $item) {
+   unlink(public_path() . $item->photo->path);
+            Photo::findOrfail($item->photo->id)->delete();
+            ImageBook::where('photo_id', $item->photo->id)->delete();
+          //  var_dump($item->photo->path);
+        }
         Session::flash('book_change', 'The book has been successfully deleted!');
         $book->delete();
+
+
         return redirect('books');
     }
 
 
-
     public function filterBookList(Request $request)
     {
-        $intId=$request['id'];
-        $strTitle=!empty($request['title'])?$request['title']:"";
-        $strAuthor=!empty($request['author'])?$request['author']:"";
-        if(!empty($intId)){
-            $books=Book::where('id',$intId)->where('title','like','%'.$strTitle.'%')->where('author','like','%'.$strAuthor.'%')->orderBy('id')->paginate(10);
-        }else{
-            $books=Book::where('title','like','%'.$strTitle.'%')->where('author','like','%'.$strAuthor.'%')->orderBy('id')->paginate(10);
+        $intId = $request['id'];
+        $strTitle = !empty($request['title']) ? $request['title'] : "";
+        $strAuthor = !empty($request['author']) ? $request['author'] : "";
+        if (!empty($intId)) {
+            $books = Book::where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy('id')->paginate(10);
+        } else {
+            $books = Book::where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy('id')->paginate(10);
         }
 
         return $books;
     }
-
 
 
 }

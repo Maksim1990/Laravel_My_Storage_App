@@ -11,14 +11,18 @@ class Book extends Model
         'author','date'
     ];
 
-    public $with=['user'];
+    public $with=['user','photos'];
 
     public function user(){
         return $this->belongsTo('App\User');
     }
 
+    public function photos(){
+        return $this->hasMany('App\ImageBook');
+    }
+
     public function photo(){
-        return $this->belongsTo('App\Photo');
+        return $this->hasOne('App\ImageBook');
     }
 
 }
