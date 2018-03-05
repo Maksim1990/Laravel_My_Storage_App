@@ -10,7 +10,8 @@
         {!! Form::open(['method'=>'POST','action'=>'PhotoController@store', 'class'=>'dropzone'])!!}
 
         {{ Form::hidden('user_id', Auth::id() ) }}
-        {{ Form::hidden('book_id', $book->id ) }}
+        {{ Form::hidden('item_id', $item->id ) }}
+        {{ Form::hidden('module_id', $module_id ) }}
         {!! Form::close() !!}
     </div>
     @include('includes.formErrors')

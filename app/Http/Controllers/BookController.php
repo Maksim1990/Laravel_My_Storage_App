@@ -23,8 +23,7 @@ class BookController extends Controller
         $filterTitle = $request ? $request['title'] : "";
         $filterId = $request ? $request['id'] : "";
         $filterAuthor = $request ? $request['author'] : "";
-        if ($request) {
-
+        if (!empty($filterTitle) || !empty($filterId) || !empty($filterAuthor)) {
             if (!empty($filterId)) {
                 $books = Book::where('id', $filterId)->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate(10);
             } else {
@@ -35,7 +34,7 @@ class BookController extends Controller
         }
 
 
-        $title = 'Add new book';
+        $title = 'All books';
         $arrFilter = [
             'id' => $filterId,
             'title' => $filterTitle,
@@ -60,12 +59,13 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\BookCreateRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(BookCreateRequest $request)
     {
         $file = $request->file('photo_id');
+        $photo_id=0;
         if (!($file->getClientSize() > 2100000)) {
             $input = $request->all();
             $user = Auth::user();
@@ -73,14 +73,14 @@ class BookController extends Controller
                 $name = time() . "_" . $file->getClientOriginalName();
                 $file->move('images', $name);
                 $photo = Photo::create(['path' => $name, 'user_id' => $user->id, 'module_id' => 1]);
-                $input['photo_id'] = $photo->id;
+                $photo_id=$photo->id;
             }
             $input['user_id'] = $user->id;
             $input['active'] = 1;
             $book = Book::create($input);
             Session::flash('book_change', 'New book has been successfully created!');
 
-            ImageBook::create(['book_id' => $book->id, 'photo_id' => $input['photo_id']]);
+            ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
             Session::flash('book_change', 'New book has been successfully created!');
             return redirect('books/' . $book->id);
         } else {
@@ -129,7 +129,7 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
         $user = Auth::user();
-
+        $photo_id=0;
         $file = $request->file('photo_id');
         if ($file) {
             if (!($file->getClientSize() > 2100000)) {
@@ -139,7 +139,7 @@ class BookController extends Controller
                     $name = time() . "_" . $file->getClientOriginalName();
                     $file->move('images', $name);
                     $photo = Photo::create(['path' => $name, 'user_id' => $user->id, 'module_id' => 1]);
-                    $input['photo_id'] = $photo->id;
+                    $photo_id=$photo->id;
                 }
             } else {
                 Session::flash('book_change', 'Image size should not exceed 2 MB');
@@ -151,7 +151,7 @@ class BookController extends Controller
         $book->update($input);
         Session::flash('book_change', 'New book has been successfully updated!');
 
-        ImageBook::create(['book_id' => $book->id, 'photo_id' => $input['photo_id']]);
+        ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
         Session::flash('book_change', 'New book has been successfully updated!');
         return redirect('books/' . $book->id);
 

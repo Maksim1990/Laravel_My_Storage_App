@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class="col-sm-2 col-lg-2">
-        <p><a href="{{URL::to('upload_images/'.$book->id)}}">Upload multiple image</a></p>
+        <p><a href="{{URL::to('upload_images/'.$book->id.'/1')}}">Upload multiple image</a></p>
         <p><a href="#">Upload single image</a></p>
         <p><a href="{{URL::to('books/'.$book->id."/edit")}}">Edit this book</a></p>
         <p>

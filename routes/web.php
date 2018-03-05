@@ -36,6 +36,8 @@ Route::group(['middleware'=>'admin'], function (){
     Route::resource('/users','UserController');
     Route::resource('/books','BookController');
     Route::resource('/photos','PhotoController');
+    Route::resource('/movies','MovieController');
+    Route::resource('/events','EventController');
 
 
     Route::get('importExport', 'MaatwebsiteDemoController@importExport');
@@ -43,7 +45,8 @@ Route::group(['middleware'=>'admin'], function (){
     Route::post('importExcel', 'MaatwebsiteDemoController@importExcel');
 
     Route::post('/filter_book_list','BookController@filterBookList');
-    Route::get('/upload_images/{id}','PhotoController@uploadMultipleImages');
+    Route::post('/filter_movie_list','MovieController@filterMovieList');
+    Route::get('/upload_images/{id}/{module_id}','PhotoController@uploadMultipleImages');
 
 });
 
