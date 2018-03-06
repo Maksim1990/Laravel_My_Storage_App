@@ -31,12 +31,15 @@
     <link href="{{asset('css/libs.css')}}" rel="stylesheet">
 
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
+    <link href="{{asset('css/custom_style.css')}}" rel="stylesheet">
 
 @yield('styles')
 @yield('scripts_header')
 
 
 <body>
+<div id="app">
+    <div id="divLoading"></div>
 @include('layouts.header')
 @include('layouts.left')
 @include('layouts.modals')
@@ -44,11 +47,13 @@
 
 
 <!-- Overlay effect when opening the side navigation on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer"
-     title="Close Sidemenu" id="myOverlay"></div>
+    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer"
+         title="Close Sidemenu" id="myOverlay"></div>
 
-@include('layouts.content')
+    @include('layouts.content')
+</div>
 @yield('scripts')
+
 @include('layouts.footer')
 
 </body>

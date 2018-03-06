@@ -182,13 +182,32 @@ class BookController extends Controller
 
     public function filterBookList(Request $request)
     {
+        $arrSortDetails = json_decode($request['arrSortDetails']);
+        if(count($arrSortDetails)>0){
+            switch ($arrSortDetails[0]){
+                case "id":
+                    $strSortItem="id";
+                    break;
+                case "title":
+                    $strSortItem="title";
+                    break;
+                case "author":
+                    $strSortItem="author";
+                    break;
+            }
+            $strSortDirection=$arrSortDetails[1]==="up"?"asc":"desc";
+        }else{
+            $strSortItem="id";
+            $strSortDirection="desc";
+        }
+
         $intId = $request['id'];
         $strTitle = !empty($request['title']) ? $request['title'] : "";
         $strAuthor = !empty($request['author']) ? $request['author'] : "";
         if (!empty($intId)) {
-            $books = Book::where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy('id')->paginate(10);
+            $books = Book::where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem,$strSortDirection)->paginate(10);
         } else {
-            $books = Book::where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy('id')->paginate(10);
+            $books = Book::where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem,$strSortDirection)->paginate(10);
         }
 
         return $books;

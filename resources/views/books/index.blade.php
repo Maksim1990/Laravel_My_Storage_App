@@ -6,9 +6,15 @@
 
         <table class="w3-table-all w3-bordered w3-hoverable">
             <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Author</th>
+                <th id="sort_id" data-type="id">ID
+                <span id="sort_id_icon"></span>
+                </th>
+                <th id="sort_title" data-type="title">Title
+                    <span id="sort_title_icon"></span>
+                </th>
+                <th id="sort_author" data-type="author">Author
+                    <span id="sort_author_icon"></span>
+                </th>
                 <th></th>
             </tr>
             <tr class="w3-gray">
@@ -61,6 +67,58 @@
 @stop
 @section('scripts')
     <script>
+        var token = '{{\Illuminate\Support\Facades\Session::token()}}'
+        var url = '{{ URL::to('filter_book_list') }}';
+        //-- Initialize array of sorting details
+        arrSortDetails=[];
+        //-- Initialize array of filters
+        arrFilter = [];
+        {{--<i class="fas fa-long-arrow-alt-up"></i>--}}
+        $('#sort_id,#sort_title,#sort_author').click(function () {
+            var strFilterType = $(this).data('type');
+
+            //-- Fill in appropriate value into arrSortDetails array
+            switch(strFilterType){
+                case "id":
+                case "title":
+                case "author":
+                    if(arrSortDetails[0]===strFilterType){
+                        if(arrSortDetails[1]==="up"){
+                            arrSortDetails=[];
+                            arrSortDetails=[strFilterType,"down"];
+                        }else{
+                            arrSortDetails=[];
+                            arrSortDetails=[strFilterType,"up"];
+                        }
+                    }else{
+                        arrSortDetails=[];
+                        arrSortDetails=[strFilterType,"up"];
+                    }
+                    break;
+            }
+
+            //-- Add appropriate sort icon for sorting field
+            switch(arrSortDetails[0]) {
+                case "id":
+                case "title":
+                case "author":
+                    $("#sort_id_icon,#sort_author_icon,#sort_title_icon").html("");
+                    $("#sort_id,#sort_author,#sort_title").css("color","black");
+                    if(arrSortDetails[1]==="up"){
+                        $("#sort_"+arrSortDetails[0]+"_icon").html("<i class='fas fa-long-arrow-alt-up'></i>");
+                    }else{
+                        $("#sort_"+arrSortDetails[0]+"_icon").html("<i class='fas fa-long-arrow-alt-down'></i>");
+                    }
+                    $("#sort_"+arrSortDetails[0]).css("color","red");
+                    break;
+            }
+
+            //-- Perform Ajax call
+            RunAjaxRequest(arrFilter,url,token,arrSortDetails);
+        });
+
+    </script>
+    <script>
         @if(Session::has('book_change'))
         new Noty({
             type: 'success',
@@ -71,14 +129,13 @@
     </script>
     <script>
         $(document).ready(function () {
-            var arrFilter = [];
+
             arrFilter['id'] = "{{$arrFilter['id']?$arrFilter['title']:''}}";
             arrFilter['title'] = "{{$arrFilter['title']?$arrFilter['title']:''}}";
             arrFilter['author'] = "{{$arrFilter['author']?$arrFilter['author']:''}}";
-            ;
-            var token = '{{\Illuminate\Support\Facades\Session::token()}}';
+
             $('#filter_id,#filter_title,#filter_author').keyup(function () {
-                var url = '{{ URL::to('filter_book_list') }}';
+
                 var strFilterValue = $(this).val();
                 var strFilterType = $(this).data('type');
                 if (strFilterValue) {
@@ -87,79 +144,88 @@
                     arrFilter[strFilterType] = "";
                 }
 
-
-                $.ajax({
-                    method: 'POST',
-                    url: url,
-                    data: {
-                        id: arrFilter['id'],
-                        title: arrFilter['title'],
-                        author: arrFilter['author'],
-                        _token: token
-                    },
-                    success: function (data) {
-                        $("#books_block").html("");
-                        $("#pagination").html("");
-                        if (data['data'].length > 0) {
-                            for (var i = 0; i < data['data'].length; i++) {
-
-                                var strEditButton="<td><a href='books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
-                                var booksList = "<td>" + data['data'][i]['id'] + "</td><td><a href='books/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>"+strEditButton;
-
-                                $('<tr>').html(booksList + "</tr>").appendTo('#books_block');
-                            }
-                        } else {
-                            $("#books_block").html("");
-                            $('<tr>').html("Nothing found</tr>").appendTo('#books_block');
-                        }
-
-
-                        // console.log(data['current_page']);
-                        // console.log(data['first_page_url']);
-                        // console.log(data['from']);
-                        // console.log(data['last']);
-                        // console.log(data['next_page_url']);
-                        // console.log(data['per_page']);
-                        // console.log(data['prev_page_url']);
-                        // console.log(data['to']);
-                        // console.log(data['total']);
-
-
-                        var strLink = data['first_page_url'];
-                        var intPosition = strLink.indexOf("page=");
-                        var strPaginateLink = strLink.substr(0, intPosition);
-
-
-                        var strPagiantionLinks = "";
-                        var count = 1;
-                        for (var i = +data['from']; i < +data['total']; i = i + data['per_page']) {
-                            strPagiantionLinks += "<li><a href='books?page=" + count;
-
-                            if (arrFilter['id']) {
-
-                                strPagiantionLinks += "&id=" + arrFilter['id'];
-                            }
-                            if (arrFilter['title']) {
-                                strPagiantionLinks += "&title=" + arrFilter['title'];
-                            }
-                            if (arrFilter['author']) {
-                                strPagiantionLinks += "&author=" + arrFilter['author'];
-                            }
-
-
-                            strPagiantionLinks += "'>" + count + "</a></li>";
-                            count++;
-                        }
-
-                        if (count > 2) {
-                            $(' <ul class="pagination">').html(strPagiantionLinks + "</ul>").appendTo('#pagination');
-                        }
-
-                    }
-                });
-
+                //-- Perform Ajax call
+                RunAjaxRequest(arrFilter,url,token,arrSortDetails);
 
             });
         });
+
+
+        //-- Ajax request for filtering and sorting
+        function RunAjaxRequest(arrFilter,url,token,arrSortDetails) {
+            $.ajax({
+                method: 'POST',
+                url: url,
+                data: {
+                    id: arrFilter['id'],
+                    title: arrFilter['title'],
+                    author: arrFilter['author'],
+                    arrSortDetails: JSON.stringify(arrSortDetails),
+                    _token: token
+                },
+                beforeSend: function () {
+                    //-- Show loader image
+                    $("div#divLoading").addClass('show');
+                },
+                success: function (data) {
+                    $("#books_block").html("");
+                    $("#pagination").html("");
+                    if (data['data'].length > 0) {
+                        for (var i = 0; i < data['data'].length; i++) {
+
+                            var strEditButton="<td><a href='books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
+                            var booksList = "<td>" + data['data'][i]['id'] + "</td><td><a href='books/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>"+strEditButton;
+
+                            $('<tr>').html(booksList + "</tr>").appendTo('#books_block');
+                        }
+
+                        //-- Remove loader image
+                        $("div#divLoading").removeClass('show');
+                    } else {
+                        $("#books_block").html("");
+                        $('<tr>').html("Nothing found</tr>").appendTo('#books_block');
+                    }
+
+
+                    var strLink = data['first_page_url'];
+                    var intPosition = strLink.indexOf("page=");
+                    var strPaginateLink = strLink.substr(0, intPosition);
+
+
+                    var strPagiantionLinks = "";
+                    var count = 1;
+                    for (var i = +data['from']; i < +data['total']; i = i + data['per_page']) {
+                        strPagiantionLinks += "<li><a href='books?page=" + count;
+
+                        if (arrFilter['id']) {
+
+                            strPagiantionLinks += "&id=" + arrFilter['id'];
+                        }
+                        if (arrFilter['title']) {
+                            strPagiantionLinks += "&title=" + arrFilter['title'];
+                        }
+                        if (arrFilter['author']) {
+                            strPagiantionLinks += "&author=" + arrFilter['author'];
+                        }
+
+
+                        strPagiantionLinks += "'>" + count + "</a></li>";
+                        count++;
+                    }
+
+                    if (count > 2) {
+                        $(' <ul class="pagination">').html(strPagiantionLinks + "</ul>").appendTo('#pagination');
+                    }
+
+                }
+            });
+        }
+
+
+
+
+
+
     </script>
+
 @endsection
