@@ -176,7 +176,10 @@ class BookController extends Controller
         $book->update($input);
         Session::flash('book_change', 'New book has been successfully updated!');
 
-        ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
+        if($photo_id >0){
+            ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
+        }
+
         Session::flash('book_change', 'New book has been successfully updated!');
         return redirect('books/' . $book->id);
 

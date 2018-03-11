@@ -150,15 +150,17 @@
                                     @if($book->photos)
                                         @foreach($book->photos as $item)
                                             @if($count>=1)
-                                                <a href="#" data-toggle="modal" data-target="#showImage"
-                                                   title="Show image"
-                                                   class="show_image"
-                                                   data-image-id="{{$item->photo->id}}"
-                                                   data-image-path="{{$item->photo->path}}"
-                                                >
-                                                    <img style="border-radius: 10px;" width="50" height="50"
-                                                         src="{{$item->photo->path}}" alt="">
-                                                </a>
+                                                @if($item->photo)
+                                                    <a href="#" data-toggle="modal" data-target="#showImage"
+                                                       title="Show image"
+                                                       class="show_image"
+                                                       data-image-id="{{$item->photo->id}}"
+                                                       data-image-path="{{$item->photo->path}}"
+                                                    >
+                                                        <img style="border-radius: 10px;" width="50" height="50"
+                                                             src="{{$item->photo->path}}" alt="">
+                                                    </a>
+                                                @endif
                                             @else
                                                 @php
                                                     $count++;
@@ -369,7 +371,7 @@
                                 $('<tr>').html(booksList + "</tr>").appendTo('#books_block');
                             } else {
 
-                                if (data['data'][i]['photos'][0]) {
+                                if (data['data'][i]['photos'][0] && data['data'][0]['photos'][0]['photo']) {
                                     var MainImagePath = data['data'][0]['photos'][0]['photo']['path'];
                                 } else {
                                     var MainImagePath = "{{asset('images/includes/noImage.jpg')}}";
@@ -380,7 +382,7 @@
 
                                 if (data['data'][i]['photos'].length > 0) {
                                     for (var j = 0; j < data['data'][i]['photos'].length; j++) {
-                                        if (j >= 1) {
+                                        if (j >= 1 && data['data'][0]['photos'][j]['photo']) {
                                             smallImages += "<a href='#' data-toggle='modal' data-target='#showImage' title='Show image' class='show_image'  data-image-id=''  data-image-path=''><img style='border-radius: 10px;' width='50' height='50' src='" + data['data'][0]['photos'][j]['photo']['path'] + "' alt=''></a>"
                                         }
                                     }
