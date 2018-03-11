@@ -45,6 +45,7 @@ Route::group(['middleware'=>'admin'], function (){
     Route::post('importExcel', 'MaatwebsiteDemoController@importExcel');
 
     Route::post('/filter_book_list','BookController@filterBookList');
+    Route::post('/get_book_quantity','BookController@getAllBooksQuantity');
     Route::post('/filter_movie_list','MovieController@filterMovieList');
     Route::get('/upload_images/{id}/{module_id}','PhotoController@uploadMultipleImages');
 
