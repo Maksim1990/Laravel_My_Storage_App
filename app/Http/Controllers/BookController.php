@@ -44,12 +44,12 @@ class BookController extends Controller
 
         if (!empty($filterTitle) || !empty($filterId) || !empty($filterAuthor)) {
             if (!empty($filterId)) {
-                $books = Book::where('id', $filterId)->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate($intQuantity);
+                $books = Book::where('user_id', Auth::id())->where('id', $filterId)->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate($intQuantity);
             } else {
-                $books = Book::where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate($intQuantity);
+                $books = Book::where('user_id', Auth::id())->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate($intQuantity);
             }
         } else {
-            $books = Book::where('active', '=', '1')->orderBy('id')->paginate($intQuantity);
+            $books = Book::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->paginate($intQuantity);
         }
 
 
@@ -61,7 +61,10 @@ class BookController extends Controller
         ];
 
 
-        return view('books.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity'));
+        $itemsCount = Book::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->get();
+        $itemsQuantity=count($itemsCount);
+
+        return view('books.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity','itemsQuantity'));
     }
 
     /**
@@ -151,10 +154,11 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
         $user = Auth::user();
         $photo_id = 0;
+        $input = $request->all();
         $file = $request->file('photo_id');
         if ($file) {
             if (!($file->getClientSize() > 2100000)) {
-                $input = $request->all();
+
                 $user = Auth::user();
                 if ($file = $request->file('photo_id')) {
                     $name = time() . "_" . $file->getClientOriginalName();
@@ -244,9 +248,9 @@ class BookController extends Controller
 
 
         if (!empty($intId)) {
-            $books = Book::where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
+            $books = Book::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
         } else {
-            $books = Book::where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
+            $books = Book::where('user_id', Auth::id())->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
         }
 
         return $books;
@@ -280,9 +284,9 @@ class BookController extends Controller
 
 
         if (!empty($intId)) {
-            $books = Book::where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
+            $books = Book::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
         } else {
-            $books = Book::where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
+            $books = Book::where('user_id', Auth::id())->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
         }
 
         $intCount = count($books);

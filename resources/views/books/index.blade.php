@@ -29,7 +29,7 @@
         <h1>All job offers</h1>
 
         <div class=" w3-left" id="items_found">
-            {{--<p>Items found: 23</p>--}}
+            <p>Items found: {{$itemsQuantity}}</p>
         </div>
         <div class=" w3-right">
             <div class="numbers_block " style="float: left;margin-right: 30px;margin-top: 5px;font-size: 20px;">
