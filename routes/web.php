@@ -1,15 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,6 +28,7 @@ Route::group(['middleware'=>'admin'], function (){
     Route::resource('/photos','PhotoController');
     Route::resource('/movies','MovieController');
     Route::resource('/events','EventController');
+    Route::resource('/categories','CategoryController');
 
 
     Route::get('importExport', 'MaatwebsiteDemoController@importExport');
@@ -46,8 +37,12 @@ Route::group(['middleware'=>'admin'], function (){
 
     Route::post('/filter_book_list','BookController@filterBookList');
     Route::post('/get_book_quantity','BookController@getAllBooksQuantity');
+    Route::post('/get_movie_quantity','MovieController@getAllMoviesQuantity');
     Route::post('/filter_movie_list','MovieController@filterMovieList');
     Route::get('/upload_images/{id}/{module_id}','PhotoController@uploadMultipleImages');
+
+
+    Route::get('user/{id}/info', 'InfoController@getUserInfo');
 
 });
 

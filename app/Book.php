@@ -8,10 +8,10 @@ class Book extends Model
 {
     protected $fillable = [
         'user_id','title','description','photo_id','publish_year','active',
-        'author','date'
+        'author','date','category_id'
     ];
 
-    public $with=['user','photos'];
+    public $with=['user','photos','category'];
 
     public function user(){
         return $this->belongsTo('App\User');
@@ -23,6 +23,10 @@ class Book extends Model
 
     public function photo(){
         return $this->hasOne('App\ImageBook');
+    }
+
+    public function category(){
+        return $this->belongsTo('App\Category');
     }
 
 }

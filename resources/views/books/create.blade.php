@@ -15,6 +15,11 @@
         </div>
 
         <div class="group-form">
+            {!! Form::label('category_id','Category:') !!}
+            {!! Form::select('category_id', [""=>"Choose category"]+$categories,null, ['class'=>'form-control','id'=>'chooseCategory']) !!}
+        </div>
+
+        <div class="group-form">
             {!! Form::label('publish_year','Publish year:') !!}
             {!! Form::text('publish_year', null, ['class'=>'form-control']) !!}
         </div>

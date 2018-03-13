@@ -8,10 +8,10 @@ class Movie extends Model
 {
     protected $fillable = [
         'user_id','title','description','active',
-        'author','finished_date','movie_created_year'
+        'author','finished_date','movie_created_year','category_id'
     ];
 
-    public $with=['user','photos'];
+    public $with=['user','photos','category'];
 
     public function user(){
         return $this->belongsTo('App\User');
@@ -24,4 +24,9 @@ class Movie extends Model
     public function photo(){
         return $this->hasOne('App\ImageMovie');
     }
+
+    public function category(){
+        return $this->belongsTo('App\Category');
+    }
+
 }

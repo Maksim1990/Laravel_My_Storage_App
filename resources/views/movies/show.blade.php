@@ -22,6 +22,7 @@
         <div>
             @if($movie->photos)
                 @foreach($movie->photos as $item)
+                    @if($item->photo)
                     <a href="#" data-toggle="modal" data-target="#showImage"
                        title="Show image"
                        class="show_image"
@@ -30,6 +31,7 @@
                     >
                         <img style="border-radius: 30px;" width="160" height="160" src="{{$item->photo->path}}" alt="">
                     </a>
+                    @endif
                 @endforeach
             @endif
 

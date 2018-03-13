@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Category;
 use App\Http\Requests\BookCreateRequest;
 use App\ImageBook;
 use App\Photo;
@@ -74,10 +75,9 @@ class BookController extends Controller
      */
     public function create()
     {
-
-
+        $categories=Category::pluck('name','id')->all();
         $title = 'Add new book';
-        return view('books.create', compact('title'));
+        return view('books.create', compact('title','categories'));
     }
 
     /**
@@ -97,10 +97,14 @@ class BookController extends Controller
                 $name = time() . "_" . $file->getClientOriginalName();
                 $file->move('images', $name);
                 $photo = Photo::create(['path' => $name, 'user_id' => $user->id, 'module_id' => 1]);
+
                 $photo_id = $photo->id;
             }
+
             $input['user_id'] = $user->id;
+            $input['photo_id'] = $photo_id;
             $input['active'] = 1;
+
             $book = Book::create($input);
             Session::flash('book_change', 'New book has been successfully created!');
 
@@ -135,11 +139,12 @@ class BookController extends Controller
     public function edit($id)
     {
         $book = Book::findOrFail($id);
+        $categories=Category::pluck('name','id')->all();
         //$adds=Advertisement::where('user_id',Auth::id())->pluck('title','id')->all();
         //$types=CommunityType::pluck('name','id')->all();
 
         $title = 'Edit book';
-        return view('books.edit', compact('book', 'title'));
+        return view('books.edit', compact('book', 'title','categories'));
     }
 
     /**

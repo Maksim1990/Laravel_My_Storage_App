@@ -107,6 +107,7 @@
                             </td>
                             <td>{{$book->author}}</td>
 
+
                             <td><a href="{{URL::to('books/'.$book->id.'/edit ')}}" id="edit_book_{{$book->id}}"><i
                                         class="fas fa-edit"></i></a></td>
                         </tr>
@@ -141,6 +142,7 @@
                             <td>
                                 <p>Title: {{$book->title}}</p>
                                 <p>Author: {{$book->author}}</p>
+                                <p>Category: {{$book->category_id!=0?$book->category->name:"No category"}}</p>
                                 <p>Finished reading: {{$book->date}}</p>
                                 <p>Published year: {{$book->publish_year}}</p>
                                 <p>
@@ -371,8 +373,8 @@
                                 $('<tr>').html(booksList + "</tr>").appendTo('#books_block');
                             } else {
 
-                                if (data['data'][i]['photos'][0] && data['data'][0]['photos'][0]['photo']) {
-                                    var MainImagePath = data['data'][0]['photos'][0]['photo']['path'];
+                                if (data['data'][i]['photos'][0] && data['data'][i]['photos'][0]['photo']) {
+                                    var MainImagePath = data['data'][i]['photos'][0]['photo']['path'];
                                 } else {
                                     var MainImagePath = "{{asset('images/includes/noImage.jpg')}}";
                                 }
@@ -382,14 +384,22 @@
 
                                 if (data['data'][i]['photos'].length > 0) {
                                     for (var j = 0; j < data['data'][i]['photos'].length; j++) {
-                                        if (j >= 1 && data['data'][0]['photos'][j]['photo']) {
-                                            smallImages += "<a href='#' data-toggle='modal' data-target='#showImage' title='Show image' class='show_image'  data-image-id=''  data-image-path=''><img style='border-radius: 10px;' width='50' height='50' src='" + data['data'][0]['photos'][j]['photo']['path'] + "' alt=''></a>"
+                                        if (j >= 1 && data['data'][i]['photos'][j]['photo']) {
+                                            smallImages += "<a href='#' data-toggle='modal' data-target='#showImage' title='Show image' class='show_image'  data-image-id=''  data-image-path=''><img style='border-radius: 10px;' width='50' height='50' src='" + data['data'][i]['photos'][j]['photo']['path'] + "' alt=''></a>"
                                         }
                                     }
                                 }
 
+                                //-- Get category of this item
+                                if (data['data'][i]['category_id']!==0) {
+                                    var category=data['data'][i]['category']['name'];
 
-                                var booksList = "<td><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></td><td><p>Title: " + data['data'][i]['title'] + "</p><p>Author: " + data['data'][i]['author'] + "</p><p>Finished reading: " + data['data'][i]['date'] + "</p><p>Published year: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td> <p>Description: <br>" + data['data'][i]['description'] + "</p> </td>";
+                                }else{
+                                    var category="No category";
+                                }
+
+                                var strCategory = "<p>Category: "+category+"</p>";
+                                var booksList = "<td><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></td><td><p>Title: " + data['data'][i]['title'] + "</p><p>Author: " + data['data'][i]['author'] + "</p>"+strCategory+"<p>Finished reading: " + data['data'][i]['date'] + "</p><p>Published year: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td> <p>Description: <br>" + data['data'][i]['description'] + "</p> </td>";
                                 $('<tr>').html(booksList + "</tr>").appendTo('#books_block_full');
                             }
                         }

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\MovieCreateRequest;
 use App\ImageMovie;
 use App\Movie;
 use App\Photo;
+use App\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -19,22 +21,35 @@ class MovieController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
         $filterTitle = $request ? $request['title'] : "";
         $filterId = $request ? $request['id'] : "";
         $filterAuthor = $request ? $request['author'] : "";
 
+        $intQuantity = 10;
+        $itemLayout = false;
+        $setting = Setting::where('user_id', $user->id)->first();
 
-        if (!empty($filterTitle) || !empty($filterId) || !empty($filterAuthor)) {
-
-            if (!empty($filterId)) {
-                $movies = Movie::where('id', $filterId)->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate(10);
-            } else {
-                $movies = Movie::where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate(10);
+        if (isset($setting)) {
+            if ($setting->movie_list_quantity) {
+                $intQuantity = $setting->movie_list_quantity;
             }
-        } else {
-            $movies = Movie::where('active', '=', '1')->orderBy('id')->paginate(10);
+
+            if ($setting->movie_list === 'detail') {
+                $itemLayout = true;
+            }
         }
 
+
+        if (!empty($filterTitle) || !empty($filterId) || !empty($filterAuthor)) {
+            if (!empty($filterId)) {
+                $items = Movie::where('user_id', Auth::id())->where('id', $filterId)->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate($intQuantity);
+            } else {
+                $items = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate($intQuantity);
+            }
+        } else {
+            $items = Movie::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->paginate($intQuantity);
+        }
 
 
         $title = 'All movies';
@@ -43,7 +58,12 @@ class MovieController extends Controller
             'title' => $filterTitle,
             'author' => $filterAuthor
         ];
-        return view('movies.index', compact('title', 'movies', 'arrFilter'));
+
+
+        $itemsCount = Movie::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->get();
+        $itemsQuantity=count($itemsCount);
+
+        return view('movies.index', compact('title', 'items', 'arrFilter', 'itemLayout', 'intQuantity','itemsQuantity'));
 
     }
 
@@ -55,7 +75,8 @@ class MovieController extends Controller
     public function create()
     {
         $title = 'Add new movie';
-        return view('movies.create', compact('title'));
+        $categories=Category::pluck('name','id')->all();
+        return view('movies.create', compact('title','categories'));
     }
 
     /**
@@ -112,11 +133,12 @@ class MovieController extends Controller
     public function edit($id)
     {
         $movie = Movie::findOrFail($id);
+        $categories=Category::pluck('name','id')->all();
         //$adds=Advertisement::where('user_id',Auth::id())->pluck('title','id')->all();
         //$types=CommunityType::pluck('name','id')->all();
 
         $title = 'Edit movie';
-        return view('movies.edit', compact('movie', 'title'));
+        return view('movies.edit', compact('movie', 'title','categories'));
     }
 
     /**
@@ -132,9 +154,9 @@ class MovieController extends Controller
         $user = Auth::user();
         $photo_id=0;
         $file = $request->file('photo_id');
+        $input = $request->all();
         if ($file) {
             if (!($file->getClientSize() > 2100000)) {
-                $input = $request->all();
                 $user = Auth::user();
                 if ($file = $request->file('photo_id')) {
                     $name = time() . "_" . $file->getClientOriginalName();
@@ -181,25 +203,95 @@ class MovieController extends Controller
 
     public function filterMovieList(Request $request)
     {
+        $arrSortDetails = json_decode($request['arrSortDetails']);
+        if (count($arrSortDetails) > 0) {
+            switch ($arrSortDetails[0]) {
+                case "id":
+                    $strSortItem = "id";
+                    break;
+                case "title":
+                    $strSortItem = "title";
+                    break;
+                case "author":
+                    $strSortItem = "author";
+                    break;
+            }
+            $strSortDirection = $arrSortDetails[1] === "up" ? "asc" : "desc";
+        } else {
+            $strSortItem = "id";
+            $strSortDirection = "asc";
+        }
+
         $intId = $request['id'];
         $strTitle = !empty($request['title']) ? $request['title'] : "";
         $strAuthor = !empty($request['author']) ? $request['author'] : "";
-        if (!empty($intId)) {
-            $movies = Movie::where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy('id')->paginate(10);
+
+        $intQuantity = $request['intQuantity'] ? intval($request['intQuantity']) : 10;
+        $strLayout = $request['strLayout'] ? $request['strLayout'] : 'normal';
+
+        $user = Auth::user();
+        $setting = Setting::where('user_id', $user->id)->first();
+        if (isset($setting)) {
+            $setting->movie_list_quantity = $intQuantity;
+            $setting->movie_list = $strLayout;
+            $setting->save();
         } else {
-            $movies = Movie::where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy('id')->paginate(10);
+            $input['user_id'] = Auth::id();
+            $input['movie_list_quantity'] = $intQuantity;
+            $input['movie_list'] = $strLayout;
+            Setting::create($input);
         }
 
 
+        if (!empty($intId)) {
+            $items = Movie::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
+        } else {
+            $items = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
+        }
 
-//        $arr=[
-//            'intId'=>$intId,
-//            'strTitle'=>$strTitle,
-//            'strAuthor'=>$strAuthor
-//        ];
-//        return $arr;
-
-        return $movies;
+        return $items;
     }
+
+
+    public function getAllMoviesQuantity(Request $request)
+    {
+        $arrSortDetails = json_decode($request['arrSortDetails']);
+        if (count($arrSortDetails) > 0) {
+            switch ($arrSortDetails[0]) {
+                case "id":
+                    $strSortItem = "id";
+                    break;
+                case "title":
+                    $strSortItem = "title";
+                    break;
+                case "author":
+                    $strSortItem = "author";
+                    break;
+            }
+            $strSortDirection = $arrSortDetails[1] === "up" ? "asc" : "desc";
+        } else {
+            $strSortItem = "id";
+            $strSortDirection = "asc";
+        }
+
+        $intId = $request['id'];
+        $strTitle = !empty($request['title']) ? $request['title'] : "";
+        $strAuthor = !empty($request['author']) ? $request['author'] : "";
+
+
+        if (!empty($intId)) {
+            $items = Movie::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
+        } else {
+            $items = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
+        }
+
+        $intCount = count($items);
+        return $intCount;
+    }
+
+
+
+
+
 
 }
