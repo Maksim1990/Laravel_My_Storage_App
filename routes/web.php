@@ -29,6 +29,7 @@ Route::group(['middleware'=>'admin'], function (){
     Route::resource('/movies','MovieController');
     Route::resource('/events','EventController');
     Route::resource('/categories','CategoryController');
+    Route::get('/categories/{id}/{userId}','CategoryController@showItemsPerUser');
 
 
     Route::get('importExport', 'MaatwebsiteDemoController@importExport');

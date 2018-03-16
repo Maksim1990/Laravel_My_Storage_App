@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Category;
+use App\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -51,7 +53,11 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category=Category::findOrFail($id);
+
+        $lastBook=Book::where('category_id',$id)->orderBy('id','DESC')->first();
+        $lastMovie=Movie::where('category_id',$id)->orderBy('id','DESC')->first();
+        return view('categories.show',compact('category','lastBook','lastMovie'));
     }
 
     /**
@@ -63,6 +69,8 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category=Category::findOrFail($id);
+
+
         return view('categories.edit',compact('category'));
     }
 
@@ -94,4 +102,13 @@ class CategoryController extends Controller
         Session::flash('category_change','The category has been successfully deleted!');
         return redirect('/categories');
     }
+
+
+    public function showItemsPerUser($id,$userId)
+    {
+        $category=Category::where('id',$id)->where('user_id',$userId)->get();
+        return view('categories.user',compact('category'));
+    }
+
+
 }
