@@ -27,6 +27,25 @@
         }
     }
 
+
+    $(document).ready(function () {
+        if ($(window).width() < 960) {
+            $('#menu_icon').css('display','block');
+        }
+        else {
+            $('#menu_icon').css('display','none');
+        }
+    });
+
+    $(window).resize(function () {
+        if ($(window).width() < 960) {
+            $('#menu_icon').css('display','block');
+        }
+        else {
+            $('#menu_icon').css('display','none');
+        }
+    });
+
     openMail("Borge")
     function openMail(personName) {
         var i;
@@ -49,4 +68,5 @@
 
 
 </script>
+
 

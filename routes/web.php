@@ -31,6 +31,8 @@ Route::group(['middleware'=>'admin'], function (){
     Route::resource('/categories','CategoryController');
     Route::get('/categories/{id}/{userId}','CategoryController@showItemsPerUser');
 
+    Route::post('add_comment','CommentController@addComment');
+
 
     Route::get('importExport', 'MaatwebsiteDemoController@importExport');
     Route::get('downloadExcel/{type}', 'MaatwebsiteDemoController@downloadExcel');

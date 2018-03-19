@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\Category;
+use App\Comment;
 use App\Http\Requests\BookCreateRequest;
 use App\ImageBook;
 use App\Photo;
@@ -126,8 +127,9 @@ class BookController extends Controller
     public function show($id)
     {
         $book = Book::findOrFail($id);
+        $comments = Comment::where('module_id',1)->where('item_id',$id)->get();
 
-        return view('books.show', compact('book'));
+        return view('books.show', compact('book','comments'));
     }
 
     /**

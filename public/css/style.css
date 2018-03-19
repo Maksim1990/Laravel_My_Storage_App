@@ -5,7 +5,11 @@
 #hide_bitton{
     width: 50px;
 }
+
+
+
 @media(max-width:1000px){
+
     #title_right{
         float:left;
     }

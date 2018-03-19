@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','account_type','sns_acc_id','avatar_url','first_name','last_name','status','role_id','is_active'
+        'name', 'email', 'password','account_type','sns_acc_id','avatar_url','first_name','last_name','status','role_id','is_active','photo_id'
     ];
 
     /**
@@ -36,6 +36,11 @@ class User extends Authenticatable
     public function setting()
     {
         return $this->hasOne('App\Setting');
+    }
+
+
+    public function photo(){
+        return $this->hasOne('App\Photo');
     }
 
 }

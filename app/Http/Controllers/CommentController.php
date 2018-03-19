@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -81,4 +82,20 @@ class CommentController extends Controller
     {
         //
     }
+
+
+    public function addComment(Request $request)
+    {
+        $comment=$request['comment'];
+        $user_id=$request['user_id'];
+        $module_id=$request['module_id'];
+        $item_id=$request['item_id'];
+        $comment=Comment::create(['user_id'=>$user_id,'comment'=>$comment,'module_id'=>$module_id,'item_id'=>$item_id]);
+
+        return [
+            "status"=>true,
+            "comment_id"=>$comment->id,
+            ];
+    }
+
 }

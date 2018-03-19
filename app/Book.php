@@ -21,6 +21,10 @@ class Book extends Model
         return $this->hasMany('App\ImageBook');
     }
 
+    public function comments(){
+        return $this->hasMany('App\Comment');
+    }
+
     public function photo(){
         return $this->hasOne('App\ImageBook');
     }
