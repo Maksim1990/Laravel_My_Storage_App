@@ -11,8 +11,11 @@ use App\Photo;
 use App\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
+
 
 class BookController extends Controller
 {
@@ -43,15 +46,35 @@ class BookController extends Controller
             }
         }
 
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $arrOptions = [
+            'intQuantity' => $intQuantity,
+            'filterTitle' => $filterTitle,
+            'filterId' => $filterId,
+            'filterAuthor' => $filterAuthor,
+            'currentPage' => $currentPage
+        ];
+////-- Flush 'books' key from redis cache
+//        Cache::tags('books')->flush();
+        $books = Cache::tags(['books'])->get('books_' . $arrOptions['currentPage']);
 
-        if (!empty($filterTitle) || !empty($filterId) || !empty($filterAuthor)) {
-            if (!empty($filterId)) {
-                $books = Book::where('user_id', Auth::id())->where('id', $filterId)->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate($intQuantity);
+        if (empty($books)) {
+            if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor'])) {
+                if (!empty($filterId)) {
+                    $books = Book::where('user_id', Auth::id())->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'], $books, 22 * 60);
+
+                } else {
+                    $books = Book::where('user_id', Auth::id())->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'], $books, 22 * 60);
+                }
             } else {
-                $books = Book::where('user_id', Auth::id())->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate($intQuantity);
+                $books = Book::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'], $books, 22 * 60);
+
             }
-        } else {
-            $books = Book::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->paginate($intQuantity);
+        }else{
+            var_dump("FROM CACHE");
         }
 
 
@@ -64,9 +87,9 @@ class BookController extends Controller
 
 
         $itemsCount = Book::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->get();
-        $itemsQuantity=count($itemsCount);
+        $itemsQuantity = count($itemsCount);
 
-        return view('books.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity','itemsQuantity'));
+        return view('books.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity'));
     }
 
     /**
@@ -76,9 +99,9 @@ class BookController extends Controller
      */
     public function create()
     {
-        $categories=Category::pluck('name','id')->all();
+        $categories = Category::pluck('name', 'id')->all();
         $title = 'Add new book';
-        return view('books.create', compact('title','categories'));
+        return view('books.create', compact('title', 'categories'));
     }
 
     /**
@@ -127,9 +150,9 @@ class BookController extends Controller
     public function show($id)
     {
         $book = Book::findOrFail($id);
-        $comments = Comment::where('module_id',1)->where('item_id',$id)->get();
+        $comments = Comment::where('module_id', 1)->where('item_id', $id)->get();
 
-        return view('books.show', compact('book','comments'));
+        return view('books.show', compact('book', 'comments'));
     }
 
     /**
@@ -141,12 +164,12 @@ class BookController extends Controller
     public function edit($id)
     {
         $book = Book::findOrFail($id);
-        $categories=Category::pluck('name','id')->all();
+        $categories = Category::pluck('name', 'id')->all();
         //$adds=Advertisement::where('user_id',Auth::id())->pluck('title','id')->all();
         //$types=CommunityType::pluck('name','id')->all();
 
         $title = 'Edit book';
-        return view('books.edit', compact('book', 'title','categories'));
+        return view('books.edit', compact('book', 'title', 'categories'));
     }
 
     /**
@@ -183,7 +206,7 @@ class BookController extends Controller
         $book->update($input);
         Session::flash('book_change', 'New book has been successfully updated!');
 
-        if($photo_id >0){
+        if ($photo_id > 0) {
             ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
         }
 
@@ -244,7 +267,16 @@ class BookController extends Controller
         $strLayout = $request['strLayout'] ? $request['strLayout'] : 'normal';
 
         $user = Auth::user();
-        $setting = Setting::where('user_id', $user->id)->first();
+
+
+        //-- Get user's settings from cache or from DB
+        $setting = Cache::remember('settings_' . $user->id, 22 * 60, function () use ($user) {
+            return Setting::where('user_id', $user->id)->first();
+        });
+
+        //-- Flush 'books' key from redis cache
+        Cache::forget('settings_' . $user->id);
+
         if (isset($setting)) {
             $setting->book_list_quantity = $intQuantity;
             $setting->book_list = $strLayout;
@@ -256,6 +288,10 @@ class BookController extends Controller
             Setting::create($input);
         }
 
+        //-- Set user setting cache data
+        Cache::put('settings_' . $user->id, $setting, 22 * 60);
+        //-- Flush 'books' key from redis cache
+        Cache::tags('books')->flush();
 
         if (!empty($intId)) {
             $books = Book::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
@@ -292,6 +328,8 @@ class BookController extends Controller
         $strTitle = !empty($request['title']) ? $request['title'] : "";
         $strAuthor = !empty($request['author']) ? $request['author'] : "";
 
+        //-- Flush 'books' key from redis cache
+        Cache::tags('books')->flush();
 
         if (!empty($intId)) {
             $books = Book::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
@@ -300,7 +338,7 @@ class BookController extends Controller
         }
 
         $intCount = count($books);
-         return $intCount;
+        return $intCount;
     }
 
 

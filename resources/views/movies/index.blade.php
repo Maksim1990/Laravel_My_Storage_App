@@ -101,12 +101,12 @@
                         <tr>
                             <td>{{$item->id}}</td>
                             <td>
-                                <a href="{{URL::to('movies/'.$item->id)}}" id="edit_item_{{$item->id}}">
+                                <a href="{{URL::to(LaravelLocalization::getCurrentLocale().'/movies/'.$item->id)}}" id="edit_item_{{$item->id}}">
                                     {{$item->title}}</a>
                             </td>
                             <td>{{$item->author}}</td>
 
-                            <td><a href="{{URL::to('movies/'.$item->id.'/edit ')}}" id="edit_item_{{$item->id}}"><i
+                            <td><a href="{{URL::to(LaravelLocalization::getCurrentLocale().'/movies/'.$item->id.'/edit ')}}" id="edit_item_{{$item->id}}"><i
                                         class="fas fa-edit"></i></a></td>
                         </tr>
 

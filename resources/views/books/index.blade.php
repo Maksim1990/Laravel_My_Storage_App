@@ -108,13 +108,13 @@
                             <td>{{$book->id}}</td>
                             <td>
 
-                                <a href="{{URL::to('books/'.$book->id)}}" id="edit_book_{{$book->id}}">
+                                <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/'.$book->id)}}" id="edit_book_{{$book->id}}">
                                     {{$book->title}}</a>
                             </td>
                             <td>{{$book->author}}</td>
 
 
-                            <td><a href="{{URL::to('books/'.$book->id.'/edit ')}}" id="edit_book_{{$book->id}}"><i
+                            <td><a href="{{URL::to(LaravelLocalization::getCurrentLocale().'/books/'.$book->id.'/edit ')}}" id="edit_book_{{$book->id}}"><i
                                         class="fas fa-edit"></i></a></td>
                         </tr>
 

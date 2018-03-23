@@ -10,6 +10,7 @@ use App\Photo;
 use App\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
 class MovieController extends Controller
@@ -41,15 +42,39 @@ class MovieController extends Controller
         }
 
 
-        if (!empty($filterTitle) || !empty($filterId) || !empty($filterAuthor)) {
-            if (!empty($filterId)) {
-                $items = Movie::where('user_id', Auth::id())->where('id', $filterId)->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate($intQuantity);
+
+
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $arrOptions = [
+            'intQuantity' => $intQuantity,
+            'filterTitle' => $filterTitle,
+            'filterId' => $filterId,
+            'filterAuthor' => $filterAuthor,
+            'currentPage' => $currentPage
+        ];
+////-- Flush 'movies' key from redis cache
+//        Cache::tags('movies')->flush();
+        $items = Cache::tags(['movies'])->get('movies_' . $arrOptions['currentPage']);
+
+        if (empty($items)) {
+            if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor'])) {
+                if (!empty($filterId)) {
+                    $items = Movie::where('user_id', Auth::id())->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'], $items, 22 * 60);
+
+                } else {
+                    $items = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'], $items, 22 * 60);
+                }
             } else {
-                $items = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $filterTitle . '%')->where('author', 'like', '%' . $filterAuthor . '%')->orderBy('id')->paginate($intQuantity);
+                $items = Movie::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'], $items, 22 * 60);
+
             }
-        } else {
-            $items = Movie::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->paginate($intQuantity);
+        }else{
+            var_dump("FROM CACHE");
         }
+
 
 
         $title = 'All movies';
@@ -230,7 +255,16 @@ class MovieController extends Controller
         $strLayout = $request['strLayout'] ? $request['strLayout'] : 'normal';
 
         $user = Auth::user();
-        $setting = Setting::where('user_id', $user->id)->first();
+
+
+        //-- Get user's settings from cache or from DB
+        $setting = Cache::remember('settings_' . $user->id, 22 * 60, function () use ($user) {
+            return Setting::where('user_id', $user->id)->first();
+        });
+
+        //-- Flush 'books' key from redis cache
+        Cache::forget('settings_' . $user->id);
+
         if (isset($setting)) {
             $setting->movie_list_quantity = $intQuantity;
             $setting->movie_list = $strLayout;
@@ -242,6 +276,11 @@ class MovieController extends Controller
             Setting::create($input);
         }
 
+
+        //-- Set user setting cache data
+        Cache::put('settings_' . $user->id, $setting, 22 * 60);
+        //-- Flush 'movies' key from redis cache
+        Cache::tags('movies')->flush();
 
         if (!empty($intId)) {
             $items = Movie::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
@@ -278,6 +317,9 @@ class MovieController extends Controller
         $strTitle = !empty($request['title']) ? $request['title'] : "";
         $strAuthor = !empty($request['author']) ? $request['author'] : "";
 
+
+        //-- Flush 'movies' key from redis cache
+        Cache::tags('movies')->flush();
 
         if (!empty($intId)) {
             $items = Movie::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
