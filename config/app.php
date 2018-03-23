@@ -80,6 +80,10 @@ return [
 
     'locale' => 'en',
 
+    'locales' => ['es', 'en'],
+
+    'fallback_locale' => 'en',
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -164,6 +168,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -233,6 +238,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'GoogleBooks' => Scriptotek\GoogleBooks\GoogleBooksFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
 
     ],
 

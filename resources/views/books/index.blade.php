@@ -93,7 +93,12 @@
 
                 <td></td>
             </tr>
+            <ul>
+                <h1>
+                    @lang('messages.welcome')
+                </h1>
 
+            </ul>
             @if(count($books)>0)
                 @if(!isset($bookLayout) || !$bookLayout)
                     <tbody id="books_block_full"></tbody>
@@ -102,6 +107,7 @@
                         <tr>
                             <td>{{$book->id}}</td>
                             <td>
+
                                 <a href="{{URL::to('books/'.$book->id)}}" id="edit_book_{{$book->id}}">
                                     {{$book->title}}</a>
                             </td>

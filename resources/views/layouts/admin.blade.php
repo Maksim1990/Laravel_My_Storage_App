@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <html lang="{{ app()->getLocale() }}">
     @if(isset($title))
         <title>{{$title}}</title>
     @else
