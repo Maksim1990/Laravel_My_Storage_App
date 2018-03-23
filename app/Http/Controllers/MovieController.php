@@ -129,6 +129,8 @@ class MovieController extends Controller
 
             ImageMovie::create(['movie_id' => $movie->id, 'photo_id' => $photo_id]);
             Session::flash('movie_change', 'New movie has been successfully created!');
+            //-- Flush 'movies' key from redis cache
+            Cache::tags('movies')->flush();
             return redirect('movies/' . $movie->id);
         } else {
             Session::flash('movie_change', 'Image size should not exceed 2 MB');
@@ -200,6 +202,8 @@ class MovieController extends Controller
 
         ImageMovie::create(['movie_id' => $movie->id, 'photo_id' => $photo_id]);
         Session::flash('movie_change', 'New movie has been successfully updated!');
+        //-- Flush 'movies' key from redis cache
+        Cache::tags('movies')->flush();
         return redirect('movies/' . $movie->id);
     }
 
@@ -219,6 +223,8 @@ class MovieController extends Controller
             //  var_dump($item->photo->path);
         }
         Session::flash('movie_change', 'The movie has been successfully deleted!');
+        //-- Flush 'movies' key from redis cache
+        Cache::tags('movies')->flush();
         $movie->delete();
 
 
