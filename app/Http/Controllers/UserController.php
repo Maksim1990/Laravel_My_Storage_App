@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Scriptotek\GoogleBooks\GoogleBooks;
 
 class UserController extends Controller
@@ -28,8 +30,7 @@ class UserController extends Controller
 //
 //        var_dump($status);
 //        var_dump($response);
-        $test="ttt";
-        return view('users.index', compact('test'));
+
 
 //        $books = new GoogleBooks(['key' => 'AIzaSyBOpZX9gvZRUjtlzDy-7eIFmw0yz5P1BME']);
 //        foreach ($books->bookshelves->byUser('113555231101190020526') as $shelf) {
@@ -45,6 +46,11 @@ class UserController extends Controller
 //        }
 
 
+        $user=Auth::user();
+        //$users=User::where('id', '>', '0')->where('id','!=',$user->id)->orderBy('id')->paginate(10);
+        $users=User::where('id', '>', '0')->orderBy('id')->paginate(10);
+        $arrFilter=array();
+        return view('users.index', compact('users','arrFilter'));
 
     }
 

@@ -35,7 +35,7 @@
     <link href="{{asset('css/libs.css')}}" rel="stylesheet">
 
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
-    <link href="{{asset('css/custom_style.css')}}" rel="stylesheet">
+    <link href="{{asset('css/loading_icon_style.css')}}" rel="stylesheet">
 
 @yield('styles')
 @yield('scripts_header')

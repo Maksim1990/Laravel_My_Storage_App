@@ -6,7 +6,9 @@
     width: 50px;
 }
 
-
+#lang_block{
+    margin-left: 30px;
+}
 
 @media(max-width:1000px){
 
