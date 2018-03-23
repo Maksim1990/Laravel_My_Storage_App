@@ -1,0 +1,51 @@
+
+#modal_image_show,#modal_image {
+    width: 450px;
+}
+#hide_bitton{
+    width: 50px;
+}
+
+
+
+@media(max-width:1000px){
+
+    #title_right{
+        float:left;
+    }
+    #footer_low{
+        font-size: 15px;
+    }
+    #map {
+        height: 400px;
+        margin-bottom: 0px;
+    }
+    #header_right{
+        clear: both;
+        text-align: center;
+    }
+    #info_images img{
+        height: 100px;
+    }
+    #right{
+        padding: 0 0 ;
+
+    }
+    #main{
+        min-height: 500px;
+    }
+    #left{
+        height:100%;
+    }
+    #show_filters{
+        display: inline;
+    }
+    #left{
+        display: none;
+    }
+    #mapBlockDetail{
+        width: 250px;
+    }
+
+
+}
