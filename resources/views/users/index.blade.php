@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 
-    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="col-sm-7 col-sm-offset-1 col-xs-12">
         <div class="w3-center">
             <h1>All users list</h1>
         </div>
@@ -24,7 +24,7 @@
                             <div class="tooltip_custom">INFO
                                 <span class="tooltiptext">Tooltip text</span>
                             </div>
-                            <a href="{{URL::to('movies/'.$user->id)}}" id="movie_{{$user->id}}">
+                            <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/users/'.$user->id)}}" id="movie_{{$user->id}}">
                                 {{$user->name}}</a></td>
                         <td>{{$user->email}}</td>
                         <td> {{$user->created_at->diffForHumans()}}</td>

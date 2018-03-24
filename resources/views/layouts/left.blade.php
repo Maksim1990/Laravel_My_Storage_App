@@ -66,33 +66,27 @@
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Add sport event55</a>
     </div>
     <div id="lang_block">
-    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-        @if($localeCode=='th')
-            @php $strImage='th'; @endphp
-        @elseif($localeCode=='fr')
-            @php $strImage='fr'; @endphp
-        @elseif($localeCode=='ru')
-            @php $strImage='ru'; @endphp
-        @else
-            @php $strImage='en'; @endphp
-        @endif
+        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+            @if($localeCode=='th')
+                @php $strImage='th'; @endphp
+            @elseif($localeCode=='fr')
+                @php $strImage='fr'; @endphp
+            @elseif($localeCode=='ru')
+                @php $strImage='ru'; @endphp
+            @else
+                @php $strImage='en'; @endphp
+            @endif
 
-        <div class="tooltip_custom" style="display: inline-block;">
-            <a rel="alternate" hreflang="{{ $localeCode }}"
-               href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                <img style="border-radius: 30px;" width="25" height="25"
-                     src="{{asset('images/includes/flags/'.$strImage.'.png')}}" alt="">
-            </a>
-            <span class="tooltiptext">{{ $properties['native'] }}</span>
-        </div>
+            <div class="tooltip_custom" style="display: inline-block;">
+                <a rel="alternate" hreflang="{{ $localeCode }}"
+                   href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                    <img style="border-radius: 30px;" width="25" height="25"
+                         src="{{asset('images/includes/flags/'.$strImage.'.png')}}" alt="">
+                </a>
+                <span class="tooltiptext">{{ $properties['native'] }}</span>
+            </div>
 
-
-
-
-
-
-
-    @endforeach
+        @endforeach
     </div>
 </nav>
 

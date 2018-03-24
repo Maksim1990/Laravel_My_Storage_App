@@ -56,27 +56,24 @@ class BookController extends Controller
         ];
 ////-- Flush 'books' key from redis cache
 //        Cache::tags('books')->flush();
-        $books = Cache::tags(['books'])->get('books_' . $arrOptions['currentPage']);
+        $books = Cache::tags(['books'])->get('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity']);
 
         if (empty($books)) {
             if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor'])) {
                 if (!empty($filterId)) {
                     $books = Book::where('user_id', Auth::id())->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                    Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'], $books, 22 * 60);
-
+                    Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'], $books, 22 * 60);
                 } else {
                     $books = Book::where('user_id', Auth::id())->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                    Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'], $books, 22 * 60);
+                    Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'], $books, 22 * 60);
                 }
             } else {
                 $books = Book::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'], $books, 22 * 60);
-
+                Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'], $books, 22 * 60);
             }
         }else{
             var_dump("FROM CACHE");
         }
-
 
         $title = 'All books';
         $arrFilter = [
@@ -114,9 +111,10 @@ class BookController extends Controller
     {
         $file = $request->file('photo_id');
         $photo_id = 0;
-        if (!($file->getClientSize() > 2100000)) {
+        $user = Auth::user();
+        if (!empty($file) && !($file->getClientSize() > 2100000)) {
             $input = $request->all();
-            $user = Auth::user();
+
             if ($file = $request->file('photo_id')) {
                 $name = time() . "_" . $file->getClientOriginalName();
                 $file->move('images', $name);
@@ -136,6 +134,13 @@ class BookController extends Controller
             Session::flash('book_change', 'New book has been successfully created!');
             //-- Flush 'books' key from redis cache
             Cache::tags('books')->flush();
+
+
+            //-- Remove TSV books file from this user (later will be re-downloaded again)
+            if (file_exists("files/tsv/user_books/user_" . $user->id . ".tsv")) {
+                unlink("files/tsv/user_books/user_" . $user->id . ".tsv");
+            }
+
             return redirect('books/' . $book->id);
         } else {
             Session::flash('book_change', 'Image size should not exceed 2 MB');
@@ -191,7 +196,6 @@ class BookController extends Controller
         if ($file) {
             if (!($file->getClientSize() > 2100000)) {
 
-                $user = Auth::user();
                 if ($file = $request->file('photo_id')) {
                     $name = time() . "_" . $file->getClientOriginalName();
                     $file->move('images', $name);
@@ -209,6 +213,13 @@ class BookController extends Controller
         Session::flash('book_change', 'New book has been successfully updated!');
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
+
+
+        //-- Remove TSV books file from this user (later will be re-downloaded again)
+        if (file_exists("files/tsv/user_books/user_" . $user->id . ".tsv")) {
+            unlink("files/tsv/user_books/user_" . $user->id . ".tsv");
+        }
+
 
         if ($photo_id > 0) {
             ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
@@ -228,6 +239,7 @@ class BookController extends Controller
     public function destroy($id)
     {
         $book = Book::findOrFail($id);
+        $user = Auth::user();
         foreach ($book->photos as $item) {
             unlink(public_path() . $item->photo->path);
             Photo::findOrfail($item->photo->id)->delete();
@@ -239,6 +251,11 @@ class BookController extends Controller
         Cache::tags('books')->flush();
 
         $book->delete();
+
+        //-- Remove TSV books file from this user (later will be re-downloaded again)
+        if (file_exists("files/tsv/user_books/user_" . $user->id . ".tsv")) {
+            unlink("files/tsv/user_books/user_" . $user->id . ".tsv");
+        }
 
 
         return redirect('books');

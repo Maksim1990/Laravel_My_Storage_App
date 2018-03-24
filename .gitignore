@@ -1,11 +1,13 @@
 /node_modules
 /public/hot
 /public/storage
+/public/files/tsv
 /storage/*.key
 /vendor
 /.idea
 /.vagrant
 /useful
+/documents
 Homestead.json
 Homestead.yaml
 npm-debug.log

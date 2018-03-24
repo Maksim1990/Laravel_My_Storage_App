@@ -27,12 +27,17 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public $with=['setting'];
+    public $with=['setting','profile'];
 
     public function books()
     {
         return $this->hasMany('App\Book');
     }
+    public function profile()
+    {
+        return $this->hasOne('App\Profile');
+    }
+
     public function setting()
     {
         return $this->hasOne('App\Setting');

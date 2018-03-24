@@ -48,6 +48,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
 
         Route::get('user/{id}/info', 'InfoController@getUserInfo');
 
+        Route::get('/users/{id}/edit/profile', 'UserController@editProfile');
+        Route::get('/users/{id}/edit/password', 'UserController@editPassword');
+
     });
 
 });
