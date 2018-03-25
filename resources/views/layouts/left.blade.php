@@ -65,7 +65,7 @@
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Add movie55</a>
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Add sport event55</a>
     </div>
-    <div id="lang_block">
+    <div id="lang_block" style="position:absolute;bottom:5%;left:10%;">
         @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
             @if($localeCode=='th')
                 @php $strImage='th'; @endphp
