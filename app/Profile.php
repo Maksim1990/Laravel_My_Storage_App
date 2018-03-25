@@ -13,7 +13,8 @@ class Profile extends Model
         'city',
         'lastname',
         'user_gender',
-        'photo_id'
+        'photo_id',
+        'birthdate'
     ];
 
 

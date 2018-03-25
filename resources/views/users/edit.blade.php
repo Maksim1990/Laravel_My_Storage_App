@@ -39,8 +39,9 @@
 
 
             <br>
+            {{Auth::user()->role_id}}
             {!! Form::submit('Update User',['class'=>'btn btn-warning']) !!}
-            @if(Auth::id()==$user->id)
+            @if(Auth::id()==$user->id || (Auth::user()->role_id==1) || (Auth::user()->role_id==2))
                 {!! Form::close() !!}
                 {{ Form::open(['method' =>'DELETE' , 'action' => ['UserController@destroy',$user->id]])}}
 

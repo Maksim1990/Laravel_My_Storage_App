@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Comment;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UserCreateRequest;
+use App\ImageBook;
+use App\ImageMovie;
+use App\Movie;
 use App\Photo;
 use App\Profile;
 use App\Role;
@@ -11,6 +16,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Scriptotek\GoogleBooks\GoogleBooks;
 use Illuminate\Support\Facades\Session;
@@ -121,6 +127,7 @@ class UserController extends Controller
                 'city' => $input['city'],
                 'status' => $input['status'],
                 'user_gender' => $input['user_gender'],
+                'birthdate' => $input['birthdate'],
                 'photo_id' => $photo_id
             ]);
 
@@ -229,22 +236,10 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $profile = Profile::where('user_id', $user->id)->get()->first();
         $title = "Edit " . $user->name . " profile";
-        return view('users.edit', compact('profile', 'user', 'title'));
+        $roles = Role::pluck('name', 'id')->all();
+        return view('users.edit', compact('profile', 'user', 'title','roles'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function editProfile($id)
-    {
-        $user = User::findOrFail($id);
-        $profile = Profile::where('user_id', $user->id)->get()->first();
-        $title = "Edit " . $user->name . " profile";
-        return view('users.editProfile', compact('profile', 'user', 'title'));
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -320,6 +315,40 @@ class UserController extends Controller
         return redirect($locale . '/users/' . $user->id);
     }
 
+    public function updatePassword(UpdatePasswordRequest $request, $id)
+    {
+
+        $user=User::findOrFail(Auth::id());
+        $input=$request->all();
+        $old_password=bcrypt(\Request::input('old_password'));
+        $password=\Request::input('password');
+        $password_2=\Request::input('password_2');
+        if (Hash::check(\Request::input('old_password'), $user->password)) {
+            if($password==$password_2){
+                $input['password'] = bcrypt(\Request::input('password'));
+                $user->update($input);
+                Session::flash('user_change','The password has been successfully edited!');
+                return redirect('users/'.Auth::id());
+            }else{
+
+                $user=User::findOrFail(Auth::id());
+                $title='Change password';
+                Session::flash('user_change','You repeated new password not correct');
+                return view('users.editPassword', compact('user','title'));
+            }
+        }else{
+
+            $user=User::findOrFail(Auth::id());
+            $title='Change password';
+            Session::flash('user_change','You entered wrong old password');
+            return view('users.editPassword', compact('user','title'));
+        }
+    }
+
+
+
+
+
     /**
      * Remove the specified resource from storage.
      *
@@ -328,6 +357,57 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $locale = LaravelLocalization::getCurrentLocale();
+        $user=User::findOrFail($id);
+        if ($user->profile->photo_id) {
+            unlink(public_path() . $user->profile->photo->path);
+            Photo::findOrfail($user->profile->photo->id)->delete();
+        }
+
+
+        //-- Delete all related books
+        $books=Book::where('user_id',$user->id)->get();
+        if($books){
+            foreach ($books as $book){
+                foreach ($book->photos as $item) {
+                    unlink(public_path() . $item->photo->path);
+                    Photo::findOrfail($item->photo->id)->delete();
+                    ImageBook::where('photo_id', $item->photo->id)->delete();
+                }
+                $book->delete();
+            }
+        }
+
+        //-- Delete all related movies
+        $movies=Movie::where('user_id',$user->id)->get();
+        if($movies){
+            foreach ($movies as $movie){
+                foreach ($movie->photos as $item) {
+                    unlink(public_path() . $item->photo->path);
+                    Photo::findOrfail($item->photo->id)->delete();
+                    ImageMovie::where('photo_id', $item->photo->id)->delete();
+                }
+                $movie->delete();
+            }
+        }
+
+        //-- Delete all comments
+        Comment::where('user_id',$user->id)->delete();
+        //-- Delete profile
+        Profile::where('user_id',$user->id)->delete();
+
+
+        //-- Remove TSV books file from this user (later will be re-downloaded again)
+        if (file_exists("files/tsv/user_books/user_" . $user->id . ".tsv")) {
+            unlink("files/tsv/user_books/user_" . $user->id . ".tsv");
+        }
+
+        Session::flash('user_change','The user has been successfully deleted!');
+        $user->delete();
+        return redirect($locale.'/users');
     }
+
+
+
+
 }

@@ -24,7 +24,7 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request,$idUser=0)
     {
 
         $user = Auth::user();
@@ -55,24 +55,32 @@ class BookController extends Controller
             'currentPage' => $currentPage
         ];
 ////-- Flush 'books' key from redis cache
-//        Cache::tags('books')->flush();
-        $books = Cache::tags(['books'])->get('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity']);
+      // Cache::tags('books')->flush();
+        $books = Cache::tags(['books'])->get('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser);
+
+        if(empty($idUser)){
+            $intUserId=0;
+            $strUserAction='>';
+        }else{
+            $intUserId=$idUser;
+            $strUserAction='=';
+        }
 
         if (empty($books)) {
             if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor'])) {
                 if (!empty($filterId)) {
                     $books = Book::where('user_id', Auth::id())->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                    Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'], $books, 22 * 60);
+                    Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser, $books, 22 * 60);
                 } else {
                     $books = Book::where('user_id', Auth::id())->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                    Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'], $books, 22 * 60);
+                    Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser, $books, 22 * 60);
                 }
             } else {
-                $books = Book::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'], $books, 22 * 60);
+                $books = Book::where('user_id', $strUserAction,$intUserId)->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser, $books, 22 * 60);
             }
         }else{
-            //var_dump("FROM CACHE");
+            var_dump("FROM CACHE");
         }
 
         $title = 'All books';
@@ -83,10 +91,10 @@ class BookController extends Controller
         ];
 
 
-        $itemsCount = Book::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->get();
+        $itemsCount = Book::where('user_id', $strUserAction,$intUserId)->where('active', '=', '1')->orderBy('id')->get();
         $itemsQuantity = count($itemsCount);
 
-        return view('books.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity'));
+        return view('books.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity','idUser'));
     }
 
     /**
@@ -317,10 +325,19 @@ class BookController extends Controller
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
 
+        $idUser=$request['idUser'];
+        if(empty($idUser)){
+            $intUserId=0;
+            $strUserAction='>';
+        }else{
+            $intUserId=$idUser;
+            $strUserAction='=';
+        }
+
         if (!empty($intId)) {
-            $books = Book::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
+            $books = Book::where('user_id', $strUserAction,$intUserId)->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
         } else {
-            $books = Book::where('user_id', Auth::id())->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
+            $books = Book::where('user_id', $strUserAction,$intUserId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
         }
 
         return $books;
@@ -355,10 +372,21 @@ class BookController extends Controller
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
 
+
+
+        $idUser=$request['idUser'];
+        if(empty($idUser)){
+            $intUserId=0;
+            $strUserAction='>';
+        }else{
+            $intUserId=$idUser;
+            $strUserAction='=';
+        }
+
         if (!empty($intId)) {
-            $books = Book::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
+            $books = Book::where('user_id', $strUserAction,$intUserId)->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
         } else {
-            $books = Book::where('user_id', Auth::id())->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
+            $books = Book::where('user_id', $strUserAction,$intUserId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
         }
 
         $intCount = count($books);

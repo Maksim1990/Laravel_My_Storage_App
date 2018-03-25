@@ -102,13 +102,13 @@
                             <td>{{$book->id}}</td>
                             <td>
 
-                                <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/'.$book->id)}}" id="edit_book_{{$book->id}}">
+                                <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/books/'.$book->id)}}" id="edit_book_{{$book->id}}">
                                     {{$book->title}}</a>
                             </td>
                             <td>{{$book->author}}</td>
 
 
-                            <td><a href="{{URL::to(LaravelLocalization::getCurrentLocale().'/books/'.$book->id.'/edit ')}}" id="edit_book_{{$book->id}}"><i
+                            <td><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id.'/edit ')}}" id="edit_book_{{$book->id}}"><i
                                         class="fas fa-edit"></i></a></td>
                         </tr>
 
@@ -334,6 +334,7 @@
 
         //-- Ajax request for filtering and sorting
         function RunAjaxRequest(arrFilter, url, token, arrSortDetails, intQuantity=10, strLayout='normal') {
+            var idUser='{{$idUser}}';
             $.ajax({
                 method: 'POST',
                 url: url,
@@ -344,6 +345,7 @@
                     arrSortDetails: JSON.stringify(arrSortDetails),
                     intQuantity: intQuantity,
                     strLayout: strLayout,
+                    idUser:idUser,
                     _token: token
                 },
                 beforeSend: function () {
@@ -368,8 +370,8 @@
                             }
 
                             if (!blnDetailedLayout) {
-                                var strEditButton = "<td><a href='books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
-                                var booksList = "<td>" + data['data'][i]['id'] + "</td><td><a href='books/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>" + strEditButton;
+                                var strEditButton = "<td><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
+                                var booksList = "<td>" + data['data'][i]['id'] + "</td><td><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>" + strEditButton;
                                 $('<tr>').html(booksList + "</tr>").appendTo('#books_block');
                             } else {
 
@@ -422,7 +424,13 @@
                     var strPagiantionLinks = "";
                     var count = 1;
                     for (var i = +data['from']; i <= +data['total']; i = i + data['per_page']) {
-                        strPagiantionLinks += "<li><a href='books?page=" + count;
+                        var idUser='{{$idUser}}';
+                        if(idUser!=0){
+                            strPagiantionLinks += "<li><a href='/books/list/"+idUser+"/?page=" + count;
+                        }else{
+                            strPagiantionLinks += "<li><a href='/books/list/?page=" + count;
+                        }
+
 
                         if (arrFilter['id']) {
 
@@ -449,6 +457,7 @@
         }
 
         function GetAllFoundQuantityOfItems(arrFilter, urlGetAllItemsQuantity, token, arrSortDetails) {
+            var idUser='{{$idUser}}';
             $.ajax({
                 method: 'POST',
                 url: urlGetAllItemsQuantity,
@@ -456,6 +465,7 @@
                     id: arrFilter['id'],
                     title: arrFilter['title'],
                     author: arrFilter['author'],
+                    idUser:idUser,
                     arrSortDetails: JSON.stringify(arrSortDetails),
                     _token: token
                 },

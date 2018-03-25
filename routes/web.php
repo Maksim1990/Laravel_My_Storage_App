@@ -25,12 +25,26 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::get('/home', 'HomeController@index')->name('home');
 
         Route::resource('/users', 'UserController');
-        Route::resource('/books', 'BookController');
+
+
+        Route::get('books/list/{idUser?}', [
+            'as' => 'books.index',
+            'uses' => 'BookController@index'
+        ]);
+        Route::resource('/books', 'BookController', ['except' => 'index']);
         Route::resource('/photos', 'PhotoController');
-        Route::resource('/movies', 'MovieController');
+
+        Route::get('movies/list/{idUser?}', [
+            'as' => 'movies.index',
+            'uses' => 'MovieController@index'
+        ]);
+        Route::resource('/movies', 'MovieController', ['except' => 'index']);
+
         Route::resource('/events', 'EventController');
+        Route::resource('/profiles', 'ProfileController');
         Route::resource('/categories', 'CategoryController');
         Route::get('/categories/{id}/{userId}', 'CategoryController@showItemsPerUser');
+
 
         Route::post('add_comment', 'CommentController@addComment');
 
@@ -48,8 +62,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
 
         Route::get('user/{id}/info', 'InfoController@getUserInfo');
 
-        Route::get('/users/{id}/edit/profile', 'UserController@editProfile');
+        Route::get('/users/{id}/edit/profile', 'ProfileController@editProfile');
         Route::get('/users/{id}/edit/password', 'UserController@editPassword');
+        Route::patch('/users/update/password/{id}','UserController@updatePassword');
 
 
 

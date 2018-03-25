@@ -20,7 +20,7 @@ class MovieController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request,$idUser=0)
     {
         $user = Auth::user();
         $filterTitle = $request ? $request['title'] : "";
@@ -54,21 +54,30 @@ class MovieController extends Controller
         ];
 ////-- Flush 'movies' key from redis cache
 //        Cache::tags('movies')->flush();
-        $items = Cache::tags(['movies'])->get('movies_' . $arrOptions['currentPage']);
+        $items = Cache::tags(['movies'])->get('movies_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser);
+
+
+        if(empty($idUser)){
+            $intUserId=0;
+            $strUserAction='>';
+        }else{
+            $intUserId=$idUser;
+            $strUserAction='=';
+        }
 
         if (empty($items)) {
             if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor'])) {
                 if (!empty($filterId)) {
-                    $items = Movie::where('user_id', Auth::id())->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                    Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'], $items, 22 * 60);
+                    $items = Movie::where('user_id', $strUserAction,$intUserId)->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser, $items, 22 * 60);
 
                 } else {
-                    $items = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                    Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'], $items, 22 * 60);
+                    $items = Movie::where('user_id', $strUserAction,$intUserId)->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    Cache::tags(['movies'])->put('movies_'. $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser, $items, 22 * 60);
                 }
             } else {
-                $items = Movie::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'], $items, 22 * 60);
+                $items = Movie::where('user_id', $strUserAction,$intUserId)->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser, $items, 22 * 60);
 
             }
         }else{
@@ -85,10 +94,10 @@ class MovieController extends Controller
         ];
 
 
-        $itemsCount = Movie::where('user_id', Auth::id())->where('active', '=', '1')->orderBy('id')->get();
+        $itemsCount = Movie::where('user_id', $strUserAction,$intUserId)->where('active', '=', '1')->orderBy('id')->get();
         $itemsQuantity=count($itemsCount);
 
-        return view('movies.index', compact('title', 'items', 'arrFilter', 'itemLayout', 'intQuantity','itemsQuantity'));
+        return view('movies.index', compact('title', 'items', 'arrFilter', 'itemLayout', 'intQuantity','itemsQuantity','idUser'));
 
     }
 
@@ -288,10 +297,20 @@ class MovieController extends Controller
         //-- Flush 'movies' key from redis cache
         Cache::tags('movies')->flush();
 
+
+        $idUser=$request['idUser'];
+        if(empty($idUser)){
+            $intUserId=0;
+            $strUserAction='>';
+        }else{
+            $intUserId=$idUser;
+            $strUserAction='=';
+        }
+
         if (!empty($intId)) {
-            $items = Movie::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
+            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
         } else {
-            $items = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
+            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
         }
 
         return $items;
@@ -327,10 +346,20 @@ class MovieController extends Controller
         //-- Flush 'movies' key from redis cache
         Cache::tags('movies')->flush();
 
+
+        $idUser=$request['idUser'];
+        if(empty($idUser)){
+            $intUserId=0;
+            $strUserAction='>';
+        }else{
+            $intUserId=$idUser;
+            $strUserAction='=';
+        }
+
         if (!empty($intId)) {
-            $items = Movie::where('user_id', Auth::id())->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
+            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
         } else {
-            $items = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
+            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->orderBy($strSortItem, $strSortDirection)->get();
         }
 
         $intCount = count($items);

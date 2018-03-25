@@ -1,54 +1,44 @@
 @extends('layouts.admin')
+@section ('scripts_header')
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+@endsection
 @section ('content')
     <div>
         <div class="col-sm-5 col-xs-12">
-            <p>Edit User</p>
-            <div class="col-sm-3">
-                <img height="200"
-                     src="{{!empty($user->profile->photo_id) ? $user->profile->photo->path :"/images/includes/noImage.jpg"}}"
-                     class="image-responsive" alt="">
-            </div>
-        </div>
-        <div class="col-sm-5  col-xs-12">
-            {{ Form::model($user, ['method' =>'PATCH' , 'action' => ['UserController@update',$user->id],'files'=>true])}}
-            <div class="group-form">
-                {!! Form::label('name','User name:') !!}
-                {!! Form::text('name', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
-            </div>
-            <div class="group-form">
-                {!! Form::label('email','User email:') !!}
-                {!! Form::email('email', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
-            </div>
-            @if(Auth::user()->role_id=="1")
+            <div class="col-sm-6">
+                {{ Form::model($profile, ['method' =>'PATCH' , 'action' => ['ProfileController@update',$profile->id],'files'=>true])}}
                 <div class="group-form">
-                    {!! Form::label('role_id','Role:') !!}
-                    {!! Form::select('role_id',$roles,null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
+                    {!! Form::label('lastname','Lastname:') !!}
+                    {!! Form::text('lastname', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
                 </div>
-            @endif
-            <div class="group-form">
-                {!! Form::label('photo_id','Photo:') !!}
-                {!! Form::file('photo_id') !!}
-            </div>
-
-            @if(Auth::user()->role_id=="1")
                 <div class="group-form">
-                    {!! Form::label('is_active','Status:') !!}
-                    {!! Form::select('is_active',[1=>"Active",0=>"Not Active"],null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
+                    {!! Form::label('birthdate','Birthdate:') !!}
+                    {!!  Form::text('birthdate', null, array('id' => 'datepicker')) !!}
                 </div>
-            @endif
-
-
-            <br>
-            {!! Form::submit('Update User',['class'=>'btn btn-warning']) !!}
-            @if(Auth::id()==$user->id)
-                {!! Form::close() !!}
-                {{ Form::open(['method' =>'DELETE' , 'action' => ['UserController@destroy',$user->id]])}}
-
-                {!! Form::submit('Delete User',['class'=>'btn btn-danger']) !!}
+                <div class="group-form">
+                    {!! Form::label('Gender:') !!}
+                    <span>Male</span>
+                    {!! Form::radio('user_gender', 'M') !!}
+                    <span>Female</span>
+                    {!! Form::radio('user_gender', 'F') !!}
+                </div>
+                <div class="group-form">
+                    {!! Form::label('status','Status:') !!}
+                    {!! Form::text('status', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
+                </div>
+                <div class="group-form">
+                    {!! Form::label('country','Country:') !!}
+                    {!! Form::text('country', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
+                </div>
+                <div class="group-form">
+                    {!! Form::label('city','City:') !!}
+                    {!! Form::text('city', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
+                </div>
+                <br>
+                {!! Form::submit('Update User',['class'=>'btn btn-warning']) !!}
 
                 {!! Form::close() !!}
-            @endif
-            @include('includes.formErrors')
+            </div>
         </div>
 
     </div>
@@ -65,5 +55,16 @@
         }).show();
         @endif
     </script>
-
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            $( "#datepicker" ).datepicker({
+                changeMonth: true,
+                yearRange: '1950:2035',
+                defaultDate: '2017',
+                changeYear: true
+            });
+        });
+    </script>
 @endsection
