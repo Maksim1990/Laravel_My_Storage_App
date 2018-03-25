@@ -254,7 +254,6 @@ class BookController extends Controller
             unlink(public_path() . $item->photo->path);
             Photo::findOrfail($item->photo->id)->delete();
             ImageBook::where('photo_id', $item->photo->id)->delete();
-            //  var_dump($item->photo->path);
         }
         Session::flash('book_change', 'The book has been successfully deleted!');
         //-- Flush 'books' key from redis cache
