@@ -1,4 +1,5 @@
 <?php
 return [
-    'welcome' => 'สวัสดี!'
+    'welcome' => 'ยินดีต้อนรับ!',
+    'search'=>'ค้นหา'
 ];

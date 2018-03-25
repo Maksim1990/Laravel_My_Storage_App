@@ -51,6 +51,22 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::get('/users/{id}/edit/profile', 'UserController@editProfile');
         Route::get('/users/{id}/edit/password', 'UserController@editPassword');
 
+
+
+        Route::get('/search', function () {
+            return view('search.search');
+        });
+        Route::get('/search/books', function () {
+            return view('search.searchBooks');
+        });
+
+        Route::get('/search/users', function () {
+            return view('search.searchUsers');
+        });
+        Route::get('/search/movies', function () {
+            return view('search.searchMovies');
+        });
+
     });
 
 });

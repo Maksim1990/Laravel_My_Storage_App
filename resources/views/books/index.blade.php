@@ -93,12 +93,6 @@
 
                 <td></td>
             </tr>
-            <ul>
-                <h1>
-                    @lang('messages.welcome')
-                </h1>
-
-            </ul>
             @if(count($books)>0)
                 @if(!isset($bookLayout) || !$bookLayout)
                     <tbody id="books_block_full"></tbody>
@@ -427,7 +421,7 @@
 
                     var strPagiantionLinks = "";
                     var count = 1;
-                    for (var i = +data['from']; i < +data['total']; i = i + data['per_page']) {
+                    for (var i = +data['from']; i <= +data['total']; i = i + data['per_page']) {
                         strPagiantionLinks += "<li><a href='books?page=" + count;
 
                         if (arrFilter['id']) {
@@ -446,7 +440,7 @@
                         count++;
                     }
 
-                    if (count > 2) {
+                    if (count >= 2) {
                         $(' <ul class="pagination">').html(strPagiantionLinks + "</ul>").appendTo('#pagination');
                     }
 

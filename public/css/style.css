@@ -10,6 +10,48 @@
     margin-left: 30px;
 }
 
+#mySidebar{
+    margin-top: -40px;
+}
+/* START of Fixed meny styling*/
+body {
+    margin: 0;
+}
+
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding-right: 25%;
+    z-index: 999;
+}
+
+.navbar a {
+    float: right;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    text-transform: uppercase;
+}
+
+.navbar a:hover {
+    background: #ddd;
+    color: black;
+}
+
+.main {
+    padding: 16px;
+    margin-top: 40px;
+    height: 1500px; /* Used in this example to enable scrolling */
+}
+
+/* END of Fixed meny styling*/
+
 @media(max-width:1000px){
 
     #title_right{

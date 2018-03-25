@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'welcome' => 'Welcome to our application test'
+    'welcome' => 'Welcome',
+    'search'=>'Search'
 ];

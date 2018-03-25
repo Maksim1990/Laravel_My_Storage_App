@@ -415,7 +415,7 @@
 
                     var strPagiantionLinks = "";
                     var count = 1;
-                    for (var i = +data['from']; i < +data['total']; i = i + data['per_page']) {
+                    for (var i = +data['from']; i <= +data['total']; i = i + data['per_page']) {
                         strPagiantionLinks += "<li><a href='movies?page=" + count;
 
                         if (arrFilter['id']) {

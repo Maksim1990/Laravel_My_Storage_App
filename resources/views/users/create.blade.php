@@ -6,8 +6,6 @@
 
             {!! Form::open(['method'=>'POST','action'=>'UserController@store', 'files'=>true])!!}
 
-
-
             <div class="group-form">
                 {!! Form::label('name','Name:') !!}
                 {!! Form::text('name', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
@@ -17,8 +15,6 @@
                 {!! Form::label('lastname','Last name:') !!}
                 {!! Form::text('lastname', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
             </div>
-
-
 
             <div class="group-form">
                 {!! Form::label('role_id','Role:') !!}

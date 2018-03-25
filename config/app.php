@@ -184,6 +184,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Scriptotek\GoogleBooks\GoogleBooksServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
 
     ],
 

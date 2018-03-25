@@ -72,7 +72,7 @@ class BookController extends Controller
                 Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'], $books, 22 * 60);
             }
         }else{
-            var_dump("FROM CACHE");
+            //var_dump("FROM CACHE");
         }
 
         $title = 'All books';
