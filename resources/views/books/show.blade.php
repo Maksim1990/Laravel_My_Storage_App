@@ -42,7 +42,7 @@
             @if($book->photos)
                 @foreach($book->photos as $item)
                     @if($item->photo)
-                        <a href="#" data-toggle="modal" data-target="#showImage"
+                        <a href="#" id="image_{{$item->photo->id}}" data-toggle="modal" data-target="#showImage"
                            title="Show image"
                            class="show_image"
                            data-image-id="{{$item->photo->id}}"
@@ -189,6 +189,38 @@
                     }
                 });
             }
+        });
+
+
+        $("#modal_delete_image").click(function () {
+            var token = '{{\Illuminate\Support\Facades\Session::token()}}';
+            var image_id = $('#modal_image_show_id').val();
+            var url = '{{ URL::to('delete_image_ajax') }}';
+            var confDelete = confirm('Do you want to delete this description?');
+            if (confDelete) {
+                $.ajax({
+                    method: 'POST',
+                    url: url,
+                    data: {
+                        image_id: image_id,
+                        _token: token
+                    },
+                    success: function (data) {
+                        if (data['status']) {
+
+                            $('#showImage').modal('hide');
+                            $('#image_'+image_id).hide();
+                          new Noty({
+                              type: 'success',
+                              layout: 'topRight',
+                                text: 'Image was successfully deleted!'
+                            }).show();
+                        }
+
+                    }
+                });
+            }
+
         });
 
 

@@ -122,4 +122,22 @@ class PhotoController extends Controller
     {
         //
     }
+
+
+
+    public function deleteImage(Request $request)
+    {
+        $image_id = $request['image_id'];
+        $image = Photo::findOrFail($image_id);
+        unlink(public_path() . $image->path);
+        ImageBook::where('photo_id', $image->id)->delete();
+
+        $image->delete();
+
+
+
+        return ["status" => true];
+    }
+
+
 }

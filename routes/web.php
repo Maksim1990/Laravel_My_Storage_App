@@ -67,6 +67,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::patch('/users/update/password/{id}','UserController@updatePassword');
 
 
+        Route::post('/delete_image_ajax', 'PhotoController@deleteImage');
 
         Route::get('/search', function () {
             return view('search.search');
