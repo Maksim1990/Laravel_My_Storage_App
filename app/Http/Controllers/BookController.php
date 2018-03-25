@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
 class BookController extends Controller
@@ -246,6 +247,7 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
+        $locale = LaravelLocalization::getCurrentLocale();
         $book = Book::findOrFail($id);
         $user = Auth::user();
         foreach ($book->photos as $item) {
@@ -266,7 +268,7 @@ class BookController extends Controller
         }
 
 
-        return redirect('books');
+        return redirect($locale.'/books/list');
     }
 
 
