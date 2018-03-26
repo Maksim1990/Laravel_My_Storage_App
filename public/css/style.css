@@ -52,6 +52,17 @@ body {
 
 /* END of Fixed meny styling*/
 
+
+#rating_block{
+    margin-top: 20px;
+}
+#current_number{
+    font-size: 60px;
+    color: green;
+    font-weight: bold;
+}
+
+
 @media(max-width:1000px){
 
     #title_right{

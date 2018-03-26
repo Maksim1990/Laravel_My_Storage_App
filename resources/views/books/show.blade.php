@@ -1,5 +1,9 @@
 @extends('layouts.admin')
+@section ('scripts_header')
+    <script src="{{asset('js/jquery.barrating.js')}}" type="text/javascript"></script>
+@endsection
 @section('styles')
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-stars.css') }}">
     <style>
         .commentItem {
             background-color: sandybrown;
@@ -20,16 +24,60 @@
 @endsection
 @section('content')
     <div class="col-sm-2 col-lg-2">
-        <p><a href="{{URL::to('upload_images/'.$book->id.'/1')}}">Upload multiple image</a></p>
-        <p><a href="#">Upload single image</a></p>
-        <p><a href="{{URL::to('books/'.$book->id."/edit")}}">Edit this book</a></p>
-        <p>
-            {{ Form::open(['method' =>'DELETE' , 'action' => ['BookController@destroy',$book->id]])}}
+        <div class="w3-center ">
+            <p><a href="{{URL::to('upload_images/'.$book->id.'/1')}}">Upload multiple image</a></p>
+            <p><a href="#">Upload single image</a></p>
+            <p><a href="{{URL::to('books/'.$book->id."/edit")}}">Edit this book</a></p>
+            <p>
+                {{ Form::open(['method' =>'DELETE' , 'action' => ['BookController@destroy',$book->id]])}}
 
-            {!! Form::submit('Delete book',['class'=>'btn btn-danger']) !!}
+                {!! Form::submit('Delete book',['class'=>'btn btn-danger']) !!}
 
-            {!! Form::close() !!}
-        </p>
+                {!! Form::close() !!}
+            </p>
+        </div>
+
+
+        <div id="rating_block" class="col-sm-12">
+            <div id="cirrentRating" class="w3-center">
+                <span id="current_number">{{$currentRating}}</span>
+            </div>
+
+            @if($blnAlreadyVoted)
+                @php
+                    $blnDisplayRateBlock='none';
+                    $blnDisplayRateMessage='block';
+                @endphp
+            @else
+                @php
+                    $blnDisplayRateBlock='block';
+                    $blnDisplayRateMessage='none';
+                @endphp
+            @endif
+            <div id="rating_main" style="display: {{$blnDisplayRateBlock}};" class="w3-center">
+                <select id="ratingSelect" name="rating">
+                    <option class="vote" value="1">1</option>
+                    <option class="vote" value="2">2</option>
+                    <option class="vote" value="3">3</option>
+                    <option class="vote" value="4">4</option>
+                    <option class="vote" value="5">5</option>
+                </select>
+            </div>
+
+            <div id="rating_message_block" class="w3-center">
+                <span id="rating_message" style="display:{{$blnDisplayRateMessage}};" class="w3-text-green">Thank you for voting!</span>
+            </div>
+            @if(count($ratings)>0)
+                <div id="rating_statistics_block">
+                    <p id="rating_statistics_message" class="w3-text-green w3-center w3-tiny">
+                        <span id="voteCount" class="w3-medium">{{$countRating}}</span> people already voted
+                    </p>
+                </div>
+            @endif
+
+        </div>
+
+
     </div>
     <div class="col-sm-8 col-sm-offset-1 col-lg-8 col-lg-offset-1">
         <div>
@@ -71,7 +119,9 @@
                         <div id="commentItem_{{$comment->id}}" class="commentItem col-sm-12 col-lg-12">
                             <div class="col-sm-4 col-lg-4">
                                 @if($comment->user)
-                                    {{$comment->user->name}}
+                                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.$comment->user->id)}}">
+                                        {{$comment->user->name}}
+                                    </a>
                                 @endif
                             </div>
                             <div class="col-sm-8 col-lg-8">
@@ -86,6 +136,11 @@
                 @endif
 
             </div>
+            <div class="w3-center">
+                {!! $comments->links() !!}
+            </div>
+
+
         </div>
 
     </div>
@@ -119,6 +174,7 @@
 
 @stop
 @section('scripts')
+    <script src="{{asset('js/examples.js')}}" type="text/javascript"></script>
     <script>
         var token = '{{\Illuminate\Support\Facades\Session::token()}}'
         var url = '{{ URL::to('add_comment') }}';
@@ -181,8 +237,10 @@
                             var dateTime = date + ' ' + time;
                             var comment_id = data['comment_id'];
                             var user_name = '{{Auth::user()->name}}';
-                            var comment_block = "<div class='col-sm-4 col-lg-4'>" + user_name + "</div><div class='col-sm-8 col-lg-8'><p>Added: "+dateTime+"</p><p>" + comment + "</p></div></div>";
-                            $("<div id='commentItem_" + comment_id + "' class='commentItem col-sm-12 col-lg-12'>").html(comment_block).appendTo('#commentBlock');
+                            var user_id = '{{Auth::id()}}';
+                            var user_block="<a href='/{{LaravelLocalization::getCurrentLocale() }}/users/" + user_id + "'>" + user_name + "</a>";
+                            var comment_block = "<div class='col-sm-4 col-lg-4'>"+user_block+"</div><div class='col-sm-8 col-lg-8'><p>Added: " + dateTime + "</p><p>" + comment + "</p></div></div>";
+                            $("<div id='commentItem_" + comment_id + "' class='commentItem col-sm-12 col-lg-12'>").html(comment_block).prependTo('#commentBlock');
                             $("#input_comment").val("");
                             activateButton();
                         }
@@ -209,10 +267,10 @@
                         if (data['status']) {
 
                             $('#showImage').modal('hide');
-                            $('#image_'+image_id).hide();
-                          new Noty({
-                              type: 'success',
-                              layout: 'topRight',
+                            $('#image_' + image_id).hide();
+                            new Noty({
+                                type: 'success',
+                                layout: 'topRight',
                                 text: 'Image was successfully deleted!'
                             }).show();
                         }
@@ -221,6 +279,48 @@
                 });
             }
 
+        });
+
+
+        $('#ratingSelect').barrating('show', {
+            theme: 'bootstrap-stars',
+            onSelect: function (value, text) {
+
+                var urlRating = '{{ URL::to('register_rating_ajax') }}';
+                var current_rating = $('#current_number').html();
+                var item_number = '{{$book->id}}';
+                $('#current_number').html(+current_rating + +value);
+                $('#ratingSelect').toggleClass('invisible');
+                $.ajax({
+                    method: 'POST',
+                    url: urlRating,
+                    dataType: "json",
+                    data: {
+                        rating_value: value,
+                        item_number: item_number,
+                        _token: token
+                    },
+                    async: true,
+                    success: function (data) {
+                        if (data['status']) {
+
+                            $('#ratingSelect').barrating('destroy');
+                            $('#rating_message').css('display', 'block');
+
+                            var intRating = $('#voteCount').html();
+                            $('#voteCount').html(+intRating + 1);
+                            new Noty({
+                                type: 'success',
+                                layout: 'topRight',
+                                text: 'Successfully rated as ' + value
+                            }).show();
+
+                        }
+                    }
+                });
+
+
+            }
         });
 
 

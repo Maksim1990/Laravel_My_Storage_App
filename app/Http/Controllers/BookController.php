@@ -8,6 +8,7 @@ use App\Comment;
 use App\Http\Requests\BookCreateRequest;
 use App\ImageBook;
 use App\Photo;
+use App\Rating;
 use App\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -166,9 +167,25 @@ class BookController extends Controller
     public function show($id)
     {
         $book = Book::findOrFail($id);
-        $comments = Comment::where('module_id', 1)->where('item_id', $id)->get();
+        $comments = Comment::where('module_id', 1)->where('item_id', $id)->orderBy('id','DESC')->paginate(10);
+        $ratings = Rating::where('module_number',1)->where('item_number', $id)->get();
 
-        return view('books.show', compact('book', 'comments'));
+
+        $currentRating=0;
+        $countRating=count($ratings);
+        foreach ($ratings as $rating){
+            $currentRating+=$rating->rating_value;
+
+            //-- Already voted block
+            if($rating->user_id==Auth::id()){
+                $blnAlreadyVoted=true;
+            }else{
+                $blnAlreadyVoted=false;
+            }
+
+        }
+
+        return view('books.show', compact('book', 'comments','currentRating','countRating','ratings','blnAlreadyVoted'));
     }
 
     /**
