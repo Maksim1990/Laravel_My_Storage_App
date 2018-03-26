@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 @section ('scripts_header')
     <script src="{{asset('js/jquery.barrating.js')}}" type="text/javascript"></script>
+    <link href="{{asset('css/jquery.bxslider.css')}}" rel="stylesheet">
+    @include('books.style')
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/bootstrap-stars.css') }}">
@@ -88,19 +90,21 @@
 
         <div>
             @if($book->photos)
-                @foreach($book->photos as $item)
-                    @if($item->photo)
-                        <a href="#" id="image_{{$item->photo->id}}" data-toggle="modal" data-target="#showImage"
-                           title="Show image"
-                           class="show_image"
-                           data-image-id="{{$item->photo->id}}"
-                           data-image-path="{{$item->photo->path}}"
-                        >
-                            <img style="border-radius: 30px;" width="160" height="160" src="{{$item->photo->path}}"
-                                 alt="">
-                        </a>
-                    @endif
-                @endforeach
+                <div class="bxslider">
+                    @foreach($book->photos as $item)
+                        @if($item->photo)
+                            <a href="#" id="image_{{$item->photo->id}}" data-toggle="modal" data-target="#showImage"
+                               title="Show image"
+                               class="show_image"
+                               data-image-id="{{$item->photo->id}}"
+                               data-image-path="{{$item->photo->path}}"
+                            >
+                                <img style="border-radius: 30px;" width="160" height="160" src="{{$item->photo->path}}"
+                                     alt="">
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
             @endif
 
         </div>
@@ -238,8 +242,8 @@
                             var comment_id = data['comment_id'];
                             var user_name = '{{Auth::user()->name}}';
                             var user_id = '{{Auth::id()}}';
-                            var user_block="<a href='/{{LaravelLocalization::getCurrentLocale() }}/users/" + user_id + "'>" + user_name + "</a>";
-                            var comment_block = "<div class='col-sm-4 col-lg-4'>"+user_block+"</div><div class='col-sm-8 col-lg-8'><p>Added: " + dateTime + "</p><p>" + comment + "</p></div></div>";
+                            var user_block = "<a href='/{{LaravelLocalization::getCurrentLocale() }}/users/" + user_id + "'>" + user_name + "</a>";
+                            var comment_block = "<div class='col-sm-4 col-lg-4'>" + user_block + "</div><div class='col-sm-8 col-lg-8'><p>Added: " + dateTime + "</p><p>" + comment + "</p></div></div>";
                             $("<div id='commentItem_" + comment_id + "' class='commentItem col-sm-12 col-lg-12'>").html(comment_block).prependTo('#commentBlock');
                             $("#input_comment").val("");
                             activateButton();
@@ -322,7 +326,27 @@
 
             }
         });
+    </script>
+    <script src="{{asset('js/jquery.bxslider.js')}}" type="text/javascript"></script>
+    <script>
+        $('.bxslider').bxSlider({
+            auto: true,
+            minSlides: 4,
+            maxSlides: 4,
+            slideWidth: 468,
+            slideMargin: 20
+        });
 
+
+        //-- Hide slider dots in case less than 4 images
+        var elements = document.getElementsByClassName('bx-pager-link');
+        if(elements.length > 4){
+            for (var i in elements) {
+                if (elements.hasOwnProperty(i)) {
+                    elements[i].style.display= 'none';
+                }
+            }
+        }
 
     </script>
 @endsection
