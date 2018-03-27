@@ -11,6 +11,7 @@ use App\Photo;
 use App\Rating;
 use App\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Input;
@@ -29,6 +30,7 @@ class BookController extends Controller
     public function index(Request $request,$idUser=0)
     {
 
+        //\Artisan::call('scout:import', ['model' => App\User::class]);
         $user = Auth::user();
         $filterTitle = $request ? $request['title'] : "";
         $filterId = $request ? $request['id'] : "";
