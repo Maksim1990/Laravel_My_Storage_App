@@ -26,60 +26,7 @@
 @endsection
 @section('content')
     <div class="col-sm-2 col-lg-2">
-        <div class="w3-center ">
-            <p><a href="{{URL::to('upload_images/'.$book->id.'/1')}}">Upload multiple image</a></p>
-            <p><a href="#">Upload single image</a></p>
-            <p><a href="{{URL::to('books/'.$book->id."/edit")}}">Edit this book</a></p>
-            <p>
-                {{ Form::open(['method' =>'DELETE' , 'action' => ['BookController@destroy',$book->id]])}}
-
-                {!! Form::submit('Delete book',['class'=>'btn btn-danger']) !!}
-
-                {!! Form::close() !!}
-            </p>
-        </div>
-
-
-        <div id="rating_block" class="col-sm-12">
-            <div id="cirrentRating" class="w3-center">
-                <span id="current_number">{{$currentRating}}</span>
-            </div>
-
-            @if($blnAlreadyVoted)
-                @php
-                    $blnDisplayRateBlock='none';
-                    $blnDisplayRateMessage='block';
-                @endphp
-            @else
-                @php
-                    $blnDisplayRateBlock='block';
-                    $blnDisplayRateMessage='none';
-                @endphp
-            @endif
-            <div id="rating_main" style="display: {{$blnDisplayRateBlock}};" class="w3-center">
-                <select id="ratingSelect" name="rating">
-                    <option class="vote" value="1">1</option>
-                    <option class="vote" value="2">2</option>
-                    <option class="vote" value="3">3</option>
-                    <option class="vote" value="4">4</option>
-                    <option class="vote" value="5">5</option>
-                </select>
-            </div>
-
-            <div id="rating_message_block" class="w3-center">
-                <span id="rating_message" style="display:{{$blnDisplayRateMessage}};" class="w3-text-green">Thank you for voting!</span>
-            </div>
-            @if(count($ratings)>0)
-                <div id="rating_statistics_block">
-                    <p id="rating_statistics_message" class="w3-text-green w3-center w3-tiny">
-                        <span id="voteCount" class="w3-medium">{{$countRating}}</span> people already voted
-                    </p>
-                </div>
-            @endif
-
-        </div>
-
-
+        @include('books.left')
     </div>
     <div class="col-sm-8 col-sm-offset-1 col-lg-8 col-lg-offset-1">
         <div>
@@ -347,6 +294,13 @@
                 }
             }
         }
+
+        //-- Change link text color on hover
+        $( '#user_left p' ).mouseover(function() {
+            $(this).find('a').css('color','white');
+        }).mouseleave(function() {
+            $(this).find('a').css('color','#4CAF50');
+        });
 
     </script>
 @endsection

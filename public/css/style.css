@@ -17,6 +17,9 @@
 body {
     margin: 0;
 }
+body a{
+    color:#4CAF50;
+}
 
 .navbar {
     overflow: hidden;
@@ -47,7 +50,7 @@ body {
 .main {
     padding: 16px;
     margin-top: 40px;
-    height: 1500px; /* Used in this example to enable scrolling */
+    height: 1200px; /* Used in this example to enable scrolling */
 }
 
 /* END of Fixed meny styling*/
@@ -62,6 +65,13 @@ body {
     font-weight: bold;
 }
 
+
+/* Fixed button style*/
+#fixedbutton {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+}
 
 @media(max-width:1000px){
 

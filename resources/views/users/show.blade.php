@@ -1,72 +1,49 @@
 @extends('layouts.admin')
-@section ('styles')
-    <style>
 
-        #user_diagram {
-            font: 10px sans-serif;
-        }
-        #main_profile_block{
-            padding-top: 100px;
-        }
-
-        .axis path,
-        .axis line {
-            fill: none;
-            stroke: #000;
-            shape-rendering: crispEdges;
-        }
-
-        .bar {
-            fill: green;
-        }
-
-        .bar:hover {
-            fill: gray;
-        }
-
-        .x.axis path {
-            display: none;
-        }
-
-        .d3-tip {
-            line-height: 1;
-            font-weight: bold;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            border-radius: 2px;
-        }
-
-        /* Creates a small triangle extender for the tooltip */
-        .d3-tip:after {
-            box-sizing: border-box;
-            display: inline;
-            font-size: 10px;
-            width: 100%;
-            line-height: 1;
-            color: rgba(0, 0, 0, 0.8);
-            content: "\25BC";
-            position: absolute;
-            text-align: center;
-        }
-
-        /* Style northward tooltips differently */
-        .d3-tip.n:after {
-            margin: -1px 0 0 0;
-            top: 100%;
-            left: 0;
-        }
-    </style>
-@endsection
 @section ('scripts_header')
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-
+@endsection
+@section ('styles')
+    <link href="{{asset('css/jquery.bxslider.css')}}" rel="stylesheet">
+    @include('users.style')
 @endsection
 @section('content')
-    <div class="col-sm-12 col-xs-12 " id="main_profile_block">
+    <div class="col-sm-2 col-lg-2">
+        @include('users.left')
+    </div>
+    <div class="col-sm-10 col-xs-10 " id="main_profile_block">
         <div class="col-sm-12 col-xs-12">
+            <div class="col-sm-4 col-xs-12">
+                <img height="200"
+                     src="{{!empty($user->profile->photo_id) ? $user->profile->photo->path :"/images/includes/noImage.jpg"}}"
+                     class="image-responsive" alt="">
+            </div>
+            <div class="col-sm-8 col-xs-12">
+                <p><h1 class="w3-text-green">{{$user->name}} {{$user->profile->lastname?$user->profile->lastname:""}}</h1></p>
+                <p class="w3-text-green w3-center w3-small">Joined {{$user->created_at->diffForHumans()}}</p>
+            </div>
         </div>
+        <div class="col-sm-12 col-xs-12">
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                                                          data-toggle="tab">Books</a></li>
+                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+                                           data-toggle="tab">Movies</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    @include('users.books_nav')
+                </div>
+                <div role="tabpanel" class="tab-pane " id="profile">
+                    two
+                </div>
+            </div>
+        </div>
+
         <div class="col-sm-12 col-xs-12">
             <div class="w3-center">
                 <h2>{{$user->name}}'s books for these year</h2>
@@ -96,13 +73,26 @@
 
                 intHeight = 300;
                 intWidth = 560;
+                $('#books_slider_block').css('display', 'none');
+                $('#books_simple_block').css('display', 'block');
+                $('#movies_slider_block').css('display', 'none');
+                $('#movies_simple_block').css('display', 'block');
+
             } else if ($(window).width() < 1200 && $(window).width() < 540) {
                 intHeight = 200;
                 intWidth = 360;
+                $('#books_slider_block').css('display', 'none');
+                $('#books_simple_block').css('display', 'block');
+                $('#movies_slider_block').css('display', 'none');
+                $('#movies_simple_block').css('display', 'block');
             }
             else if ($(window).width() > 1200) {
-                intHeight = 500;
-                intWidth = 960;
+                intHeight = 400;
+                intWidth = 860;
+                $('#books_slider_block').css('display', 'block');
+                $('#books_simple_block').css('display', 'none');
+                $('#movies_slider_block').css('display', 'none');
+                $('#movies_simple_block').css('display', 'block');
             }
 
             var arrResult = {intHeight: intHeight, intWidth: intWidth};
@@ -206,6 +196,35 @@
             }
 
         }
+
+    </script>
+    <script src="{{asset('js/jquery.bxslider.js')}}" type="text/javascript"></script>
+    <script>
+        $('.bxslider').bxSlider({
+            auto: true,
+            minSlides: 4,
+            maxSlides: 4,
+            slideWidth: 468,
+            slideMargin: 20
+        });
+
+
+        //-- Hide slider dots in case less than 4 images
+        var elements = document.getElementsByClassName('bx-pager-link');
+        if (elements.length > 4) {
+            for (var i in elements) {
+                if (elements.hasOwnProperty(i)) {
+                    elements[i].style.display = 'none';
+                }
+            }
+        }
+
+        //-- Change link text color on hover
+        $( '#user_left p' ).mouseover(function() {
+            $(this).find('a').css('color','white');
+        }).mouseleave(function() {
+            $(this).find('a').css('color','#4CAF50');
+        });
 
     </script>
 @endsection

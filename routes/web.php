@@ -84,6 +84,31 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
             return view('search.searchMovies');
         });
 
+
+        //-- STRIPE block
+        Route::group(['prefix'=>'subscription','middleware'=>'auth'], function (){
+
+            Route::get('/',[
+                'as'=> 'subscription',
+                'uses'=>'SubscriptionController@index'
+            ]);
+
+            Route::get('/new','SubscriptionController@create');
+            Route::get('/cancel','SubscriptionController@cancel');
+            Route::get('/resume','SubscriptionController@resume');
+            Route::get('/change','SubscriptionController@change');
+            Route::post('/register','SubscriptionController@store');
+            Route::post(
+                'stripe/webhook',
+                '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook'
+            );
+
+        });
+
+
+
+
+
     });
 
 });

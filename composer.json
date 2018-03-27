@@ -9,6 +9,7 @@
         "algolia/algoliasearch-client-php": "^1.25",
         "fideloper/proxy": "~3.3",
         "google/apiclient": "^2.2",
+        "laravel/cashier": "~7.0",
         "laravel/framework": "5.5.*",
         "laravel/scout": "^4.0",
         "laravel/socialite": "^3.0",

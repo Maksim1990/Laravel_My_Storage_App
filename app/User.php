@@ -4,11 +4,12 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Cashier\Billable;
 use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
-    use Notifiable,Searchable;
+    use Notifiable,Searchable,Billable;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +17,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','account_type','sns_acc_id','avatar_url','first_name','last_name','status','role_id','is_active','photo_id'
+        'name', 'email', 'password','account_type','sns_acc_id','avatar_url','first_name','last_name','status','role_id','is_active','photo_id',
+        'stripe_id','card_brand','card_last_four','trial_ends_at'
     ];
 
     /**
@@ -34,6 +36,11 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Book');
     }
+    public function movies()
+    {
+        return $this->hasMany('App\Movie');
+    }
+
     public function profile()
     {
         return $this->hasOne('App\Profile');
