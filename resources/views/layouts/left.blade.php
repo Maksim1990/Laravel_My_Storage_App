@@ -21,7 +21,7 @@
             <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom "
                onclick="openMail('Borge');w3_close();" id="firstTab">
                 <div class="w3-container w3-center">
-                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}" class="span5 span_custom" data-step="5" data-intro="Navigate to all application sections via instant left menu!" data-position="right">
+                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}" class=" span_custom" data-step="5" data-intro="Navigate to all application sections via instant left menu!" data-position="right">
                         <img style="border-radius: 20px;margin-top: -3px;" height="35"
                              src="{{Auth::user()->profile->photo ? Auth::user()->profile->photo->path :"/images/includes/no_user.png"}}"
                              alt="">
