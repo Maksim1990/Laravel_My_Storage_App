@@ -16,6 +16,7 @@ class MaatwebsiteDemoController extends Controller
     {
         return view('import.importExport');
     }
+
     public function downloadExcel($type)
     {
 //-- To get specific items from DB
@@ -25,26 +26,31 @@ class MaatwebsiteDemoController extends Controller
 //        }
 
         $data = Book::get()->toArray();
-        return \Excel::create('itsolutionstuff_example', function($excel) use ($data) {
-            $excel->sheet('mySheet', function($sheet) use ($data)
-            {
+        return \Excel::create('itsolutionstuff_example', function ($excel) use ($data) {
+            $excel->sheet('mySheet', function ($sheet) use ($data) {
                 $sheet->fromArray($data);
             });
         })->download($type);
     }
+
     public function importExcel()
     {
-        if(Input::hasFile('import_file')){
+        if (Input::hasFile('import_file')) {
             $path = Input::file('import_file')->getRealPath();
-            $data = \Excel::load($path, function($reader) {
+            $data = \Excel::load($path, function ($reader) {
             })->get();
-            if(!empty($data) && $data->count()){
-         
+            if (!empty($data) && $data->count()) {
+
                 foreach ($data as $key => $value) {
-                    $insert[] = ['title' => $value->title, 'author' => $value->author,'active'=>1,'date' => $value->date,'user_id'=>Auth::id()];
+                    $input['title'] = $value->title;
+                    $input['author'] = $value->author;
+                    $input['date'] = $value->date;
+                    $input['user_id'] = Auth::id();
+                    $input['active'] = 1;
                 }
-                if(!empty($insert)){
-                    Book::create($insert);
+
+                if (!empty($input)) {
+                    Book::create($input);
                     dd('Insert Record successfully.');
                 }
             }
