@@ -73,6 +73,31 @@ body a{
     right: 0px;
 }
 
+
+
+
+/* LEFT USER BLOCK*/
+#main_left {
+    padding-right: 10px;
+
+}
+#plan_left{
+    border:2px solid yellow;
+    border-radius:20px;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+#main_left p{
+    padding: 5px;
+    border-bottom: 1px solid lightgray;
+}
+#main_left p:hover{
+    background-color:lightgray;
+}
+
 @media(max-width:1000px){
 
     #title_right{

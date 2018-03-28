@@ -72,7 +72,7 @@
             if ($(window).width() < 1200 && $(window).width() > 540) {
 
                 intHeight = 300;
-                intWidth = 560;
+                intWidth = 460;
                 $('#books_slider_block').css('display', 'none');
                 $('#books_simple_block').css('display', 'block');
                 $('#movies_slider_block').css('display', 'none');
@@ -88,7 +88,7 @@
             }
             else if ($(window).width() > 1200) {
                 intHeight = 400;
-                intWidth = 860;
+                intWidth = 660;
                 $('#books_slider_block').css('display', 'block');
                 $('#books_simple_block').css('display', 'none');
                 $('#movies_slider_block').css('display', 'none');

@@ -66,6 +66,12 @@
     var openTab = document.getElementById("firstTab");
     openTab.click();
 
+    //-- Change link text color on hover
+    $( '#main_left p' ).mouseover(function() {
+        $(this).find('a').css('color','white');
+    }).mouseleave(function() {
+        $(this).find('a').css('color','#4CAF50');
+    });
 
 </script>
 
