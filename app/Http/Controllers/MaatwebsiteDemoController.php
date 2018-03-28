@@ -49,6 +49,10 @@ class MaatwebsiteDemoController extends Controller
                 }
             }
         }
+
+        //-- Update Algolia index after successful import
+        Book::where('id', '>', 0)->searchable();
+
         return back();
     }
 }
