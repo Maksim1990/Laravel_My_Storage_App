@@ -190,6 +190,15 @@ class BookController extends Controller
         return view('books.show', compact('book', 'comments','currentRating','countRating','ratings','blnAlreadyVoted'));
     }
 
+    public function testFunction()
+    {
+
+//        //-- Update Algolia index after successful import
+//        Book::where('id', '>', 0)->searchable();
+
+        return view('test');
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

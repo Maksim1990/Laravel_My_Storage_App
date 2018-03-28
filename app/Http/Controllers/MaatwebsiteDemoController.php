@@ -44,14 +44,14 @@ class MaatwebsiteDemoController extends Controller
                     $insert[] = ['title' => $value->title, 'author' => $value->author,'active'=>1,'date' => $value->date,'user_id'=>Auth::id()];
                 }
                 if(!empty($insert)){
-                    DB::table('books')->insert($insert);
+                    Book::create($insert);
                     dd('Insert Record successfully.');
                 }
             }
         }
 
-        //-- Update Algolia index after successful import
-        Book::where('id', '>', 0)->searchable();
+//        //-- Update Algolia index after successful import
+//        Book::where('id', '>', 0)->searchable();
 
         return back();
     }

@@ -44,6 +44,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::resource('/profiles', 'ProfileController');
         Route::resource('/categories', 'CategoryController');
         Route::get('/categories/{id}/{userId}', 'CategoryController@showItemsPerUser');
+        Route::get('/test', 'BookController@testFunction');
 
 
         Route::post('add_comment', 'CommentController@addComment');
