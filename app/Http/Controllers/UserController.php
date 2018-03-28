@@ -152,7 +152,7 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         //-- Get all books that user uploaded this year
-        $books = Book::where('user_id', $user->id)->whereYear('created_at', date('Y'))->get();
+        $books = Book::where('user_id', $user->id)->whereYear('created_at', 2018)->get();
 
         $arrOfBooks = array();
 

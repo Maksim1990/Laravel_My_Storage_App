@@ -1,4 +1,11 @@
-<a href="#head"><img src="http://placehold.it/200x100" id="fixedbutton"></a>
+<a href="#head" data-step="4" data-intro="Use bottom right icon for instant support access" data-position="top"><img src="http://placehold.it/200x100" id="fixedbutton"></a>
+<div id="fixed_tutorial_button">
+    <p>First time here?</p>
+    <p>Do you want to go through fast tutorial?</p>
+<a class="btn btn-success btn-small" href="javascript:void(0);" onclick="javascript:introJs().setOption('showProgress', true).start();" id="tutorial_yes" >Yes</a>
+<button class="btn btn-default btn-small" id="tutorial_skip">Skip</button>
+<button class="btn btn-success " style="background-color: black;" id="tutorial_never">Don't show it</button>
+</div>
 <script>
     // var openInbox = document.getElementById("Link1");
     // openInbox.click();
@@ -74,5 +81,39 @@
     });
 
 </script>
+<style>
+    .span6 {
+        width: 95%;
+    }
 
+    .span5 {
+        position: fixed;
+        top: 20px;
+        left: 15px;
+    }
+    .introjs-helperNumberLayer,.introjs-progressbar{
+        background: green;
+        margin-left: 30px;
+        margin-top: 20px;
+    }
+    .introjs-helperLayer{
+        opacity: 0.2;
+    }
+    .introjs-tooltiptext{
+        padding-left: 30px;
+    }
+</style>
+
+{{--//-- Intro JS block--}}
+<script src="{{asset('js/intro.js')}}" type="text/javascript"></script>
+<script >
+    // alert("Test");
+    $('.introjs-skipbutton').click(function() {
+        alert("Test");
+    });
+
+    $('#tutorial_yes,#tutorial_skip,#tutorial_never').click(function() {
+        $('#fixed_tutorial_button').hide();
+    });
+</script>
 

@@ -12,13 +12,16 @@ color:white;"
 
 
     {{--START of Fixed bar menu--}}
+
     <div class="navbar ">
+        <div id="navbar_step" class="span6" data-step="2" data-intro="Instant link to your profile and search functionality are on menu top bar" data-position='bottom'>
         <a href="#home">Home</a>
         <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">
             <img  style="border-radius: 20px;margin-top: -5px;" height="35" src="{{Auth::user()->profile->photo ? Auth::user()->profile->photo->path :"/images/includes/no_user.png"}}" alt="">
         </a>
         <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search')}}"><i class="fas fa-search"></i>
             @lang('messages.search')</a>
+    </div>
     </div>
     {{--END of Fixed bar menu--}}
 

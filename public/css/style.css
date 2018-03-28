@@ -31,6 +31,7 @@ body a{
     z-index: 999;
 }
 
+
 .navbar a {
     float: right;
     display: block;
@@ -71,6 +72,17 @@ body a{
     position: fixed;
     bottom: 0px;
     right: 0px;
+}
+#fixed_tutorial_button {
+    border-radius: 15px;
+    height: 110px;
+    padding: 10px 10px;
+    widht:150px;
+    background-color: yellow;
+    position: fixed;
+    bottom: 0px;
+    right: 50%;
+    bottom: 10px;
 }
 
 

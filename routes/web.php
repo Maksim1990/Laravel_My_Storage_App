@@ -84,6 +84,15 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
             return view('search.searchMovies');
         });
 
+        Route::get('/plans', function () {
+            return view('plans.index');
+        });
+
+
+        Route::get('/guide', function () {
+            return view('guide.index');
+        });
+
 
         //-- STRIPE block
         Route::group(['prefix'=>'subscription','middleware'=>'auth'], function (){

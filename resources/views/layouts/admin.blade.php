@@ -36,11 +36,15 @@
     <link href="{{asset('css/hover_icon.css')}}" rel="stylesheet">
     <link href="{{asset('css/libs.css')}}" rel="stylesheet">
 
+
+    <link href="{{asset('css/introjs.css')}}" rel="stylesheet">
+    <link href="{{asset('css/bootstrap-responsive.min.css')}}" rel="stylesheet">
+
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
     <link href="{{asset('css/loading_icon_style.css')}}" rel="stylesheet">
 
-@yield('styles')
-@yield('scripts_header')
+    @yield('styles')
+    @yield('scripts_header')
 
 
 <body>
@@ -57,7 +61,7 @@
          title="Close Sidemenu" id="myOverlay"></div>
 
 
-@include('layouts.content')
+    @include('layouts.content')
 </div>
 @yield('scripts')
 
