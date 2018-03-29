@@ -51,7 +51,7 @@ body a{
 .main {
     padding: 16px;
     margin-top: 40px;
-    height: 1200px; /* Used in this example to enable scrolling */
+    min-height: 1200px; /* Used in this example to enable scrolling */
 }
 
 /* END of Fixed meny styling*/

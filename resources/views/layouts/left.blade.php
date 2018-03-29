@@ -8,7 +8,7 @@
     <a href="javascript:void(0)" onclick="w3_close()" title="Close Sidemenu"
        class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a>
     <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align"
-       onclick="document.getElementById('id01').style.display='block'">New Message <i
+       onclick="document.getElementById('id01').style.display='block'">About application<i
                 class="w3-padding fa fa-pencil"></i></a>
 
 
@@ -41,11 +41,12 @@
                 </div>
             </div>
 
-            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom "
+            <a href="javascript:void(0)" class=" w3-button"
                onclick="openMail('John');w3_close();">
-                <div class="w3-container">
+                <div class="w3-container" style="padding-top: 0;padding-bottom: 0;margin-top: -25px;">
                     <div id="plan_left" class="w3-center w3-text-yellow">
-                        Your current plan is FREE
+                        <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/plans')}}" class="w3-text-yellow" style="border:none;">
+                            Your current plan is FREE</a>
                     </div>
                 </div>
             </a>
@@ -108,6 +109,13 @@
                 </div>
 
             @endforeach
+                <div class="tooltip_custom " style="display: inline-block;" >
+                    <a  href="#">
+                        <img style="border-radius: 30px; margin-left: 60px;" width="45" height="45"
+                             src="{{asset('images/includes/contact-icon.png')}}" alt="">
+                    </a>
+                    <span class="tooltiptext" style=" margin-left: -30px;">Contact us!</span>
+                </div>
         </div>
 
 </nav>
