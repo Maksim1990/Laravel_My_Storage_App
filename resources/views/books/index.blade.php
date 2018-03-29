@@ -167,8 +167,7 @@
                             <td>
                                 <p>@lang_u('messages.title'): {{$book->title}}</p>
                                 <p>@lang_u('messages.author'): {{$book->author}}</p>
-                                <p>@lang
-                                        _u('messages.category'): {{$book->category_id!=0?$book->category->name:"No category"}}</p>
+                                <p>@lang_u('messages.category'): {{$book->category_id!=0?$book->category->name:"No category"}}</p>
                                 <p>Finished reading: {{$book->date}}</p>
                                 <p>Published year: {{$book->publish_year}}</p>
                                 <p>
@@ -536,6 +535,9 @@
                                         $('#actions_block').hide();
                                     }
                                 }
+
+                                //-- Truncate JS session of books IDs for this user
+                                sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
                             },
                             error: function (data) {
                                // console.log('Error:', data);
@@ -666,6 +668,9 @@
                             $('#actions_block').hide();
                         }
                     }
+
+                    //-- Truncate JS session of books IDs for this user
+                    sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
                 },
                 error: function (data) {
                     //console.log('Error:', data);
