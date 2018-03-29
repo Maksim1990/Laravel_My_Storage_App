@@ -14,7 +14,7 @@ color:white;"
     {{--START of Fixed bar menu--}}
 
     <div class="navbar ">
-        <div id="navbar_step" class="span6" data-step="2" data-intro="Instant link to your profile and search functionality are on menu top bar" data-position='bottom'>
+        <div id="navbar_step" class="span6" data-step="2" data-intro="@lang('messages.instant_link_to_menu')" data-position='bottom'>
         <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/plans')}}" style="padding-top: 5px;padding-bottom: 2px" id="current_plan_link">
             <span style="text-transform: capitalize;font-size: 12px;">@lang('messages.current_plan')</span>
             <br><span style="color: gold;font-weight: bold;">FREE</span> </a>

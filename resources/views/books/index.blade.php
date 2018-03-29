@@ -29,12 +29,13 @@
         <h1>All job offers</h1>
 
         <div class=" w3-left" id="items_found">
-            <p>Items found: {{$itemsQuantity}}</p>
+            <p>Items found: <span id="items_found_span">{{$itemsQuantity}}</span></p>
         </div>
         <div class=" w3-right">
             <div id="actions_block"
                  style="display: none;float: left;font-size: 20px;margin-right: 30px;margin-top: 5px;">
-                <a href="" class="w3-text-red">Delete all <span id="actions_block_number"></span> selected books?</a>
+                <a href="#" class="w3-text-red" id="delete_multiple">Delete all <span id="actions_block_number"></span>
+                    selected books?</a>
             </div>
 
 
@@ -110,7 +111,7 @@
                     <tbody id="books_block_full"></tbody>
                     <tbody id="books_block">
                     @foreach($books as $book)
-                        <tr>
+                        <tr id="book_line_{{$book->id}}">
                             @if($idUser>0 && $idUser==Auth::id())
                                 <td><input type="checkbox" class="selectBook" id="select_book_{{$book->id}}"
                                            data-id="{{$book->id}}"></td>
@@ -223,6 +224,7 @@
         var token = '{{\Illuminate\Support\Facades\Session::token()}}'
         var url = '{{ URL::to('filter_book_list') }}';
         var urlGetAllItemsQuantity = '{{ URL::to('get_book_quantity') }}';
+        var urlDeleteMultipleBooks = '{{ URL::to('delete_multiple_books_ajax') }}';
         //-- Initialize array of sorting details
         arrSortDetails = [];
         //-- Initialize array of filters
@@ -491,7 +493,7 @@
                 success: function (data) {
                     console.log(data);
                     if (+data > 0) {
-                        $('#items_found').html('<p>Items found: ' + data + '</p>');
+                        $('#items_found').html('<p>Items found: <span id="items_found_span">' + data + '</span></p>');
                     }
                 }
             });
@@ -502,10 +504,10 @@
     <script>
         //-- Initiate object of selected books IDs
         objCheckedBookIds = {};
-
+        sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
         //-- Initialize array of currently selected addresses
         var arrAlreadySelectedBookIds = ReturnStorageSessionArray(sessionStorage.getItem('objSelectedBooksIds_' + '{{Auth::id()}}'));
-
+        console.log(arrAlreadySelectedBookIds);
         for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
             $('#select_book_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
             objCheckedBookIds[arrAlreadySelectedBookIds[i]] = arrAlreadySelectedBookIds[i];
@@ -517,7 +519,7 @@
         //-- Functionality to multiple select of books
         $('.selectBook').on('click', function () {
             var intBookId = $(this).data('id');
-
+            console.log(intBookId);
             //-- Truncate JS session of books IDs for this user
             sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
             if ($(this).is(':checked')) {
@@ -531,7 +533,7 @@
             if (Object.keys(objCheckedBookIds).length > 0) {
                 $('#actions_block').css('display', 'block');
                 $('#actions_block_number').text(Object.keys(objCheckedBookIds).length);
-            }else{
+            } else {
                 $('#actions_block').css('display', 'none');
             }
 
@@ -542,9 +544,33 @@
         });
 
 
-        //---------
-        // Delete items block
-        //---------
+        //-- Delete Selected Items
+        $('#delete_multiple').on('click', function () {
+            var arrItemsIds = Object.keys(objCheckedBookIds);
+            //console.log(arrItemsIds);
+            $.ajax({
+                url: urlDeleteMultipleBooks,
+                type: "post",
+                data: {
+                    arrItemsIds: JSON.stringify(arrItemsIds),
+                    _token: token
+                },
+                success: function (data) {
+                    //console.log(data);
+                    if (data['status']) {
+                        for (var i = 0; i < arrItemsIds.length; i++) {
+                            var intitemsNow = $('#items_found_span').text();
+                            $('#items_found_span').text(+intitemsNow - 1);
+                            $('#book_line_' + arrItemsIds[i]).hide();
+                            $('#actions_block').hide();
+                        }
+                    }
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                }
+            });
+        });
 
 
         //-- Return specific array from JS session storage depending on arrStorage value

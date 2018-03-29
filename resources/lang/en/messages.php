@@ -37,4 +37,5 @@ return [
     'notification_will_not_be_shown'=>'This notification won\'t be shown anymore',
     'notification_will_be_shown'=>'This notification will be shown later',
     'current_plan'=>'Current plan',
+    'instant_link_to_menu'=>'Instant link to your profile and search functionality are on menu top bar',
 ];

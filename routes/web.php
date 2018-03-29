@@ -71,6 +71,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::post('/delete_image_ajax', 'PhotoController@deleteImage');
         Route::post('/register_rating_ajax', 'RatingController@registerRating');
         Route::post('/show_tutorial_ajax', 'UserController@changeShowTutorialAction');
+        Route::post('/delete_multiple_books_ajax', 'BookController@deleteMultipleBooks');
 
         Route::get('/search', function () {
             return view('search.search');
