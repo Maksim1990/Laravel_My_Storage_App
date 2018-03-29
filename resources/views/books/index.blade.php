@@ -517,27 +517,7 @@
 
                     //-- Delete Selected Items
                     $('#delete_multiple').on('click', function () {
-                        var arrItemsIds = Object.keys(objCheckedBookIds);
-                        $.ajax({
-                            url: urlDeleteMultipleBooks,
-                            type: "post",
-                            data: {
-                                arrItemsIds: JSON.stringify(arrItemsIds),
-                                _token: token
-                            },
-                            success: function (data) {
-                                if (data['status']) {
-                                    for (var i = 0; i < arrItemsIds.length; i++) {
-                                        var intitemsNow = $('#items_found_span').text();
-                                        $('#items_found_span').text(+intitemsNow - 1);
-                                        $('#book_line_' + arrItemsIds[i]).hide();
-                                        $('#book_line_full_' + arrItemsIds[i]).hide();
-                                        $('#actions_block').hide();
-                                    }
-                                }
-
-                            }
-                        });
+                        DeleteMultipleItems();
                     });
                 }
             });
@@ -643,6 +623,10 @@
 
         //-- Delete Selected Items
         $('#delete_multiple').on('click', function () {
+            DeleteMultipleItems();
+        });
+
+        function DeleteMultipleItems() {
             var arrItemsIds = Object.keys(objCheckedBookIds);
 
             $.ajax({
@@ -662,13 +646,13 @@
                             $('#book_line_full_' + arrItemsIds[i]).hide();
                             $('#actions_block').hide();
                         }
+
+                        //-- Truncate JS session of books IDs for this user
+                        sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
                     }
-                },
-                error: function (data) {
-                    //console.log('Error:', data);
                 }
             });
-        });
+        }
 
 
         //-- Return specific array from JS session storage depending on arrStorage value
