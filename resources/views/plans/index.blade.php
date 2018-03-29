@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.admin_mini')
 @section('styles')
     <style>
         * {
@@ -51,6 +51,20 @@
             font-size: 18px;
         }
 
+        .w3-main{
+            margin-left: 0px;
+        }
+        .span6{
+            width: 100%;
+        }
+        .navbar{
+            padding-right: 5%;
+        }
+
+        .main {
+            min-height: 100%;
+        }
+
         @media only screen and (max-width: 600px) {
             .columns {
                 width: 100%;
@@ -60,7 +74,7 @@
 @endsection
 @section('content')
 
-    <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1 w3-center ">
+    <div class="col-sm-12 col-lg-12 w3-center ">
         <h2 style="text-align:center">@lang('messages.choose_appropriate_plan')</h2>
         <p style="text-align:center">@lang('messages.plan_can_easily_be_changes')!</p>
 
@@ -105,5 +119,7 @@
 
 @endsection
 @section('scripts')
-
+    <script>
+        $('#plans_hide_block,#menu_icon').hide();
+    </script>
 @endsection

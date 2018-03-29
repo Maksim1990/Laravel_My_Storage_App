@@ -109,7 +109,9 @@ body a{
 #main_left p:hover{
     background-color:lightgray;
 }
-
+.w3-main{
+    margin-left:320px;
+}
 @media(max-width:1000px){
 
     #title_right{
