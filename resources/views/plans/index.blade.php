@@ -61,8 +61,8 @@
 @section('content')
 
     <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1 w3-center ">
-        <h2 style="text-align:center">Responsive Pricing Tables</h2>
-        <p style="text-align:center">Resize the browser window to see the effect.</p>
+        <h2 style="text-align:center">@lang('messages.choose_appropriate_plan')</h2>
+        <p style="text-align:center">@lang('messages.plan_can_easily_be_changes')!</p>
 
         <div class="columns">
             <ul class="price">

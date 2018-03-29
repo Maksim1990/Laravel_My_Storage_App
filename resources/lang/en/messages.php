@@ -26,4 +26,6 @@ return [
     'navigate_to_all'=>'Navigate to all application sections via instant left menu',
     'click_on_logo'=>'Click on logo image in order to instantly move to the application main page',
     'close_sidemenu'=>'Close Sidemenu',
+    'choose_appropriate_plan'=>'Choose appropriate plan',
+    'plan_can_easily_be_changes'=>'Chosen plan in future can be easily changed later on',
 ];
