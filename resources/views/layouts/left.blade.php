@@ -78,13 +78,13 @@
         </div>
 
         <a id="Link4" onclick="myFunc('Link_block_4')" href="javascript:void(0)" class="w3-bar-item w3-button"><i
-                    class="fa fa-inbox w3-margin-right"></i>Other users<i
+                    class="fa fa-inbox w3-margin-right"></i>Other functions<i
                     class="fa fa-caret-down w3-margin-left"></i></a>
         <div id="Link_block_4" class="w3-hide w3-animate-left">
             <a href="{{URL::to('books/create ')}}" class="w3-bar-item w3-button"><i
-                        class="fa fa-paper-plane w3-margin-right"></i>Add book55</a></a>
-            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Add movie55</a>
-            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Add sport event55</a>
+                        class="fa fa-paper-plane w3-margin-right"></i>Import/Export</a></a>
+            <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search')}}" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Instant search</a>
+            <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/categories')}}" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>View all categories</a>
         </div>
 
         <div id="lang_block" style="position:absolute;bottom:5%;left:10%;">

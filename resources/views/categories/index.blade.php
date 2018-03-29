@@ -45,6 +45,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="w3-center">
+        {!! $categories->links() !!}
+    </div>
     </div>
 @endsection
 
