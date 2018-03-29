@@ -32,6 +32,12 @@
             <p>Items found: {{$itemsQuantity}}</p>
         </div>
         <div class=" w3-right">
+            <div id="actions_block"
+                 style="display: none;float: left;font-size: 20px;margin-right: 30px;margin-top: 5px;">
+                <a href="" class="w3-text-red">Delete all <span id="actions_block_number"></span> selected books?</a>
+            </div>
+
+
             <div class="numbers_block " style="float: left;margin-right: 30px;margin-top: 5px;font-size: 20px;">
                 @php
                     $arrQuantities=array(10,20,50);
@@ -64,13 +70,17 @@
                     @endphp
                 @endif
                 <button class="btn layout {{$styleDetail}}" id='layoutDetail' data-layout="detail"><i
-                        class="fas fa-th-large"></i></button>
+                            class="fas fa-th-large"></i></button>
                 <button class="btn layout {{$styleNormal}}" id='layoutNormal' data-layout="normal"><i
-                        class="fas fa-list"></i></button>
+                            class="fas fa-list"></i></button>
             </div>
+
         </div>
         <table class="w3-table-all w3-bordered w3-hoverable">
             <tr>
+                <th>
+
+                </th>
                 <th id="sort_id" data-type="id">ID
                     <span id="sort_id_icon"></span>
                 </th>
@@ -83,7 +93,9 @@
                 <th></th>
             </tr>
             <tr class="w3-gray">
-
+                @if($idUser>0 && $idUser==Auth::id())
+                    <td></td>
+                @endif
                 <td><input class="w3-input" id="filter_id" type="text" data-type="id"
                            value="{{$arrFilter['id']?$arrFilter['id']:""}}"></td>
                 <td><input class="w3-input" id="filter_title" type="text" data-type="title"
@@ -99,17 +111,24 @@
                     <tbody id="books_block">
                     @foreach($books as $book)
                         <tr>
+                            @if($idUser>0 && $idUser==Auth::id())
+                                <td><input type="checkbox" class="selectBook" id="select_book_{{$book->id}}"
+                                           data-id="{{$book->id}}"></td>
+                            @endif
                             <td>{{$book->id}}</td>
                             <td>
 
-                                <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/books/'.$book->id)}}" id="edit_book_{{$book->id}}">
+                                <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/books/'.$book->id)}}"
+                                   id="edit_book_{{$book->id}}">
                                     {{$book->title}}</a>
                             </td>
                             <td>{{$book->author}}</td>
 
 
-                            <td><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id.'/edit ')}}" id="edit_book_{{$book->id}}"><i
-                                        class="fas fa-edit"></i></a></td>
+                            <td>
+                                <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id.'/edit ')}}"
+                                   id="edit_book_{{$book->id}}"><i
+                                            class="fas fa-edit"></i></a></td>
                         </tr>
 
                     @endforeach
@@ -334,7 +353,7 @@
 
         //-- Ajax request for filtering and sorting
         function RunAjaxRequest(arrFilter, url, token, arrSortDetails, intQuantity=10, strLayout='normal') {
-            var idUser='{{$idUser}}';
+            var idUser = '{{$idUser}}';
             $.ajax({
                 method: 'POST',
                 url: url,
@@ -345,7 +364,7 @@
                     arrSortDetails: JSON.stringify(arrSortDetails),
                     intQuantity: intQuantity,
                     strLayout: strLayout,
-                    idUser:idUser,
+                    idUser: idUser,
                     _token: token
                 },
                 beforeSend: function () {
@@ -359,10 +378,10 @@
                     if (data['data'].length > 0) {
                         for (var i = 0; i < data['data'].length; i++) {
                             {{--@if(!isset($bookLayout) || !$bookLayout)--}}
-                                {{--var blnDetailedLayout = false;--}}
-                                {{--@else--}}
-                                {{--var blnDetailedLayout = true;--}}
-                                {{--@endif--}}
+                                    {{--var blnDetailedLayout = false;--}}
+                                    {{--@else--}}
+                                    {{--var blnDetailedLayout = true;--}}
+                                    {{--@endif--}}
                             if (strLayout == 'normal') {
                                 var blnDetailedLayout = false;
                             } else {
@@ -393,15 +412,15 @@
                                 }
 
                                 //-- Get category of this item
-                                if (data['data'][i]['category_id']!==0) {
-                                    var category=data['data'][i]['category']['name'];
+                                if (data['data'][i]['category_id'] !== 0) {
+                                    var category = data['data'][i]['category']['name'];
 
-                                }else{
-                                    var category="No category";
+                                } else {
+                                    var category = "No category";
                                 }
 
-                                var strCategory = "<p>Category: "+category+"</p>";
-                                var booksList = "<td><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></td><td><p>Title: " + data['data'][i]['title'] + "</p><p>Author: " + data['data'][i]['author'] + "</p>"+strCategory+"<p>Finished reading: " + data['data'][i]['date'] + "</p><p>Published year: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td> <p>Description: <br>" + data['data'][i]['description'] + "</p> </td>";
+                                var strCategory = "<p>Category: " + category + "</p>";
+                                var booksList = "<td><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></td><td><p>Title: " + data['data'][i]['title'] + "</p><p>Author: " + data['data'][i]['author'] + "</p>" + strCategory + "<p>Finished reading: " + data['data'][i]['date'] + "</p><p>Published year: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td> <p>Description: <br>" + data['data'][i]['description'] + "</p> </td>";
                                 $('<tr>').html(booksList + "</tr>").appendTo('#books_block_full');
                             }
                         }
@@ -424,10 +443,10 @@
                     var strPagiantionLinks = "";
                     var count = 1;
                     for (var i = +data['from']; i <= +data['total']; i = i + data['per_page']) {
-                        var idUser='{{$idUser}}';
-                        if(idUser!=0){
-                            strPagiantionLinks += "<li><a href='/books/list/"+idUser+"/?page=" + count;
-                        }else{
+                        var idUser = '{{$idUser}}';
+                        if (idUser != 0) {
+                            strPagiantionLinks += "<li><a href='/books/list/" + idUser + "/?page=" + count;
+                        } else {
                             strPagiantionLinks += "<li><a href='/books/list/?page=" + count;
                         }
 
@@ -457,7 +476,7 @@
         }
 
         function GetAllFoundQuantityOfItems(arrFilter, urlGetAllItemsQuantity, token, arrSortDetails) {
-            var idUser='{{$idUser}}';
+            var idUser = '{{$idUser}}';
             $.ajax({
                 method: 'POST',
                 url: urlGetAllItemsQuantity,
@@ -465,7 +484,7 @@
                     id: arrFilter['id'],
                     title: arrFilter['title'],
                     author: arrFilter['author'],
-                    idUser:idUser,
+                    idUser: idUser,
                     arrSortDetails: JSON.stringify(arrSortDetails),
                     _token: token
                 },
@@ -478,6 +497,62 @@
             });
         }
 
+
+    </script>
+    <script>
+        //-- Initiate object of selected books IDs
+        objCheckedBookIds = {};
+
+        //-- Initialize array of currently selected addresses
+        var arrAlreadySelectedBookIds = ReturnStorageSessionArray(sessionStorage.getItem('objSelectedBooksIds_' + '{{Auth::id()}}'));
+
+        for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
+            $('#select_book_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
+            objCheckedBookIds[arrAlreadySelectedBookIds[i]] = arrAlreadySelectedBookIds[i];
+            $('#actions_block').css('display', 'block');
+            $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
+        }
+
+
+        //-- Functionality to multiple select of books
+        $('.selectBook').on('click', function () {
+            var intBookId = $(this).data('id');
+
+            //-- Truncate JS session of books IDs for this user
+            sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
+            if ($(this).is(':checked')) {
+                objCheckedBookIds[intBookId] = intBookId;
+
+            } else {
+                delete objCheckedBookIds[intBookId];
+            }
+
+            //-- If some items is still selected than display action link
+            if (Object.keys(objCheckedBookIds).length > 0) {
+                $('#actions_block').css('display', 'block');
+                $('#actions_block_number').text(Object.keys(objCheckedBookIds).length);
+            }else{
+                $('#actions_block').css('display', 'none');
+            }
+
+
+            //-- Write JS session of books IDs for this user
+            var arrCheckedBookIds = Object.keys(objCheckedBookIds);
+            sessionStorage.setItem('objSelectedBooksIds_' + '{{Auth::id()}}', arrCheckedBookIds);
+        });
+
+
+        //---------
+        // Delete items block
+        //---------
+
+
+        //-- Return specific array from JS session storage depending on arrStorage value
+        function ReturnStorageSessionArray(arrStorage) {
+            var strStorage = (arrStorage) ? arrStorage : null;
+            var arrStorageResult = strStorage ? strStorage.split(",") : 0;
+            return arrStorageResult;
+        }
 
     </script>
 
