@@ -12,10 +12,12 @@ use App\Movie;
 use App\Photo;
 use App\Profile;
 use App\Role;
+use App\Setting;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Scriptotek\GoogleBooks\GoogleBooks;
@@ -406,6 +408,39 @@ class UserController extends Controller
         $user->delete();
         return redirect($locale.'/users');
     }
+
+
+
+    public function changeShowTutorialAction(Request $request)
+    {
+        $show_tutorial = $request['show_tutorial'];
+        $user = Auth::user();
+
+        //-- Get user's settings from cache or from DB
+        $setting = Cache::remember('settings_' . $user->id, 22 * 60, function () use ($user) {
+            return Setting::where('user_id', $user->id)->first();
+        });
+
+        //-- Flush 'settings' key from redis cache
+        Cache::forget('settings_' . $user->id);
+
+        if (isset($setting)) {
+            $setting->show_tutorial = $show_tutorial;
+            $setting->save();
+        } else {
+            $input['user_id'] = Auth::id();
+            $input['show_tutorial'] = $show_tutorial;
+            Setting::create($input);
+        }
+
+        //-- Set user setting cache data
+        Cache::put('settings_' . $user->id, $setting, 22 * 60);
+
+
+
+        return ["status" => true];
+    }
+
 
 
 

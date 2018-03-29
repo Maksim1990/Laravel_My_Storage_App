@@ -22,6 +22,7 @@ class CreateSettingsTable extends Migration
             $table->integer('movie_list_quantity')->nullable();
             $table->string('event_list')->nullable();
             $table->integer('event_list_quantity')->nullable();
+            $table->string('show_tutorial')->nullable();
             $table->timestamps();
         });
     }
