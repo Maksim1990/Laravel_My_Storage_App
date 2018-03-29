@@ -25,17 +25,18 @@
 @endsection
 @section('content')
     <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
-        <p>All book</p>
-        <h1>All job offers</h1>
+
+        <h1>@lang_u('messages.all') @lang('messages.books')</h1>
 
         <div class=" w3-left" id="items_found">
-            <p>Items found: <span id="items_found_span">{{$itemsQuantity}}</span></p>
+            <p>@lang_u('messages.items_found'): <span id="items_found_span">{{$itemsQuantity}}</span></p>
         </div>
         <div class=" w3-right">
             <div id="actions_block"
                  style="display: none;float: left;font-size: 20px;margin-right: 30px;margin-top: 5px;">
-                <a href="#" class="w3-text-red" id="delete_multiple">Delete all <span id="actions_block_number"></span>
-                    selected books?</a>
+                <a href="#" class="w3-text-red" id="delete_multiple">@lang_u('messages.delete') @lang('messages.all')
+                    <span id="actions_block_number"></span>
+                    @lang('messages.selected') @lang('messages.books')?</a>
             </div>
 
 
@@ -71,9 +72,9 @@
                     @endphp
                 @endif
                 <button class="btn layout {{$styleDetail}}" id='layoutDetail' data-layout="detail"><i
-                            class="fas fa-th-large"></i></button>
+                        class="fas fa-th-large"></i></button>
                 <button class="btn layout {{$styleNormal}}" id='layoutNormal' data-layout="normal"><i
-                            class="fas fa-list"></i></button>
+                        class="fas fa-list"></i></button>
             </div>
 
         </div>
@@ -85,10 +86,10 @@
                 <th id="sort_id" data-type="id">ID
                     <span id="sort_id_icon"></span>
                 </th>
-                <th id="sort_title" data-type="title">Title
+                <th id="sort_title" data-type="title">@lang('messages.title')
                     <span id="sort_title_icon"></span>
                 </th>
-                <th id="sort_author" data-type="author">Author
+                <th id="sort_author" data-type="author">@lang_u('messages.author')
                     <span id="sort_author_icon"></span>
                 </th>
                 <th></th>
@@ -129,7 +130,7 @@
                             <td>
                                 <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id.'/edit ')}}"
                                    id="edit_book_{{$book->id}}"><i
-                                            class="fas fa-edit"></i></a></td>
+                                        class="fas fa-edit"></i></a></td>
                         </tr>
 
                     @endforeach
@@ -138,7 +139,11 @@
                     <tbody id="books_block"></tbody>
                     <tbody id="books_block_full">
                     @foreach($books as $book)
-                        <tr>
+                        <tr id="book_line_full_{{$book->id}}">
+                            @if($idUser>0 && $idUser==Auth::id())
+                                <td><input type="checkbox" class="selectBook" id="select_book_full_{{$book->id}}"
+                                           data-id="{{$book->id}}"></td>
+                            @endif
                             @php
                                 $countMain=0;
                             @endphp
@@ -160,9 +165,10 @@
                                          src="{{asset('images/includes/noImage.jpg')}}" alt=""></td>
                             @endif
                             <td>
-                                <p>Title: {{$book->title}}</p>
-                                <p>Author: {{$book->author}}</p>
-                                <p>Category: {{$book->category_id!=0?$book->category->name:"No category"}}</p>
+                                <p>@lang_u('messages.title'): {{$book->title}}</p>
+                                <p>@lang_u('messages.author'): {{$book->author}}</p>
+                                <p>@lang
+                                        _u('messages.category'): {{$book->category_id!=0?$book->category->name:"No category"}}</p>
                                 <p>Finished reading: {{$book->date}}</p>
                                 <p>Published year: {{$book->publish_year}}</p>
                                 <p>
@@ -378,12 +384,13 @@
                     $("#books_block_full").html("");
                     $("#pagination").html("");
                     if (data['data'].length > 0) {
+                        arrFilteredItems = [];
                         for (var i = 0; i < data['data'].length; i++) {
                             {{--@if(!isset($bookLayout) || !$bookLayout)--}}
-                                    {{--var blnDetailedLayout = false;--}}
-                                    {{--@else--}}
-                                    {{--var blnDetailedLayout = true;--}}
-                                    {{--@endif--}}
+                                {{--var blnDetailedLayout = false;--}}
+                                {{--@else--}}
+                                {{--var blnDetailedLayout = true;--}}
+                                {{--@endif--}}
                             if (strLayout == 'normal') {
                                 var blnDetailedLayout = false;
                             } else {
@@ -391,9 +398,10 @@
                             }
 
                             if (!blnDetailedLayout) {
-                                var strEditButton = "<td><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
-                                var booksList = "<td>" + data['data'][i]['id'] + "</td><td><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>" + strEditButton;
-                                $('<tr>').html(booksList + "</tr>").appendTo('#books_block');
+                                var strCheckBox = "<td><input type='checkbox' class='selectBook' id='select_book_full_" + data['data'][i]['id'] + "' data-id='" + data['data'][i]['id'] + "'></td>";
+                                var strEditButton = "<td ><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
+                                var booksList = strCheckBox + "<td>" + data['data'][i]['id'] + "</td><td><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>" + strEditButton;
+                                $("<tr id='book_line_" + data['data'][i]['id'] + "'>").html(booksList + "</tr>").appendTo('#books_block');
                             } else {
 
                                 if (data['data'][i]['photos'][0] && data['data'][i]['photos'][0]['photo']) {
@@ -423,9 +431,12 @@
 
                                 var strCategory = "<p>Category: " + category + "</p>";
                                 var booksList = "<td><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></td><td><p>Title: " + data['data'][i]['title'] + "</p><p>Author: " + data['data'][i]['author'] + "</p>" + strCategory + "<p>Finished reading: " + data['data'][i]['date'] + "</p><p>Published year: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td> <p>Description: <br>" + data['data'][i]['description'] + "</p> </td>";
-                                $('<tr>').html(booksList + "</tr>").appendTo('#books_block_full');
+                                $("<tr id='book_line_full_" + data['data'][i]['id'] + "'>").html(booksList + "</tr>").appendTo('#books_block_full');
                             }
+                            arrFilteredItems.push(data['data'][i]['id']);
                         }
+
+
                         //-- Remove loader image
                         $("div#divLoading").removeClass('show');
                     } else {
@@ -473,6 +484,64 @@
                         $(' <ul class="pagination">').html(strPagiantionLinks + "</ul>").appendTo('#pagination');
                     }
 
+                    //-- Mark selected items
+                    MarkSelectedItems(arrFilteredItems);
+
+                    //-- Functionality to multiple select of books
+                    $('.selectBook').on('click', function () {
+                        var intBookId = $(this).data('id');
+                        //-- Truncate JS session of books IDs for this user
+                        sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
+                        if ($(this).is(':checked')) {
+                            objCheckedBookIds[intBookId] = intBookId;
+
+                        } else {
+                            delete objCheckedBookIds[intBookId];
+                        }
+
+                        //-- If some items is still selected than display action link
+                        if (Object.keys(objCheckedBookIds).length > 0) {
+                            $('#actions_block').css('display', 'block');
+                            $('#actions_block_number').text(Object.keys(objCheckedBookIds).length);
+                        } else {
+                            $('#actions_block').css('display', 'none');
+                        }
+
+
+                        //-- Write JS session of books IDs for this user
+                        var arrCheckedBookIds = Object.keys(objCheckedBookIds);
+                        sessionStorage.setItem('objSelectedBooksIds_' + '{{Auth::id()}}', arrCheckedBookIds);
+
+                        MarkSelectedItems(arrFilteredItems);
+                    });
+
+
+                    //-- Delete Selected Items
+                    $('#delete_multiple').on('click', function () {
+                        var arrItemsIds = Object.keys(objCheckedBookIds);
+                        $.ajax({
+                            url: urlDeleteMultipleBooks,
+                            type: "post",
+                            data: {
+                                arrItemsIds: JSON.stringify(arrItemsIds),
+                                _token: token
+                            },
+                            success: function (data) {
+                                if (data['status']) {
+                                    for (var i = 0; i < arrItemsIds.length; i++) {
+                                        var intitemsNow = $('#items_found_span').text();
+                                        $('#items_found_span').text(+intitemsNow - 1);
+                                        $('#book_line_' + arrItemsIds[i]).hide();
+                                        $('#book_line_full_' + arrItemsIds[i]).hide();
+                                        $('#actions_block').hide();
+                                    }
+                                }
+                            },
+                            error: function (data) {
+                               // console.log('Error:', data);
+                            }
+                        });
+                    });
                 }
             });
         }
@@ -491,9 +560,8 @@
                     _token: token
                 },
                 success: function (data) {
-                    console.log(data);
                     if (+data > 0) {
-                        $('#items_found').html('<p>Items found: <span id="items_found_span">' + data + '</span></p>');
+                        $('#items_found').html('<p>' + "@lang_u('messages.items_found')" + ': <span id="items_found_span">' + data + '</span></p>');
                     }
                 }
             });
@@ -504,22 +572,54 @@
     <script>
         //-- Initiate object of selected books IDs
         objCheckedBookIds = {};
-        sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
-        //-- Initialize array of currently selected addresses
-        var arrAlreadySelectedBookIds = ReturnStorageSessionArray(sessionStorage.getItem('objSelectedBooksIds_' + '{{Auth::id()}}'));
-        console.log(arrAlreadySelectedBookIds);
-        for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
-            $('#select_book_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
-            objCheckedBookIds[arrAlreadySelectedBookIds[i]] = arrAlreadySelectedBookIds[i];
-            $('#actions_block').css('display', 'block');
-            $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
-        }
+        //sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
 
+        //-- Mark selected items
+        MarkSelectedItems(false);
+
+        function MarkSelectedItems(arrFiltered) {
+
+            var arrAlreadySelectedBookIds = ReturnStorageSessionArray(sessionStorage.getItem('objSelectedBooksIds_' + '{{Auth::id()}}'));
+
+            var intCountItems = arrAlreadySelectedBookIds.length;
+
+            if (arrFiltered) {
+                //-- Initialize array of currently selected addresses
+                var arrTemporary = [];
+                for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
+                    var intIndex = arrFiltered.indexOf(+arrAlreadySelectedBookIds[i]);
+                    if (intIndex >= 0) {
+                        arrTemporary.push(+arrAlreadySelectedBookIds[i]);
+
+                    }
+                }
+                var arrAlreadySelectedBookIds = arrTemporary;
+
+            }
+
+            for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
+                $('#select_book_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
+                $('#select_book_full_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
+                if (!arrFiltered) {
+                    objCheckedBookIds[arrAlreadySelectedBookIds[i]] = arrAlreadySelectedBookIds[i];
+                    $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
+                }else{
+                    if(arrFilter['title']==="" && arrFilter['id']==="" && arrFilter['author']===""){
+
+                        $('#actions_block_number').text(intCountItems);
+                    }else{
+                        $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
+                    }
+
+                }
+                $('#actions_block').css('display', 'block');
+
+            }
+        }
 
         //-- Functionality to multiple select of books
         $('.selectBook').on('click', function () {
             var intBookId = $(this).data('id');
-            console.log(intBookId);
             //-- Truncate JS session of books IDs for this user
             sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
             if ($(this).is(':checked')) {
@@ -547,7 +647,7 @@
         //-- Delete Selected Items
         $('#delete_multiple').on('click', function () {
             var arrItemsIds = Object.keys(objCheckedBookIds);
-            //console.log(arrItemsIds);
+
             $.ajax({
                 url: urlDeleteMultipleBooks,
                 type: "post",
@@ -556,18 +656,19 @@
                     _token: token
                 },
                 success: function (data) {
-                    //console.log(data);
+
                     if (data['status']) {
                         for (var i = 0; i < arrItemsIds.length; i++) {
                             var intitemsNow = $('#items_found_span').text();
                             $('#items_found_span').text(+intitemsNow - 1);
                             $('#book_line_' + arrItemsIds[i]).hide();
+                            $('#book_line_full_' + arrItemsIds[i]).hide();
                             $('#actions_block').hide();
                         }
                     }
                 },
                 error: function (data) {
-                    console.log('Error:', data);
+                    //console.log('Error:', data);
                 }
             });
         });
