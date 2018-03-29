@@ -38,18 +38,22 @@
     $(document).ready(function () {
         if ($(window).width() < 960) {
             $('#menu_icon').css('display','block');
+            $('#current_plan_link').css('display','none');
         }
         else {
             $('#menu_icon').css('display','none');
+            $('#current_plan_link').css('display','inline-block');
         }
     });
 
     $(window).resize(function () {
         if ($(window).width() < 960) {
             $('#menu_icon').css('display','block');
+            $('#current_plan_link').css('display','none');
         }
         else {
             $('#menu_icon').css('display','none');
+            $('#current_plan_link').css('display','inline-block');
         }
     });
 
