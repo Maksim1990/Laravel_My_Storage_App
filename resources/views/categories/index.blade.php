@@ -3,18 +3,20 @@
 @extends('layouts.admin')
 @section('content')
     <div class="w3-col m6 l6">
-        <p>Create Post</p>
+    <div class="col-sm-10 col-sm-offset-1"  style="padding-top: 20px;">
+        <p>New category</p>
 
         {!! Form::open(['method'=>'POST','action'=>'CategoryController@store'])!!}
-        <div class="group-form">
+        <div class="group-form" style="margin-bottom: 20px;">
             {!! Form::label('name','Name:') !!}
             {!! Form::text('name', null, ['class'=>'form-control']) !!}
         </div>
 
-        {!! Form::submit('Create category',['class'=>'btn-success']) !!}
+        {!! Form::submit('Create category',['class'=>'btn btn-success']) !!}
 
         {!! Form::close() !!}
 
+    </div>
     </div>
     <div class="w3-col m6 l6">
         <h1>All categories</h1>
