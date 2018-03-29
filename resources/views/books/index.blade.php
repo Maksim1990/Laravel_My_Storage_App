@@ -536,11 +536,6 @@
                                     }
                                 }
 
-                                //-- Truncate JS session of books IDs for this user
-                                sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
-                            },
-                            error: function (data) {
-                               // console.log('Error:', data);
                             }
                         });
                     });
@@ -668,9 +663,6 @@
                             $('#actions_block').hide();
                         }
                     }
-
-                    //-- Truncate JS session of books IDs for this user
-                    sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
                 },
                 error: function (data) {
                     //console.log('Error:', data);
