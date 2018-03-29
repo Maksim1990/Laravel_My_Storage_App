@@ -11,7 +11,7 @@
     @if(isset($title))
         <title>{{$title}}</title>
     @else
-        <title>Meet Mate APP</title>
+        <title>My Books APP</title>
     @endif
 
 
