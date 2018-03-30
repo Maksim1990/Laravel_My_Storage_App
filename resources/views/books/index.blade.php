@@ -235,6 +235,10 @@
         arrSortDetails = [];
         //-- Initialize array of filters
         arrFilter = [];
+
+        //-- Initialize filtered items that retirned after applying filters
+        arrFilteredItems = [];
+
         {{--<i class="fas fa-long-arrow-alt-up"></i>--}}
         $('#sort_id,#sort_title,#sort_author').click(function () {
             var strFilterType = $(this).data('type');
@@ -384,7 +388,7 @@
                     $("#books_block_full").html("");
                     $("#pagination").html("");
                     if (data['data'].length > 0) {
-                        arrFilteredItems = [];
+
                         for (var i = 0; i < data['data'].length; i++) {
                             {{--@if(!isset($bookLayout) || !$bookLayout)--}}
                                     {{--var blnDetailedLayout = false;--}}
@@ -521,7 +525,7 @@
 
                     //-- Delete Selected Items
                     $('#delete_multiple').on('click', function () {
-                        DeleteMultipleItems();
+                        DeleteMultipleItems(arrFilteredItems);
                     });
                 }
             });
@@ -628,37 +632,38 @@
         });
 
 
-        //-- Delete Selected Items
-        $('#delete_multiple').on('click', function () {
-            DeleteMultipleItems();
-        });
+//        //-- Delete Selected Items
+//        $('#delete_multiple').on('click', function () {
+//            DeleteMultipleItems(false);
+//        });
 
-        function DeleteMultipleItems() {
+        function DeleteMultipleItems(arrFiltered) {
             var arrItemsIds = Object.keys(objCheckedBookIds);
+console.log(arrItemsIds);
+console.log(arrFiltered);
+            {{--$.ajax({--}}
+                {{--url: urlDeleteMultipleBooks,--}}
+                {{--type: "post",--}}
+                {{--data: {--}}
+                    {{--arrItemsIds: JSON.stringify(arrItemsIds),--}}
+                    {{--_token: token--}}
+                {{--},--}}
+                {{--success: function (data) {--}}
 
-            $.ajax({
-                url: urlDeleteMultipleBooks,
-                type: "post",
-                data: {
-                    arrItemsIds: JSON.stringify(arrItemsIds),
-                    _token: token
-                },
-                success: function (data) {
+                    {{--if (data['status']) {--}}
+                        {{--for (var i = 0; i < arrItemsIds.length; i++) {--}}
+                            {{--var intitemsNow = $('#items_found_span').text();--}}
+                            {{--$('#items_found_span').text(+intitemsNow - 1);--}}
+                            {{--$('#book_line_' + arrItemsIds[i]).hide();--}}
+                            {{--$('#book_line_full_' + arrItemsIds[i]).hide();--}}
+                            {{--$('#actions_block').hide();--}}
+                        {{--}--}}
 
-                    if (data['status']) {
-                        for (var i = 0; i < arrItemsIds.length; i++) {
-                            var intitemsNow = $('#items_found_span').text();
-                            $('#items_found_span').text(+intitemsNow - 1);
-                            $('#book_line_' + arrItemsIds[i]).hide();
-                            $('#book_line_full_' + arrItemsIds[i]).hide();
-                            $('#actions_block').hide();
-                        }
-
-                        //-- Truncate JS session of books IDs for this user
-                        sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
-                    }
-                }
-            });
+                        {{--//-- Truncate JS session of books IDs for this user--}}
+                        {{--sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');--}}
+                    {{--}--}}
+                {{--}--}}
+            {{--});--}}
         }
 
 
