@@ -59,7 +59,7 @@ class BookController extends Controller
             'currentPage' => $currentPage
         ];
         //-- Flush 'books' key from redis cache
-        // Cache::tags('books')->flush();
+        //Cache::tags('books')->flush();
         $books = Cache::tags(['books'])->get('books_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser);
 
         if (empty($idUser)) {

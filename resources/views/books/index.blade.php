@@ -72,17 +72,18 @@
                     @endphp
                 @endif
                 <button class="btn layout {{$styleDetail}}" id='layoutDetail' data-layout="detail"><i
-                        class="fas fa-th-large"></i></button>
+                            class="fas fa-th-large"></i></button>
                 <button class="btn layout {{$styleNormal}}" id='layoutNormal' data-layout="normal"><i
-                        class="fas fa-list"></i></button>
+                            class="fas fa-list"></i></button>
             </div>
 
         </div>
         <table class="w3-table-all w3-bordered w3-hoverable">
             <tr>
-                <th>
-
-                </th>
+                @if($idUser>0 && $idUser==Auth::id())
+                    <th>
+                    </th>
+                @endif
                 <th id="sort_id" data-type="id">ID
                     <span id="sort_id_icon"></span>
                 </th>
@@ -130,7 +131,7 @@
                             <td>
                                 <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id.'/edit ')}}"
                                    id="edit_book_{{$book->id}}"><i
-                                        class="fas fa-edit"></i></a></td>
+                                            class="fas fa-edit"></i></a></td>
                         </tr>
 
                     @endforeach
@@ -386,10 +387,10 @@
                         arrFilteredItems = [];
                         for (var i = 0; i < data['data'].length; i++) {
                             {{--@if(!isset($bookLayout) || !$bookLayout)--}}
-                                {{--var blnDetailedLayout = false;--}}
-                                {{--@else--}}
-                                {{--var blnDetailedLayout = true;--}}
-                                {{--@endif--}}
+                                    {{--var blnDetailedLayout = false;--}}
+                                    {{--@else--}}
+                                    {{--var blnDetailedLayout = true;--}}
+                                    {{--@endif--}}
                             if (strLayout == 'normal') {
                                 var blnDetailedLayout = false;
                             } else {
@@ -397,7 +398,10 @@
                             }
 
                             if (!blnDetailedLayout) {
-                                var strCheckBox = "<td><input type='checkbox' class='selectBook' id='select_book_full_" + data['data'][i]['id'] + "' data-id='" + data['data'][i]['id'] + "'></td>";
+                                var strCheckBox = "";
+                                @if($idUser>0 && $idUser==Auth::id())
+                                    strCheckBox = "<td><input type='checkbox' class='selectBook' id='select_book_full_" + data['data'][i]['id'] + "' data-id='" + data['data'][i]['id'] + "'></td>";
+                                        @endif
                                 var strEditButton = "<td ><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
                                 var booksList = strCheckBox + "<td>" + data['data'][i]['id'] + "</td><td><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>" + strEditButton;
                                 $("<tr id='book_line_" + data['data'][i]['id'] + "'>").html(booksList + "</tr>").appendTo('#books_block');
@@ -571,26 +575,29 @@
                     }
                 }
                 var arrAlreadySelectedBookIds = arrTemporary;
-
             }
 
-            for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
-                $('#select_book_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
-                $('#select_book_full_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
-                if (!arrFiltered) {
-                    objCheckedBookIds[arrAlreadySelectedBookIds[i]] = arrAlreadySelectedBookIds[i];
-                    $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
-                }else{
-                    if(arrFilter['title']==="" && arrFilter['id']==="" && arrFilter['author']===""){
+            if (arrAlreadySelectedBookIds.length > 0) {
 
-                        $('#actions_block_number').text(intCountItems);
-                    }else{
+                for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
+                    $('#select_book_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
+                    $('#select_book_full_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
+                    $('#actions_block').css('display', 'block');
+                    if (!arrFiltered) {
+                        objCheckedBookIds[arrAlreadySelectedBookIds[i]] = arrAlreadySelectedBookIds[i];
                         $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
+                    } else {
+                        if (arrFilter['title'] === "" && arrFilter['id'] === "" && arrFilter['author'] === "") {
+
+                            $('#actions_block_number').text(intCountItems);
+                        } else {
+                            console.log(arrAlreadySelectedBookIds.length);
+                            $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
+                        }
                     }
-
                 }
-                $('#actions_block').css('display', 'block');
-
+            } else {
+                $('#actions_block').css('display', 'none');
             }
         }
 
