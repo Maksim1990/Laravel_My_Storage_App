@@ -52,4 +52,5 @@ return [
     'selected'=>'selected',
     'author'=>'author',
     'items_found'=>'Items found',
+    'delete_selected_items'=>'Are you really want to delete selected item(s)',
 ];

@@ -387,6 +387,8 @@
                     $("#books_block").html("");
                     $("#books_block_full").html("");
                     $("#pagination").html("");
+
+                    arrFilteredItems=[];
                     if (data['data'].length > 0) {
 
                         for (var i = 0; i < data['data'].length; i++) {
@@ -523,10 +525,10 @@
                     });
 
 
-                    //-- Delete Selected Items
-                    $('#delete_multiple').on('click', function () {
-                        DeleteMultipleItems(arrFilteredItems);
-                    });
+                    // //-- Delete Selected Items
+                    // $('#delete_multiple').on('click', function () {
+                    //     DeleteMultipleItems(arrFilteredItems);
+                    // });
                 }
             });
         }
@@ -568,17 +570,19 @@
 
             var intCountItems = arrAlreadySelectedBookIds.length;
 
-            if (arrFiltered) {
+            if (arrFiltered.length > 0) {
                 //-- Initialize array of currently selected addresses
                 var arrTemporary = [];
                 for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
                     var intIndex = arrFiltered.indexOf(+arrAlreadySelectedBookIds[i]);
                     if (intIndex >= 0) {
                         arrTemporary.push(+arrAlreadySelectedBookIds[i]);
-
                     }
                 }
                 var arrAlreadySelectedBookIds = arrTemporary;
+
+            }else if((arrFiltered.constructor === Array) || arrFiltered.length <= 0){
+                arrAlreadySelectedBookIds=[];
             }
 
             if (arrAlreadySelectedBookIds.length > 0) {
@@ -595,7 +599,7 @@
 
                             $('#actions_block_number').text(intCountItems);
                         } else {
-                            console.log(arrAlreadySelectedBookIds.length);
+
                             $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
                         }
                     }
@@ -632,38 +636,53 @@
         });
 
 
-//        //-- Delete Selected Items
-//        $('#delete_multiple').on('click', function () {
-//            DeleteMultipleItems(false);
-//        });
+       //-- Delete Selected Items
+       $('#delete_multiple').on('click', function () {
+           DeleteMultipleItems(arrFilteredItems);
+       });
 
         function DeleteMultipleItems(arrFiltered) {
-            var arrItemsIds = Object.keys(objCheckedBookIds);
-console.log(arrItemsIds);
-console.log(arrFiltered);
-            {{--$.ajax({--}}
-                {{--url: urlDeleteMultipleBooks,--}}
-                {{--type: "post",--}}
-                {{--data: {--}}
-                    {{--arrItemsIds: JSON.stringify(arrItemsIds),--}}
-                    {{--_token: token--}}
-                {{--},--}}
-                {{--success: function (data) {--}}
+            var arrItemsIds = ReturnStorageSessionArray(sessionStorage.getItem('objSelectedBooksIds_' + '{{Auth::id()}}'));
+            if (arrFiltered.length > 0) {
+                //-- Initialize array of currently selected addresses
+                var arrTemporary = [];
+                for (var i = 0; i < arrItemsIds.length; i++) {
+                    var intIndex = arrFiltered.indexOf(+arrItemsIds[i]);
+                    if (intIndex >= 0) {
+                        arrTemporary.push(+arrItemsIds[i]);
+                    }
+                }
+                var arrItemsIds = arrTemporary;
 
-                    {{--if (data['status']) {--}}
-                        {{--for (var i = 0; i < arrItemsIds.length; i++) {--}}
-                            {{--var intitemsNow = $('#items_found_span').text();--}}
-                            {{--$('#items_found_span').text(+intitemsNow - 1);--}}
-                            {{--$('#book_line_' + arrItemsIds[i]).hide();--}}
-                            {{--$('#book_line_full_' + arrItemsIds[i]).hide();--}}
-                            {{--$('#actions_block').hide();--}}
-                        {{--}--}}
+            }
 
-                        {{--//-- Truncate JS session of books IDs for this user--}}
-                        {{--sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');--}}
-                    {{--}--}}
-                {{--}--}}
-            {{--});--}}
+            //console.log(arrItemsIds);
+            var blnConfirm = confirm("{{trans('messages.delete_selected_items')}}?");
+            if (blnConfirm == true) {
+                $.ajax({
+                    url: urlDeleteMultipleBooks,
+                    type: "post",
+                    data: {
+                        arrItemsIds: JSON.stringify(arrItemsIds),
+                        _token: token
+                    },
+                    success: function (data) {
+
+                        if (data['status']) {
+                            for (var i = 0; i < arrItemsIds.length; i++) {
+                                var intitemsNow = $('#items_found_span').text();
+                                $('#items_found_span').text(+intitemsNow - 1);
+                                $('#book_line_' + arrItemsIds[i]).hide();
+                                $('#book_line_full_' + arrItemsIds[i]).hide();
+                                $('#actions_block').hide();
+                            }
+
+                            //-- Truncate JS session of books IDs for this user
+                            sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
+                        }
+                    }
+                });
+            }
         }
 
 
