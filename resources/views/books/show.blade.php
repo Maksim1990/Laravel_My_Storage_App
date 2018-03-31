@@ -10,7 +10,7 @@
         .commentItem {
             background-color: sandybrown;
             border-radius: 20px;
-            padding: 5px 5px;
+            padding: 10px 5px;
             margin-bottom: 10px;
         }
 
@@ -22,35 +22,86 @@
             width: 80%;
             display: inline-block;
         }
+
+        .bx-wrapper {
+            background-color: transparent;
+        }
+
+        #book_details, #like_block {
+            padding-top: 30px;
+        }
+
+        #like_block {
+            font-size: 30px;
+        }
+
+        .fa-heart {
+            border: 2px dashed green;
+
+            padding: 5px 5px;
+            border-radius: 30px;
+        }
+
+        .fa-heart:hover {
+            font-size: 35px;
+        }
+
+        .tooltiptext {
+            font-size: 15px;
+        }
     </style>
 @endsection
 @section('content')
     <div class="col-sm-2 col-lg-2">
         @include('books.left')
     </div>
-    <div class="col-sm-8 col-sm-offset-1 col-lg-8 col-lg-offset-1">
-        <div>
-            <p>{{$book->id}}</p>
-            <p>{{$book->title}}</p>
-            <p>{{$book->author}}</p>
+    <div class="col-sm-8 col-sm-offset-1 col-lg-8 col-lg-offset-1" style="padding-top: 30px;">
+        <div class="col-sm-12 col-xs-12" style="margin-bottom: 100px;">
+            <div class="col-sm-4 col-xs-12">
+                <img height="200"
+                     src="{{!empty($user->profile->photo_id) ? $user->profile->photo->path :"/images/includes/noImage.jpg"}}"
+                     class="image-responsive" alt="">
+            </div>
+            <div class="col-sm-7 col-xs-12" id="book_details">
+                <p>{{$book->id}}</p>
+                <p>{{$book->title}}</p>
+                <p>{{$book->author}}</p>
+            </div>
+            <div class="col-sm-1 col-xs-12" id="like_block">
+                @if($blnLike)
+                    @php $strClass="fas";$strStatus="dislike";$txtTooltip='Remove from favorite';  @endphp
+                @else
+                    @php $strClass="far";$strStatus="like";$txtTooltip='Add to favorite'; @endphp
+                @endif
+                <div class="tooltip_custom" id="tooltip_custom">
+                    <a href="#" class="like" data-status="{{$strStatus}}"><i
+                            class=" fa-heart {{$strClass}} w3-text-green"></i></a>
+                    <span class="tooltiptext" id="tooltiptext">{{$txtTooltip}}</span>
+                </div>
+
+            </div>
         </div>
+
 
         <div>
             @if($book->photos)
-                <div class="bxslider">
-                    @foreach($book->photos as $item)
-                        @if($item->photo)
-                            <a href="#" id="image_{{$item->photo->id}}" data-toggle="modal" data-target="#showImage"
-                               title="Show image"
-                               class="show_image"
-                               data-image-id="{{$item->photo->id}}"
-                               data-image-path="{{$item->photo->path}}"
-                            >
-                                <img style="border-radius: 30px;" width="160" height="160" src="{{$item->photo->path}}"
-                                     alt="">
-                            </a>
-                        @endif
-                    @endforeach
+                <div class="col-sm-12 col-xs-12">
+                    <div class="bxslider">
+                        @foreach($book->photos as $item)
+                            @if($item->photo)
+                                <a href="#" id="image_{{$item->photo->id}}" data-toggle="modal" data-target="#showImage"
+                                   title="Show image"
+                                   class="show_image"
+                                   data-image-id="{{$item->photo->id}}"
+                                   data-image-path="{{$item->photo->path}}"
+                                >
+                                    <img style="border-radius: 30px;" width="160" height="160"
+                                         src="{{$item->photo->path}}"
+                                         alt="">
+                                </a>
+                            @endif
+                        @endforeach
+                    </div>
                 </div>
             @endif
 
@@ -71,19 +122,29 @@
                             <div class="col-sm-4 col-lg-4">
                                 @if($comment->user)
                                     <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.$comment->user->id)}}">
+                                        <p><img style="border-radius: 20px;margin-top: -5px;" height="35"
+                                                src="{{$comment->user->profile->photo ? $comment->user->profile->photo->path :"/images/includes/no_user.png"}}"
+                                                alt=""></p>
                                         {{$comment->user->name}}
                                     </a>
                                 @endif
                             </div>
-                            <div class="col-sm-8 col-lg-8">
+                            <div class="col-sm-7 col-lg-7">
 
                                 <p>Added: {{$comment->created_at->diffForHumans()}}</p>
                                 <p>{{$comment->comment}}</p>
                             </div>
+                            @if($comment->user->id == Auth::id())
+                                <div class="col-sm-1 col-lg-1 ">
+                                    <a href="#" id="delete_comment_{{$comment->id}}"
+                                       class="delete_comment w3-text-white" data-comment="{{$comment->id}}"><i
+                                            class="fas fa-trash-alt"></i></a>
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 @else
-                    <p>No available comments</p>
+                    <p id="no_comments">No available comments</p>
                 @endif
 
             </div>
@@ -127,7 +188,7 @@
 @section('scripts')
     <script src="{{asset('js/examples.js')}}" type="text/javascript"></script>
     <script>
-        var token = '{{\Illuminate\Support\Facades\Session::token()}}'
+        var token = '{{\Illuminate\Support\Facades\Session::token()}}';
         var url = '{{ URL::to('add_comment') }}';
 
         $(".show_image").click(function () {
@@ -189,11 +250,21 @@
                             var comment_id = data['comment_id'];
                             var user_name = '{{Auth::user()->name}}';
                             var user_id = '{{Auth::id()}}';
-                            var user_block = "<a href='/{{LaravelLocalization::getCurrentLocale() }}/users/" + user_id + "'>" + user_name + "</a>";
-                            var comment_block = "<div class='col-sm-4 col-lg-4'>" + user_block + "</div><div class='col-sm-8 col-lg-8'><p>Added: " + dateTime + "</p><p>" + comment + "</p></div></div>";
+                            var deleteBlock = " <div class='col-sm-1 col-lg-1'><a href='#' id='delete_comment_" + comment_id + "' class='delete_comment w3-text-white' data-comment='" + comment_id + "'><i class='fas fa-trash-alt'></i></a></div>";
+                            var user_image_block = "<p><img style='border-radius: 20px;margin-top: -5px;' height='35' src='{{Auth::user()->profile->photo ? Auth::user()->profile->photo->path :'/images/includes/no_user.png'}}' + alt=''></p>";
+                            var user_block = "<a href='/{{LaravelLocalization::getCurrentLocale() }}/users/" + user_id + "'>" + user_image_block + user_name + "</a>";
+                            var comment_block = "<div class='col-sm-4 col-lg-4'>" + user_block + "</div><div class='col-sm-7 col-lg-7'><p>Added: " + dateTime + "</p><p>" + comment + "</p></div>" + deleteBlock + "</div>";
                             $("<div id='commentItem_" + comment_id + "' class='commentItem col-sm-12 col-lg-12'>").html(comment_block).prependTo('#commentBlock');
                             $("#input_comment").val("");
+                            $("#no_comments").hide();
                             activateButton();
+
+                            //-- Add to favorite functionality
+                            $(".delete_comment").click(function () {
+                                var comment_id = $(this).data('comment');
+                                DeleteComment(comment_id)
+                            });
+
                         }
                     }
                 });
@@ -273,6 +344,90 @@
 
             }
         });
+
+
+        //-- Add to favorite functionality
+        $(".delete_comment").click(function () {
+            var comment_id = $(this).data('comment');
+            DeleteComment(comment_id)
+        });
+
+        function DeleteComment(comment_id) {
+            var urlDeleteComment = '{{ URL::to('delete_books_comment_ajax') }}';
+            var blnConfirm = confirm("{{trans('messages.delete_selected_item')}}?");
+            if (blnConfirm == true) {
+                $.ajax({
+                    method: 'POST',
+                    url: urlDeleteComment,
+                    dataType: "json",
+                    data: {
+                        comment_id: comment_id,
+                        _token: token
+                    },
+                    async: true,
+                    success: function (data) {
+                        if (data['status']) {
+
+                            $('#commentItem_' + comment_id).hide();
+                            new Noty({
+                                type: 'success',
+                                layout: 'topRight',
+                                text: 'Your comment was removed!'
+                            }).show();
+
+                        }
+                    }
+                });
+            }
+        }
+
+        //-- Add to favorite functionality
+        $(".like").click(function () {
+            var urlFavorite = '{{ URL::to('add_book_to_favorite_ajax') }}';
+            var strStatus = $(this).data('status');
+            var module_id = 1;
+            //alert(strStatus);
+            var item_number = '{{$book->id}}';
+            $.ajax({
+                method: 'POST',
+                url: urlFavorite,
+                dataType: "json",
+                data: {
+                    strStatus: strStatus,
+                    item_number: item_number,
+                    module_id: module_id,
+                    _token: token
+                },
+                async: true,
+                success: function (data) {
+                    if (data['status']) {
+
+                        if (strStatus == 'like') {
+                            var strInfo = 'Added to favorite';
+                            var strInfoAjax = 'Remove from favorite';
+                            var textStatus = 'dislike';
+                            var textClassAdd = 'fas';
+                        } else {
+                            var strInfo = 'Removed from favorite';
+                            var strInfoAjax = 'Add to favorite';
+                            var textStatus = 'like';
+                            var textClassAdd = 'far';
+                        }
+                        $('#tooltiptext').text(strInfoAjax);
+                        $('#tooltip_custom').find('a').data('status', textStatus);
+                        $('#tooltip_custom').find('a').html("<i class=' fa-heart " + textClassAdd + " w3-text-green'></i>");
+                        new Noty({
+                            type: 'success',
+                            layout: 'topRight',
+                            text: strInfo
+                        }).show();
+
+                    }
+                }
+            });
+        });
+
+
     </script>
     <script src="{{asset('js/jquery.bxslider.js')}}" type="text/javascript"></script>
     <script>
@@ -287,19 +442,19 @@
 
         //-- Hide slider dots in case less than 4 images
         var elements = document.getElementsByClassName('bx-pager-link');
-        if(elements.length > 4){
+        if (elements.length > 4) {
             for (var i in elements) {
                 if (elements.hasOwnProperty(i)) {
-                    elements[i].style.display= 'none';
+                    elements[i].style.display = 'none';
                 }
             }
         }
 
         //-- Change link text color on hover
-        $( '#user_left p' ).mouseover(function() {
-            $(this).find('a').css('color','white');
-        }).mouseleave(function() {
-            $(this).find('a').css('color','#4CAF50');
+        $('#user_left p').mouseover(function () {
+            $(this).find('a').css('color', 'white');
+        }).mouseleave(function () {
+            $(this).find('a').css('color', '#4CAF50');
         });
 
     </script>

@@ -43,8 +43,9 @@
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
     <link href="{{asset('css/loading_icon_style.css')}}" rel="stylesheet">
 
-    @yield('styles')
     @yield('scripts_header')
+    @yield('styles')
+
 
 
 <body>

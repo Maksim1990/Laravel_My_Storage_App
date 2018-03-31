@@ -53,4 +53,5 @@ return [
     'author'=>'author',
     'items_found'=>'Items found',
     'delete_selected_items'=>'Are you really want to delete selected item(s)',
+    'delete_selected_item'=>'Are you really want to delete this item',
 ];

@@ -13,9 +13,9 @@
         @include('users.left')
     </div>
     <div class="col-sm-10 col-xs-10 " id="main_profile_block">
-        <div class="col-sm-12 col-xs-12">
+        <div class="col-sm-12 col-xs-12" style="margin-bottom: 30px;">
             <div class="col-sm-4 col-xs-12">
-                <img height="200"
+                <img height="200" style="border-radius: 20px;"
                      src="{{!empty($user->profile->photo_id) ? $user->profile->photo->path :"/images/includes/noImage.jpg"}}"
                      class="image-responsive" alt="">
             </div>

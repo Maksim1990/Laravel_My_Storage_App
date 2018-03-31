@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Book;
 use App\Category;
 use App\Comment;
+use App\Favorite;
 use App\Http\Requests\BookCreateRequest;
 use App\ImageBook;
 use App\Photo;
@@ -169,6 +170,7 @@ class BookController extends Controller
     public function show($id)
     {
         $book = Book::findOrFail($id);
+        $user=Auth::user();
         $comments = Comment::where('module_id', 1)->where('item_id', $id)->orderBy('id', 'DESC')->paginate(10);
         $ratings = Rating::where('module_number', 1)->where('item_number', $id)->get();
 
@@ -187,7 +189,18 @@ class BookController extends Controller
 
         }
 
-        return view('books.show', compact('book', 'comments', 'currentRating', 'countRating', 'ratings', 'blnAlreadyVoted'));
+        $module_id=1;
+        $favorite=Favorite::where('user_id',$user->id)->where('module_number',$module_id)->where('item_number',$id)->first();
+        if(!empty($favorite->id)){
+            $blnLike=true;
+        }else{
+            $blnLike=false;
+        }
+
+
+
+
+        return view('books.show', compact('book', 'comments', 'currentRating', 'countRating', 'ratings', 'blnAlreadyVoted','favorite','blnLike'));
     }
 
     public function testFunction()

@@ -30,7 +30,7 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +41,7 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -52,7 +52,7 @@ class CommentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -63,8 +63,8 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -75,7 +75,7 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -86,16 +86,25 @@ class CommentController extends Controller
 
     public function addComment(Request $request)
     {
-        $comment=$request['comment'];
-        $user_id=$request['user_id'];
-        $module_id=$request['module_id'];
-        $item_id=$request['item_id'];
-        $comment=Comment::create(['user_id'=>$user_id,'comment'=>$comment,'module_id'=>$module_id,'item_id'=>$item_id]);
+        $comment = $request['comment'];
+        $user_id = $request['user_id'];
+        $module_id = $request['module_id'];
+        $item_id = $request['item_id'];
+        $comment = Comment::create(['user_id' => $user_id, 'comment' => $comment, 'module_id' => $module_id, 'item_id' => $item_id]);
 
         return [
-            "status"=>true,
-            "comment_id"=>$comment->id,
-            ];
+            "status" => true,
+            "comment_id" => $comment->id,
+        ];
+    }
+
+    public function deleteBookComment(Request $request)
+    {
+
+        $blnStatus = true;
+        $strStatus = $request['comment_id'];
+        Comment::findOrFail($strStatus)->delete();
+        return ["status" => $blnStatus];
     }
 
 }
