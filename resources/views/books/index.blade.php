@@ -27,7 +27,6 @@
     <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
 
         <h1>@lang_u('messages.all') @lang('messages.books')</h1>
-
         <div class=" w3-left" id="items_found">
             <p>@lang_u('messages.items_found'): <span id="items_found_span">{{$itemsQuantity}}</span></p>
         </div>
@@ -98,7 +97,10 @@
             </tr>
             <tr class="w3-gray">
                 @if($idUser>0 && $idUser==Auth::id())
-                    <td></td>
+                    <td><p class="tooltip_custom">
+                            <input type="checkbox"  id="select_all_books">
+                            <span class="tooltiptext">@lang('messages.select_all_items')</span>
+                        </p></td>
                 @endif
                 <td><input class="w3-input" id="filter_id" type="text" data-type="id"
                            value="{{$arrFilter['id']?$arrFilter['id']:""}}"></td>
@@ -474,7 +476,7 @@
                     } else {
                         $("#books_block").html("");
                         $("div#divLoading").removeClass('show');
-                        $('<tr>').html("Nothing found</tr>").appendTo('#books_block');
+                        $('<tr>').html("{{trans('messages.nothing_found')}}</tr>").appendTo('#books_block');
                     }
 
 
@@ -589,7 +591,20 @@
 
         function MarkSelectedItems(arrFiltered) {
 
-            var arrAlreadySelectedBookIds = ReturnStorageSessionArray(sessionStorage.getItem('objSelectedBooksIds_' + '{{Auth::id()}}'));
+            //-- Get all items for specific user
+            var strAllitems='{{$strBooksAll}}';
+            var arrAllItems=strAllitems.split(",");
+
+            //-- Check if main checkbox was clicked or not
+            var blnSelectAll = sessionStorage.getItem('selectAllItems_books');
+
+            if(blnSelectAll){
+                var arrAlreadySelectedBookIds=arrAllItems;
+                $('#select_all_books').prop('checked', true);
+            }else{
+                var arrAlreadySelectedBookIds = ReturnStorageSessionArray(sessionStorage.getItem('objSelectedBooksIds_' + '{{Auth::id()}}'));
+            }
+
 
             var intCountItems = arrAlreadySelectedBookIds.length;
 
@@ -613,7 +628,9 @@
                 for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
                     $('#select_book_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
                     $('#select_book_full_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
+                    @if($idUser>0 && $idUser==Auth::id())
                     $('#actions_block').css('display', 'block');
+                    @endif
                     if (!arrFiltered) {
                         objCheckedBookIds[arrAlreadySelectedBookIds[i]] = arrAlreadySelectedBookIds[i];
                         $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
@@ -644,6 +661,10 @@
                 delete objCheckedBookIds[intBookId];
             }
 
+            //-- Uncheck main checkbox and remove 'selectAllItems_books' from storage
+            sessionStorage.removeItem('selectAllItems_books');
+            $('#select_all_books').prop('checked', false);
+
             //-- If some items is still selected than display action link
             if (Object.keys(objCheckedBookIds).length > 0) {
                 $('#actions_block').css('display', 'block');
@@ -667,6 +688,11 @@
         //-- Unselect all Items
         $('#uncheck_all').on('click', function () {
             UncheckAll();
+        });
+
+        //-- Select all Items
+        $('#select_all_books').on('click', function () {
+            SelectAll();
         });
 
         function DeleteMultipleItems(arrFiltered) {
@@ -727,8 +753,23 @@
             if (blnConfirm == true) {
                 //-- Truncate JS session of books IDs for this user
                 sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
+                sessionStorage.removeItem('selectAllItems_books');
                 $('#actions_block').css('display', 'none');
                 $(":input[id^='select_book_']").prop('checked', false);
+                $('#select_all_books').prop('checked', false);
+            }
+        }
+
+
+        //-- Uncheck all selected elements
+        function SelectAll() {
+
+            if ($("#select_all_books").is(':checked')) {
+                sessionStorage.setItem('selectAllItems_books',true);
+                //-- Mark selected items
+                MarkSelectedItems(false);
+            } else {
+                UncheckAll();
             }
         }
 

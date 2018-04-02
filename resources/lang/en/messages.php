@@ -60,4 +60,6 @@ return [
     'displayed_list_is_changed'=>'Displayed list is successfully changed',
     'uncheck_all'=>'Uncheck All',
     'uncheck_all_items'=>'Do you really want to uncheck selected item(s)',
+    'select_all_items'=>'Select all',
+    'nothing_found'=>'Nothing found',
 ];

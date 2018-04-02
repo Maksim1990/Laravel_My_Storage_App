@@ -34,8 +34,8 @@
 
             <div class="w3-container">
                 <div class="w3-center " id="main_left">
-                    <p><a href="#">@lang('messages.edit_profile_data')</a></p>
-                    <p><a href="#">@lang('messages.change_password')</a></p>
+                    <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.Auth::id()."/edit/profile")}}">@lang('messages.edit_profile_data')</a></p>
+                    <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.Auth::id()."/edit/password")}}">@lang('messages.change_password')</a></p>
                     <p><a href="#">@lang('messages.change_profile_image')</a></p>
                     <p><a href="#">@lang('messages.delete_profile')</a></p>
                 </div>
@@ -58,8 +58,8 @@
             <a href="{{URL::to('books/create ')}}" class="w3-bar-item w3-button"><i
                         class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.my') @lang_u('messages.books')</a>
             </a> <a href="{{URL::to('books/create ')}}" class="w3-bar-item w3-button"><i
-                        class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.all') @lang_u('messages.books')</a></a>
-            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>@lang('messages.add') @lang_u('messages.books')</a>
+                        class="fa fa-paper-plane w3-margin-right"></i>@lang_u('messages.all') @lang_u('messages.books')</a></a>
+            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>@lang_u('messages.add') @lang_u('messages.books')</a>
             <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>@lang('messages.import_export')
                 @lang('messages.books')</a>
         </div>
@@ -71,8 +71,8 @@
             <a href="{{URL::to('books/create ')}}" class="w3-bar-item w3-button"><i
                         class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.my') @lang_u('messages.movies')</a></a>
             <a href="{{URL::to('books/create ')}}" class="w3-bar-item w3-button"><i
-                        class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.all') @lang_u('messages.movies')</a></a>
-            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>@lang('messages.add') @lang_u('messages.movies')</a>
+                        class="fa fa-paper-plane w3-margin-right"></i>@lang_u('messages.all') @lang_u('messages.movies')</a></a>
+            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>@lang_u('messages.add') @lang_u('messages.movies')</a>
             <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>@lang('messages.import_export')
             @lang('messages.movies')</a>
         </div>
