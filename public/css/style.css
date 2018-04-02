@@ -54,6 +54,9 @@ body a{
     min-height: 1200px; /* Used in this example to enable scrolling */
 }
 
+.text-uppercase{
+    text-transform: uppercase;
+}
 /* END of Fixed meny styling*/
 
 

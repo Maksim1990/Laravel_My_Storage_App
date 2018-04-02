@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -105,6 +106,16 @@ class CommentController extends Controller
         $strStatus = $request['comment_id'];
         Comment::findOrFail($strStatus)->delete();
         return ["status" => $blnStatus];
+    }
+
+
+    public function myComments($id){
+        $user=Auth::user();
+        $comments=Comment::where('user_id',$user->id)->get();
+
+
+        $title='My comments';
+        return view('comments.my_comments', compact('title', 'comments'));
     }
 
 }

@@ -46,6 +46,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::get('/categories/{id}/{userId}', 'CategoryController@showItemsPerUser');
         Route::get('/test', 'BookController@testFunction');
         Route::get('/favorites/{id}', 'FavoriteController@myFavorites');
+        Route::get('/comments/{id}', 'CommentController@myComments');
+        Route::get('/ratings/{id}', 'RatingController@myRatings');
 
 
         Route::post('add_comment', 'CommentController@addComment');
