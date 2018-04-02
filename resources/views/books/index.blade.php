@@ -37,6 +37,7 @@
                 <a href="#" class="w3-text-red" id="delete_multiple">@lang_u('messages.delete') @lang('messages.all')
                     <span id="actions_block_number"></span>
                     @lang('messages.selected') @lang('messages.books')?</a>
+                <a href="#" id="uncheck_all">@lang('messages.uncheck_all')</a>
             </div>
 
 
@@ -129,9 +130,12 @@
 
 
                             <td>
+                                @if($book->user_id==Auth::id())
                                 <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id.'/edit ')}}"
                                    id="edit_book_{{$book->id}}"><i
-                                            class="fas fa-edit"></i></a></td>
+                                            class="fas fa-edit"></i></a>
+                                @endif
+                            </td>
                         </tr>
 
                     @endforeach
@@ -166,11 +170,11 @@
                                          src="{{asset('images/includes/noImage.jpg')}}" alt=""></td>
                             @endif
                             <td>
-                                <p>@lang_u('messages.title'): {{$book->title}}</p>
-                                <p>@lang_u('messages.author'): {{$book->author}}</p>
-                                <p>@lang_u('messages.category'): {{$book->category_id!=0?$book->category->name:"No category"}}</p>
-                                <p>Finished reading: {{$book->date}}</p>
-                                <p>Published year: {{$book->publish_year}}</p>
+                                <p>@lang('messages.title'): {{$book->title}}</p>
+                                <p>@lang('messages.author'): {{$book->author}}</p>
+                                <p>@lang('messages.category'): {{$book->category_id!=0?$book->category->name:trans('messages.no_category')}}</p>
+                                <p>@lang('messages.finished_reading'): {{$book->date}}</p>
+                                <p>@lang('messages.published_year'): {{$book->publish_year}}</p>
                                 <p>
                                     @php
                                         $count=0;
@@ -199,8 +203,15 @@
                                 </p>
                             </td>
                             <td>
-                                <p>Description: <br>{{$book->description}}</p>
+                                <p>@lang('messages.description'): <br>{{$book->description}}</p>
                             </td>
+                                <td>
+                                    @if($book->user_id==Auth::id())
+                                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id.'/edit ')}}"
+                                       id="edit_book_{{$book->id}}"><i
+                                                class="fas fa-edit"></i></a>
+                                @endif
+                                </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -302,7 +313,7 @@
             new Noty({
                 type: 'success',
                 layout: 'topRight',
-                text: 'Displayed quantity of items set to ' + intQuantity
+                text: '{{trans('messages.displayed_quantity_set_to')}} ' + intQuantity
             }).show();
         });
 
@@ -322,7 +333,7 @@
             new Noty({
                 type: 'success',
                 layout: 'topRight',
-                text: 'Displayed list is successfully changed!'
+                text: '{{trans('messages.displayed_list_is_changed')}}!'
             }).show();
 
         });
@@ -366,6 +377,7 @@
         //-- Ajax request for filtering and sorting
         function RunAjaxRequest(arrFilter, url, token, arrSortDetails, intQuantity=10, strLayout='normal') {
             var idUser = '{{$idUser}}';
+            var onlineUserId = '{{Auth::id()}}';
             $.ajax({
                 method: 'POST',
                 url: url,
@@ -406,10 +418,13 @@
                             if (!blnDetailedLayout) {
                                 var strCheckBox = "";
                                 @if($idUser>0 && $idUser==Auth::id())
-                                    strCheckBox = "<td><input type='checkbox' class='selectBook' id='select_book_full_" + data['data'][i]['id'] + "' data-id='" + data['data'][i]['id'] + "'></td>";
+                                    strCheckBox = "<td><input type='checkbox' class='selectBook' id='select_book_" + data['data'][i]['id'] + "' data-id='" + data['data'][i]['id'] + "'></td>";
                                         @endif
-                                var strEditButton = "<td ><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
-                                var booksList = strCheckBox + "<td>" + data['data'][i]['id'] + "</td><td><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>" + strEditButton;
+                                var strEditButton="";
+                                if(onlineUserId==data['data'][i]['user_id']){
+                                    strEditButton = "<td ><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
+                                }
+                              var booksList = strCheckBox + "<td>" + data['data'][i]['id'] + "</td><td><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>" + strEditButton;
                                 $("<tr id='book_line_" + data['data'][i]['id'] + "'>").html(booksList + "</tr>").appendTo('#books_block');
                             } else {
 
@@ -435,11 +450,19 @@
                                     var category = data['data'][i]['category']['name'];
 
                                 } else {
-                                    var category = "No category";
+                                    var category = "{{trans('messages.no_category')}}";
                                 }
+                                var strCheckBox = "";
+                                @if($idUser>0 && $idUser==Auth::id())
+                                    strCheckBox = "<td><input type='checkbox' class='selectBook' id='select_book_" + data['data'][i]['id'] + "' data-id='" + data['data'][i]['id'] + "'></td>";
+                                        @endif
+                                var strCategory = "<p>{{trans('messages.category')}}: " + category + "</p>";
 
-                                var strCategory = "<p>Category: " + category + "</p>";
-                                var booksList = "<td><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></td><td><p>Title: " + data['data'][i]['title'] + "</p><p>Author: " + data['data'][i]['author'] + "</p>" + strCategory + "<p>Finished reading: " + data['data'][i]['date'] + "</p><p>Published year: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td> <p>Description: <br>" + data['data'][i]['description'] + "</p> </td>";
+                                var strEditButton="";
+                                if(onlineUserId==data['data'][i]['user_id']) {
+                                    var strEditButton = "<td ><a href='/{{LaravelLocalization::getCurrentLocale() }}/books/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
+                                }
+                                var booksList = strCheckBox+"<td><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></td><td><p>Title: " + data['data'][i]['title'] + "</p><p>{{trans('messages.author')}}: " + data['data'][i]['author'] + "</p>" + strCategory + "<p>{{trans('messages.finished_reading')}}: " + data['data'][i]['date'] + "</p><p>{{trans('messages.published_year')}}: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td> <p>{{trans('messages.description')}}: <br>" + data['data'][i]['description'] + "</p>"+strEditButton+"</td>";
                                 $("<tr id='book_line_full_" + data['data'][i]['id'] + "'>").html(booksList + "</tr>").appendTo('#books_block_full');
                             }
                             arrFilteredItems.push(data['data'][i]['id']);
@@ -641,6 +664,11 @@
            DeleteMultipleItems(arrFilteredItems);
        });
 
+        //-- Unselect all Items
+        $('#uncheck_all').on('click', function () {
+            UncheckAll();
+        });
+
         function DeleteMultipleItems(arrFiltered) {
             var arrItemsIds = ReturnStorageSessionArray(sessionStorage.getItem('objSelectedBooksIds_' + '{{Auth::id()}}'));
             if (arrFiltered.length > 0) {
@@ -656,7 +684,6 @@
 
             }
 
-            //console.log(arrItemsIds);
             var blnConfirm = confirm("{{trans('messages.delete_selected_items')}}?");
             if (blnConfirm == true) {
                 $.ajax({
@@ -691,6 +718,18 @@
             var strStorage = (arrStorage) ? arrStorage : null;
             var arrStorageResult = strStorage ? strStorage.split(",") : 0;
             return arrStorageResult;
+        }
+
+
+        //-- Uncheck all selected elements
+        function UncheckAll() {
+            var blnConfirm = confirm("{{trans('messages.uncheck_all_items')}}?");
+            if (blnConfirm == true) {
+                //-- Truncate JS session of books IDs for this user
+                sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
+                $('#actions_block').css('display', 'none');
+                $(":input[id^='select_book_']").prop('checked', false);
+            }
         }
 
     </script>
