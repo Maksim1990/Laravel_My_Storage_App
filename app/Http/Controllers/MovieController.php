@@ -63,6 +63,7 @@ class MovieController extends Controller
             $strUserAction = '=';
         }
 
+        $strCache=false;
         if (empty($books)) {
             if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor'])) {
                 if (!empty($filterId)) {
@@ -77,7 +78,7 @@ class MovieController extends Controller
                 Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
             }
         } else {
-            var_dump("FROM CACHE");
+            $strCache=true;
         }
 
         $title = 'All movies';
@@ -107,7 +108,7 @@ class MovieController extends Controller
             $strBooksAll=implode(",",$arrBooksAll);
         }
 
-        return view('movies.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity', 'idUser','strBooksAll'));
+        return view('movies.index', compact('title', 'books','strCache', 'arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity', 'idUser','strBooksAll'));
 
 
     }

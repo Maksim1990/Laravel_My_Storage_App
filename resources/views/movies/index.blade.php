@@ -204,8 +204,8 @@
                                     @endif
                                 </p>
                             </td>
-                            <td>
-                                <p>@lang('messages.description'): <br>{{$book->description}}</p>
+                            <td style="width: 200px;">
+                                <p>@lang('messages.description'): <br>{!! str_limit($book->description, 400) !!}</p>
                             </td>
                             <td>
                                 @if($book->user_id==Auth::id())
@@ -234,6 +234,13 @@
             @endif
         </div>
     </div>
+    @if($strCache)
+        <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1" id="cache_info">
+            <div class="alert alert-danger" role="alert">
+                <strong>ATTENTION</strong> Current content was loade from Redis cache
+            </div>
+        </div>
+    @endif
 
 
 
@@ -464,7 +471,9 @@
                                 if(onlineUserId==data['data'][i]['user_id']) {
                                     var strEditButton = "<td ><a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
                                 }
-                                var booksList = strCheckBox+"<td><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></td><td><p>Title: " + data['data'][i]['title'] + "</p><p>{{trans('messages.author')}}: " + data['data'][i]['author'] + "</p>" + strCategory + "<p>{{trans('messages.finished_reading')}}: " + data['data'][i]['date'] + "</p><p>{{trans('messages.published_year')}}: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td> <p>{{trans('messages.description')}}: <br>" + data['data'][i]['description'] + "</p>"+strEditButton+"</td>";
+                                var strDesciption=data['data'][i]['description'];
+                                if(strDesciption.length > 400) strDesciption = strDesciption.substring(0,400)+" ...";
+                                var booksList = strCheckBox+"<td><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></td><td><p>Title: " + data['data'][i]['title'] + "</p><p>{{trans('messages.author')}}: " + data['data'][i]['author'] + "</p>" + strCategory + "<p>{{trans('messages.finished_reading')}}: " + data['data'][i]['date'] + "</p><p>{{trans('messages.published_year')}}: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td style='width: 200px;'> <p>{{trans('messages.description')}}: <br>" + strDesciption + "</p>"+strEditButton+"</td>";
                                 $("<tr id='book_line_full_" + data['data'][i]['id'] + "'>").html(booksList + "</tr>").appendTo('#books_block_full');
                             }
                             arrFilteredItems.push(data['data'][i]['id']);
@@ -479,6 +488,8 @@
                         $('<tr>').html("{{trans('messages.nothing_found')}}</tr>").appendTo('#books_block');
                     }
 
+                    //-- Hide Redis cache info
+                    $("#cache_info").hide();
 
                     GetAllFoundQuantityOfItems(arrFilter, urlGetAllItemsQuantity, token, arrSortDetails);
 

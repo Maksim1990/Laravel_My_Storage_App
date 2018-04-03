@@ -71,6 +71,7 @@ class BookController extends Controller
             $strUserAction = '=';
         }
 
+        $strCache=false;
         if (empty($books)) {
             if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor'])) {
                 if (!empty($filterId)) {
@@ -85,7 +86,7 @@ class BookController extends Controller
                 Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
             }
         } else {
-            var_dump("FROM CACHE");
+            $strCache=true;
         }
 
         $title = 'All books';
@@ -115,7 +116,7 @@ class BookController extends Controller
             $strBooksAll=implode(",",$arrBooksAll);
         }
 
-        return view('books.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity', 'idUser','strBooksAll'));
+        return view('books.index', compact('title', 'books','strCache','arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity', 'idUser','strBooksAll'));
     }
 
     /**

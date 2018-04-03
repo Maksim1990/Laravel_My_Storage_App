@@ -58,7 +58,6 @@ return [
     'delete_selected_items'=>'Do you really want to delete selected item(s)',
     'delete_selected_item'=>'Do you really want to delete this item',
     'no_category'=>'No category',
-    'no_comments'=>'No comments',
     'displayed_quantity_set_to'=>'Displayed quantity of items set to',
     'displayed_list_is_changed'=>'Displayed list is successfully changed',
     'uncheck_all'=>'Uncheck All',
@@ -88,4 +87,8 @@ return [
     'search_by_books'=>'Search by books',
     'search_by_movies'=>'Search by movies',
     'sorting'=>'For sorting please click on appropriate column name',
+    'create_comment'=>'Create comment',
+    'added'=>'Added',
+    'no_comments'=>'No available comments',
+    'has_no_images'=>'Has no images yet',
 ];

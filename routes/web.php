@@ -53,9 +53,16 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::post('add_comment', 'CommentController@addComment');
 
 
-        Route::get('importExport', 'MaatwebsiteDemoController@importExport');
-        Route::get('downloadExcel/{type}', 'MaatwebsiteDemoController@downloadExcel');
-        Route::post('importExcel', 'MaatwebsiteDemoController@importExcel');
+        Route::get('import_books_main', 'MaatwebsiteDemoController@importBooksMain');
+        Route::get('import_movies_main', 'MaatwebsiteDemoController@importMoviesMain');
+        Route::get('downloadExcel_books/{type}', 'MaatwebsiteDemoController@downloadBooks');
+        Route::get('downloadExcel_movies/{type}', 'MaatwebsiteDemoController@downloadMovies');
+        Route::get('import_books', 'MaatwebsiteDemoController@importBooks');
+        Route::get('import_movies', 'MaatwebsiteDemoController@importMovies');
+        Route::get('/import_export', function () {
+            return view('import.index');
+        });
+
 
         Route::post('/filter_book_list', 'BookController@filterBookList');
         Route::post('/get_book_quantity', 'BookController@getAllBooksQuantity');
