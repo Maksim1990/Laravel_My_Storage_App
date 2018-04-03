@@ -1,13 +1,36 @@
 @extends('layouts.admin')
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-stars.css') }}">
+    <style>
+        .commentItem {
+            background-color: darkseagreen;
+            border-radius: 20px;
+            padding: 10px 5px;
+            margin-bottom: 10px;
+        }
+        .commentItem a{
+            color:white;
+        }
+
+        .commentItem:hover {
+            background-color: darkgray;
+        }
+.form-control {
+    height: 40px;
+    margin-bottom: 50px;
+}
+    </style>
+@endsection
 @section('content')
-    <p>Instant Book searching</p>
+    <div class="col-sm-8 col-sm-offset-2 col-lg-8 col-lg-offset-2 w3-center " style="padding-top: 60px;">
+    <h2 class="text-uppercase">Instant Book searching</h2>
     <ais-index app-id="{{ config('scout.algolia.id') }}"
                api-key="{{ env('ALGOLIA_SEARCH') }}"
                index-name="books">
-        <ais-input placeholder="Search by name or title..."></ais-input>
+        <ais-input class="form-control" placeholder="Search by name or title..."></ais-input>
         <ais-results>
             <template scope="{ result }">
-                <div>
+                <div class="commentItem">
 
                     @php
 
@@ -16,14 +39,14 @@
                     <h1>@{{ result.title }}</h1>
 
                     </a>
-                    <ul>
-                        <li>@{{ result.author }}</li>
-                    </ul>
+
+                        <p>@{{ result.author }}</p>
+
                 </div>
             </template>
         </ais-results>
     </ais-index>
-
+    </div>
 @endsection
 @section('scripts')
     <script src="{{asset('js/app.js')}}"></script>
