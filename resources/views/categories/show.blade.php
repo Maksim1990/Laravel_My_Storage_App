@@ -30,8 +30,8 @@
             <div>
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
-                                                              data-toggle="tab">Books</a></li>
-                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Movies</a>
+                                                              data-toggle="tab">@lang('messages.books')</a></li>
+                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">@lang('messages.movies')</a>
                     </li>
                 </ul>
 
@@ -39,13 +39,13 @@
                     <div role="tabpanel" class="tab-pane active" id="home">
                         @if(count($category->books)>0)
                             <p>
-                            <h2>All books from current category</h2>
+                            <h2><h2>@lang('messages.all_books_in_this_category')</h2></h2>
                             </p>
                             <table class="w3-table w3-striped w3-bordered w3-hoverable">
                                 <tr>
-                                    <th>Book ID</th>
-                                    <th>Author</th>
-                                    <th>Title</th>
+                                    <th>@lang_u('messages.book') ID</th>
+                                    <th>@lang_u('messages.author')</th>
+                                    <th>@lang_u('messages.title')</th>
                                 </tr>
                                 @foreach($category->books as $book)
                                     <tr>
@@ -57,19 +57,19 @@
                                 @endforeach
                             </table>
                         @else
-                            <h4>No books in this category</h4>
+                            <h4>@lang('messages.no_books_in_this_category')</h4>
                         @endif
                     </div>
                     <div role="tabpanel" class="tab-pane" id="profile">
                         @if(count($category->movies)>0)
                             <p>
-                            <h2>All movies from current category</h2>
+                            <h2>@lang('messages.all_movies_in_this_category')</h2>
                             </p>
                             <table class="w3-table w3-striped w3-bordered w3-hoverable">
                                 <tr>
-                                    <th>Book ID</th>
-                                    <th>Author</th>
-                                    <th>Title</th>
+                                    <th>@lang_u('messages.movie') ID</th>
+                                    <th>@lang_u('messages.author')</th>
+                                    <th>@lang_u('messages.title')</th>
                                 </tr>
                                 @foreach($category->movies as $movie)
                                     <tr>
@@ -82,7 +82,7 @@
                                 @endforeach
                             </table>
                         @else
-                            <h4>No movies in this category</h4>
+                            <h4>@lang('messages.no_movies_in_this_category')</h4>
                         @endif
                     </div>
                 </div>
@@ -95,8 +95,8 @@
     <div class="w3-col m4 l4 s12 w3-center">
         @if(count($category->books)>0 || count($category->movies)>0)
             <div id="info"></div>
-            <p><span style="color:#109618;"><i class="fas fa-square"></i></span> Books ({{count($category->books)}})</p>
-            <p><span style="color:#DC3912;"><i class="fas fa-square"></i></span> Movies ({{count($category->movies)}})
+            <p><span style="color:#109618;"><i class="fas fa-square"></i></span> @lang_u('messages.books') ({{count($category->books)}})</p>
+            <p><span style="color:#DC3912;"><i class="fas fa-square"></i></span> @lang_u('messages.movies') ({{count($category->movies)}})
             </p>
 
 
@@ -104,14 +104,14 @@
                 <h3>INFO</h3>
                 @if(count($category->books)>0 )
                     <div id="last_book">
-                        <p> <i class="fas fa-book"></i> Last book was added by
+                        <p> <i class="fas fa-book"></i> @lang('messages.last_book_was_added')
                             {{$lastBook->user->name}} {{$lastBook->created_at?$lastBook->created_at->diffForHumans():""}}
                         </p>
                     </div>
                 @endif
                 @if(count($category->movies)>0 )
                     <div id="last_movie">
-                        <p> <i class="fas fa-video"></i> Last movie was added by
+                        <p> <i class="fas fa-video"></i> @lang('messages.last_movie_was_added')
                             {{$lastMovie->user->name}} {{$lastMovie->created_at?$lastMovie->created_at->diffForHumans():""}}
                         </p>
                     </div>

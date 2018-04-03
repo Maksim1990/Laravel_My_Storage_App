@@ -102,4 +102,13 @@ class RatingController extends Controller
         return ["status" => true];
     }
 
+    public function myRatings($id){
+        $user=Auth::user();
+        $ratings=Rating::where('user_id',$user->id)->get();
+
+
+        $title='My ratings';
+        return view('ratings.my_ratings', compact('title', 'ratings'));
+    }
+
 }

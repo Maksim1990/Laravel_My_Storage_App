@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Category;
 use App\Http\Requests\MovieCreateRequest;
 use App\ImageMovie;
@@ -22,13 +23,14 @@ class MovieController extends Controller
      */
     public function index(Request $request,$idUser=0)
     {
+        //\Artisan::call('scout:import', ['model' => App\User::class]);
         $user = Auth::user();
         $filterTitle = $request ? $request['title'] : "";
         $filterId = $request ? $request['id'] : "";
         $filterAuthor = $request ? $request['author'] : "";
 
         $intQuantity = 10;
-        $itemLayout = false;
+        $bookLayout = false;
         $setting = Setting::where('user_id', $user->id)->first();
 
         if (isset($setting)) {
@@ -37,12 +39,9 @@ class MovieController extends Controller
             }
 
             if ($setting->movie_list === 'detail') {
-                $itemLayout = true;
+                $bookLayout = true;
             }
         }
-
-
-
 
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $arrOptions = [
@@ -52,39 +51,34 @@ class MovieController extends Controller
             'filterAuthor' => $filterAuthor,
             'currentPage' => $currentPage
         ];
-////-- Flush 'movies' key from redis cache
-//        Cache::tags('movies')->flush();
-        $items = Cache::tags(['movies'])->get('movies_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser);
+        //-- Flush 'books' key from redis cache
+      //Cache::tags('movies')->flush();
+        $books = Cache::tags(['movies'])->get('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser);
 
-
-        if(empty($idUser)){
-            $intUserId=0;
-            $strUserAction='>';
-        }else{
-            $intUserId=$idUser;
-            $strUserAction='=';
+        if (empty($idUser)) {
+            $intUserId = 0;
+            $strUserAction = '>';
+        } else {
+            $intUserId = $idUser;
+            $strUserAction = '=';
         }
 
-        if (empty($items)) {
+        if (empty($books)) {
             if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor'])) {
                 if (!empty($filterId)) {
-                    $items = Movie::where('user_id', $strUserAction,$intUserId)->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                    Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser, $items, 22 * 60);
-
+                    $books = Movie::where('user_id', Auth::id())->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
                 } else {
-                    $items = Movie::where('user_id', $strUserAction,$intUserId)->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                    Cache::tags(['movies'])->put('movies_'. $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser, $items, 22 * 60);
+                    $books = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    Movie::tags(['movies'])->put('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
                 }
             } else {
-                $items = Movie::where('user_id', $strUserAction,$intUserId)->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
-                Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'].'_'.$arrOptions['intQuantity'].'_'.$idUser, $items, 22 * 60);
-
+                $books = Movie::where('user_id', $strUserAction, $intUserId)->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
             }
-        }else{
+        } else {
             var_dump("FROM CACHE");
         }
-
-
 
         $title = 'All movies';
         $arrFilter = [
@@ -94,10 +88,27 @@ class MovieController extends Controller
         ];
 
 
-        $itemsCount = Movie::where('user_id', $strUserAction,$intUserId)->where('active', '=', '1')->orderBy('id')->get();
-        $itemsQuantity=count($itemsCount);
+        $itemsCount = Movie::where('user_id', $strUserAction, $intUserId)->where('active', '=', '1')->orderBy('id')->get();
+        $itemsQuantity = count($itemsCount);
 
-        return view('movies.index', compact('title', 'items', 'arrFilter', 'itemLayout', 'intQuantity','itemsQuantity','idUser'));
+
+        $arrBooksAll=array();
+        $strBooksAll="";
+        $booksAll = Movie::where('user_id', $user->id)->get();
+
+        if($booksAll){
+            foreach ($booksAll as $bookItem){
+                $arrBooksAll[]=$bookItem->id;
+            }
+
+        }
+
+        if(count($arrBooksAll)>0){
+            $strBooksAll=implode(",",$arrBooksAll);
+        }
+
+        return view('movies.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity', 'idUser','strBooksAll'));
+
 
     }
 
@@ -367,7 +378,31 @@ class MovieController extends Controller
     }
 
 
+    public function deleteMultipleMovies(Request $request)
+    {
+        $blnStatus = true;
+        $arrItemsIds = json_decode($request['arrItemsIds']);
 
+        for ($i = 0; $i < count($arrItemsIds); $i++) {
+
+            $book = Movie::findOrFail($arrItemsIds[$i]);
+            if (count($book->photos) > 0) {
+                foreach ($book->photos as $item) {
+                    unlink(public_path() . $item->photo->path);
+                    Photo::findOrFail($item->photo->id)->delete();
+                    ImageMovie::where('photo_id', $item->photo->id)->delete();
+                }
+            }
+
+            $book->delete();
+        }
+
+
+        //-- Flush 'books' key from redis cache
+        Cache::tags('movies')->flush();
+
+        return ["status" => $blnStatus];
+    }
 
 
 

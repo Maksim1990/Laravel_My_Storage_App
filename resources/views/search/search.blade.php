@@ -36,28 +36,28 @@
 
         <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1 w3-center search_main">
             <div class="col-sm-12 " id="search_header">
-                <h1>
+                <h1 class="text-uppercase">
                     @lang('messages.search')
                 </h1>
             </div>
 
             <div class="col-sm-3 col-sm-offset-1 search_block users">
-                <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search/users')}}">
+                <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search/users')}}" class="text-uppercase">
                     <i class="fas fa-search"></i><br>
-                    SEARCH BY USERS
+                    @lang('messages.search_by_users')
                 </a>
 
             </div>
             <div class="col-sm-3 col-sm-offset-1 search_block books">
-                <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search/books')}}">
+                <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search/books')}}" class="text-uppercase">
                     <i class="fas fa-search"></i><br>
-                    SEARCH BY BOOKS
+                    @lang('messages.search_by_books')
                 </a>
             </div>
             <div class="col-sm-3 col-sm-offset-1 search_block movies">
-                <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search/movies')}}">
+                <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search/movies')}}" class="text-uppercase">
                     <i class="fas fa-search"></i><br>
-                    SEARCH BY MOVIES
+                    @lang('messages.search_by_movies')
                 </a>
             </div>
         </div>

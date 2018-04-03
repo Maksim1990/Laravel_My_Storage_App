@@ -99,7 +99,23 @@ class BookController extends Controller
         $itemsCount = Book::where('user_id', $strUserAction, $intUserId)->where('active', '=', '1')->orderBy('id')->get();
         $itemsQuantity = count($itemsCount);
 
-        return view('books.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity', 'idUser'));
+
+        $arrBooksAll=array();
+        $strBooksAll="";
+        $booksAll = Book::where('user_id', $user->id)->get();
+
+        if($booksAll){
+            foreach ($booksAll as $bookItem){
+                $arrBooksAll[]=$bookItem->id;
+            }
+
+        }
+
+        if(count($arrBooksAll)>0){
+            $strBooksAll=implode(",",$arrBooksAll);
+        }
+
+        return view('books.index', compact('title', 'books', 'arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity', 'idUser','strBooksAll'));
     }
 
     /**

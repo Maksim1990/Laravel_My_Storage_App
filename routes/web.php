@@ -46,6 +46,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::get('/categories/{id}/{userId}', 'CategoryController@showItemsPerUser');
         Route::get('/test', 'BookController@testFunction');
         Route::get('/favorites/{id}', 'FavoriteController@myFavorites');
+        Route::get('/comments/{id}', 'CommentController@myComments');
+        Route::get('/ratings/{id}', 'RatingController@myRatings');
 
 
         Route::post('add_comment', 'CommentController@addComment');
@@ -72,7 +74,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::post('/delete_image_ajax', 'PhotoController@deleteImage');
         Route::post('/register_rating_ajax', 'RatingController@registerRating');
         Route::post('/show_tutorial_ajax', 'UserController@changeShowTutorialAction');
+
+
         Route::post('/delete_multiple_books_ajax', 'BookController@deleteMultipleBooks');
+        Route::post('/delete_multiple_movies_ajax', 'MovieController@deleteMultipleMovies');
         Route::post('/add_book_to_favorite_ajax', 'FavoriteController@addBookToFavorite');
         Route::post('/delete_books_comment_ajax', 'CommentController@deleteBookComment');
 
