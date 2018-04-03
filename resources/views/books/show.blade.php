@@ -84,7 +84,7 @@
 
 
         <div>
-            @if($book->photos)
+            @if(count($book->photos)>0)
                 <div class="col-sm-12 col-xs-12">
                     <div class="bxslider">
                         @foreach($book->photos as $item)
@@ -103,6 +103,11 @@
                         @endforeach
                     </div>
                 </div>
+                @else
+
+                <div class="col-sm-12 col-xs-12" style="margin-bottom: 80px;">
+                    <p class="w3-text-green w3-xlarge">@lang('messages.has_no_images')!</p>
+                </div>
             @endif
 
         </div>
@@ -110,9 +115,9 @@
 
         <div class="col-sm-8  col-lg-8">
             <p><input class="w3-input w3-padding-16 w3-border" id="input_comment" type="text"
-                      placeholder="Create comment"
+                      placeholder="@lang('messages.create_comment')"
                       onkeyup="return activateButton(event)">
-                <button class="btn btn-success" disabled="true" id="add_comment">ADD</button>
+                <button class="btn btn-success" disabled="true" id="add_comment">@lang_u('messages.add')</button>
             </p>
 
             <div id="commentBlock" class="col-sm-12 col-lg-12">
@@ -131,7 +136,7 @@
                             </div>
                             <div class="col-sm-7 col-lg-7">
 
-                                <p>Added: {{$comment->created_at->diffForHumans()}}</p>
+                                <p>@lang('messages.added'): {{$comment->created_at->diffForHumans()}}</p>
                                 <p>{{$comment->comment}}</p>
                             </div>
                             @if($comment->user->id == Auth::id())
@@ -144,7 +149,7 @@
                         </div>
                     @endforeach
                 @else
-                    <p id="no_comments">No available comments</p>
+                    <p id="no_comments">@lang('messages.no_comments')</p>
                 @endif
 
             </div>

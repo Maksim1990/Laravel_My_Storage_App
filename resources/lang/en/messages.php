@@ -54,4 +54,8 @@ return [
     'items_found'=>'Items found',
     'delete_selected_items'=>'Are you really want to delete selected item(s)',
     'delete_selected_item'=>'Are you really want to delete this item',
+    'create_comment'=>'Create comment',
+    'added'=>'Added',
+    'no_comments'=>'No available comments',
+    'has_no_images'=>'Has no images yet',
 ];
