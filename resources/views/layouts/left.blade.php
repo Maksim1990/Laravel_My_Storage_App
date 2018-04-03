@@ -46,7 +46,7 @@
                 <div class="w3-container" style="padding-top: 0;padding-bottom: 0;margin-top: -25px;">
                     <div id="plan_left" class="w3-center w3-text-yellow">
                         <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/plans')}}" class="w3-text-yellow" style="border:none;">
-                            @lang('messages.your_current_plan_is') FREE</a>
+                            @lang('messages.your_current_plan_is') <span class="text-uppercase">{{Auth::user()->setting->subscription_plan}}</span></a>
                     </div>
                 </div>
             </a>
