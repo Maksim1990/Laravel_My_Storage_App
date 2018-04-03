@@ -23,6 +23,7 @@ class CreateSettingsTable extends Migration
             $table->string('event_list')->nullable();
             $table->integer('event_list_quantity')->nullable();
             $table->string('show_tutorial')->nullable();
+            $table->string('subscription_plan')->nullable();
             $table->timestamps();
         });
     }

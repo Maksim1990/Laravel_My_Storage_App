@@ -26,7 +26,7 @@
                     </tr>
 
                     @foreach($comments as $comment)
-                        <tr id="comment_{{$comment->id}}">
+                        <tr id="commentItem_{{$comment->id}}">
                             <td>{!! str_limit($comment->comment, 400) !!}</td>
                             @if($comment->module_id==1)
                                 @php $strModule="Books" @endphp
@@ -36,7 +36,7 @@
                             <td>{{$strModule}}</td>
                             <td>{{$comment->item_id}}</td>
                             <td>{{$comment->created_at->diffForHumans()}}</td>
-                            <td class="w3-center"><a href="#" class="remove" data-id="{{$comment->id}}" data-module="{{$comment->id}}"> <i class="fas fa-trash-alt w3-text-red" ></i></a></td>
+                            <td class="w3-center"><a href="#" class="remove"  data-id="{{$comment->id}}"> <i class="fas fa-trash-alt w3-text-red" ></i></a></td>
                         </tr>
                     @endforeach
                 </table>
@@ -44,13 +44,47 @@
                 <h3>@lang('messages.no_comments')</h3>
             @endif
         </div>
+        <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="w3-center" id="pagination">
+                    {!! $comments->links() !!}
+            </div>
+        </div>
 
     </div>
-
-
-
-
 @stop
 @section('scripts')
+    <script>
+        //-- Add to favorite functionality
+        var token = '{{\Illuminate\Support\Facades\Session::token()}}';
+        $(".remove").click(function () {
+            var comment_id = $(this).data('id');
+            var urlDeleteComment = '{{ URL::to('delete_books_comment_ajax') }}';
+            var blnConfirm = confirm("{{trans('messages.delete_selected_item')}}?");
+            if (blnConfirm == true) {
+                $.ajax({
+                    method: 'POST',
+                    url: urlDeleteComment,
+                    dataType: "json",
+                    data: {
+                        comment_id: comment_id,
+                        _token: token
+                    },
+                    async: true,
+                    success: function (data) {
+                        if (data['status']) {
 
+                            $('#commentItem_' + comment_id).hide();
+                            new Noty({
+                                type: 'success',
+                                layout: 'topRight',
+                                text: 'Your comment was removed!'
+                            }).show();
+
+                        }
+                    }
+                });
+            }
+        });
+
+    </script>
 @endsection

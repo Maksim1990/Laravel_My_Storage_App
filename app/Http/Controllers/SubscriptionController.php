@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Setting;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Illuminate\Support\Facades\Cache;
 
 class SubscriptionController extends Controller
 {
@@ -42,9 +45,9 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
+        $locale = LaravelLocalization::getCurrentLocale();
         $user = User::find(Auth::id());
         $stripe_plan = $request['stripe_plan'];
-
         $creditCardToken = $request->stripeToken;
         if (!$user->subscription('main')) {
             if (!empty($stripe_plan)) {
@@ -56,10 +59,27 @@ class SubscriptionController extends Controller
 
                     ]);
 
-                return view('subscription.index', compact('user'));
+                //-- Get user's settings from cache or from DB
+                $setting = Cache::remember('settings_' . $user->id, 22 * 60, function () use ($user) {
+                    return Setting::where('user_id', $user->id)->first();
+                });
+
+                //-- Flush 'books' key from redis cache
+                Cache::forget('settings_' . $user->id);
+
+                if (isset($setting)) {
+                    $setting->subscription_plan = $stripe_plan;
+                    $setting->save();
+                } else {
+                    $input['user_id'] = Auth::id();
+                    $input['subscription_plan'] = $stripe_plan;
+                    Setting::create($input);
+                }
+
+                return redirect($locale.'/home');
             }
         } else {
-            return view('subscription.index', compact('user'));
+            return back();
         }
 //        if (!$user->subscription('main')) {
 //

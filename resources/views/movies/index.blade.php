@@ -236,7 +236,7 @@
     </div>
     @if($strCache)
         <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1" id="cache_info">
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-success" role="alert">
                 <strong>ATTENTION</strong> Current content was loade from Redis cache
             </div>
         </div>

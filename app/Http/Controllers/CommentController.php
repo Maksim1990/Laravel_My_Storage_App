@@ -111,7 +111,7 @@ class CommentController extends Controller
 
     public function myComments($id){
         $user=Auth::user();
-        $comments=Comment::where('user_id',$user->id)->get();
+        $comments=Comment::where('user_id',$user->id)->orderBy('id','DESC')->paginate(10);
 
 
         $title='My comments';

@@ -113,6 +113,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
 
 
         //-- STRIPE block
+        Route::post('/register','SubscriptionController@store');
         Route::group(['prefix'=>'subscription','middleware'=>'auth'], function (){
 
             Route::get('/',[
@@ -124,7 +125,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
             Route::get('/cancel','SubscriptionController@cancel');
             Route::get('/resume','SubscriptionController@resume');
             Route::get('/change','SubscriptionController@change');
-            Route::post('/register','SubscriptionController@store');
+
             Route::post(
                 'stripe/webhook',
                 '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook'

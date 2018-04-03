@@ -23,7 +23,7 @@ color:white;"
             <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/plans')}}"
                style="padding-top: 5px;padding-bottom: 2px" id="current_plan_link">
                 <span style="text-transform: capitalize;font-size: 12px;">@lang('messages.current_plan')</span>
-                <br><span style="color: gold;font-weight: bold;">FREE</span> </a>
+                <br><span style="color: gold;font-weight: bold;" class="text-uppercase">{{Auth::user()->setting->subscription_plan}}</span> </a>
 
             <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">
                 <img style="border-radius: 20px;margin-top: -5px;" height="35"

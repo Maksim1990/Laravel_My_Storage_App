@@ -256,6 +256,7 @@ class BookController extends Controller
     public function update(BookCreateRequest $request, $id)
     {
         $book = Book::findOrFail($id);
+        $locale = LaravelLocalization::getCurrentLocale();
         $user = Auth::user();
         $photo_id = 0;
         $input = $request->all();
@@ -271,7 +272,7 @@ class BookController extends Controller
                 }
             } else {
                 Session::flash('book_change', 'Image size should not exceed 2 MB');
-                return redirect('books/' . $id . '/edit');
+                return redirect($locale.'/books/' . $id . '/edit');
             }
         }
         $input['user_id'] = $user->id;
@@ -293,7 +294,7 @@ class BookController extends Controller
         }
 
         Session::flash('book_change', 'New book has been successfully updated!');
-        return redirect('books/' . $book->id);
+        return redirect($locale.'/books/' . $book->id);
 
     }
 

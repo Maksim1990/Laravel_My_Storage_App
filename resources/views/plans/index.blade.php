@@ -74,7 +74,7 @@
 @endsection
 @section('content')
 
-    <div class="col-sm-12 col-lg-12 w3-center ">
+    <div class="col-sm-8 col-sm-offset-2 col-lg-8 col-lg-offset-2 w3-center ">
         <h2 style="text-align:center">@lang('messages.choose_appropriate_plan')</h2>
         <p style="text-align:center">@lang('messages.plan_can_easily_be_changes')!</p>
 
@@ -86,19 +86,29 @@
                 <li>10 Emails</li>
                 <li>10 Domains</li>
                 <li>1GB Bandwidth</li>
-                <li class="grey"><a href="#" class="button">Sign Up</a></li>
+                <li class="grey">
+                    {!! Form::open(['method'=>'POST','action'=>'SubscriptionController@store', 'files'=>true])!!}
+                    {!! Form::hidden('stripe_plan', "free") !!}
+                    <input type="submit" class="submit button" value="Sign Up">
+                {!! Form::close() !!}
+                </li>
             </ul>
         </div>
 
         <div class="columns">
             <ul class="price">
-                <li class="header" style="background-color:#4CAF50">Pro</li>
+                <li class="header" style="background-color:#4CAF50">Basic</li>
                 <li class="grey">$ 7 / month</li>
                 <li>25GB Storage</li>
                 <li>25 Emails</li>
                 <li>25 Domains</li>
                 <li>2GB Bandwidth</li>
-                <li class="grey"><a href="#" class="button">Sign Up</a></li>
+                <li class="grey">
+                    {!! Form::open(['method'=>'POST','action'=>'SubscriptionController@store', 'files'=>true])!!}
+                    {!! Form::hidden('stripe_plan', "basic") !!}
+                    <input type="submit" class="submit button" value="Sign Up">
+                    {!! Form::close() !!}
+                </li>
             </ul>
         </div>
 
@@ -110,10 +120,20 @@
                 <li>50 Emails</li>
                 <li>50 Domains</li>
                 <li>5GB Bandwidth</li>
-                <li class="grey"><a href="#" class="button">Sign Up</a></li>
+                <li class="grey">
+                    {!! Form::open(['method'=>'POST','action'=>'SubscriptionController@store', 'files'=>true])!!}
+                    {!! Form::hidden('stripe_plan', "business") !!}
+                    <input type="submit" class="submit button" value="Sign Up">
+                    {!! Form::close() !!}
+                </li>
             </ul>
         </div>
 
+    </div>
+    <div class="col-sm-8 col-sm-offset-2 col-lg-8 col-lg-offset-2 w3-center ">
+        <div class="alert alert-info" role="alert">
+            <strong>INFO!</strong> Implemented subscription is based on <b>Laravel Cachier</b> and <b>Stripe</b> functionality
+        </div>
     </div>
 
 
