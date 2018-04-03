@@ -87,4 +87,5 @@ return [
     'search_by_users'=>'Search by users',
     'search_by_books'=>'Search by books',
     'search_by_movies'=>'Search by movies',
+    'sorting'=>'For sorting please click on appropriate column name',
 ];

@@ -79,7 +79,7 @@
 
         </div>
         <table class="w3-table-all w3-bordered w3-hoverable">
-            <tr>
+            <tr data-toggle="tooltip" title="@lang('messages.sorting')" data-placement="left">
                 @if($idUser>0 && $idUser==Auth::id())
                     <th>
                     </th>
@@ -774,5 +774,9 @@
         }
 
     </script>
-
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 @endsection
