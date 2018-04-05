@@ -108,6 +108,7 @@ return [
     'role'=>'Role',
     'user_name'=>'User name',
     'update_user'=>'Update User',
+    'update_image'=>'Update image',
     'delete_user'=>'Delete User',
     'user_email'=>'User email',
     'birthdate'=>'Birthdate',
@@ -118,4 +119,5 @@ return [
     'male'=>'Male',
     'female'=>'Female',
     'lastname'=>'Lastname',
+    'want_assign'=>'Do you want to assign this?',
 ];

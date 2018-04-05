@@ -22,6 +22,7 @@ class CreateBooksTable extends Migration
             $table->string('author')->nullable()->default('none');
             $table->string('date')->nullable();
             $table->integer('photo_id')->nullable();
+            $table->text('photo_path')->nullable();
             $table->string('publish_year')->nullable();
             $table->integer('active')->default(0);
             $table->timestamps();

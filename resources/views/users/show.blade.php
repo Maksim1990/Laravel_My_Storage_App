@@ -16,7 +16,7 @@
         <div class="col-sm-12 col-xs-12" style="margin-bottom: 30px;">
             <div class="col-sm-4 col-xs-12">
                 <div class="w3-center">
-                    @if(!empty($user->profile->photo_id))
+                    @if(!empty($user->profile->photo_id) && !empty($user->profile->photo->path))
                         <img height="200" style="border-radius: 20px;"
                              src="{{$user->profile->photo->path }}"
                              class="image-responsive" alt="">
@@ -24,7 +24,7 @@
                         <div style='border-radius: 20px;'>
                             <p  id='add_image' class='w3-hover-opacity' style="height:200px;background-repeat: no-repeat;background-size: 250px 250px;background-image:url('{{"/images/includes/noImage.jpg"}}')">
                                 @if($user->id==Auth::id() || Auth::user()->role_id=='1')
-                                    <a href="{{ URL::to('users/' . $user->id.'/edit' ) }}" style='height:100%;text-decoration:none;'>
+                                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.Auth::id()."/edit/image")}}" style='height:100%;text-decoration:none;'>
                                         <i id='add_image_icon' style='position:relative;top:100px;display:none;font-size:30px;color:gray;' class=" fa fa-plus-circle" aria-hidden="true"></i></a>
                                 @endif
                             </p>

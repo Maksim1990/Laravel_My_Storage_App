@@ -363,6 +363,49 @@ class UserController extends Controller
     }
 
 
+    public function updateImage(Request $request, $id)
+    {
+
+        $user = User::findOrFail($id);
+        $locale = LaravelLocalization::getCurrentLocale();
+        $profile = Profile::where('user_id', $user->id)->get()->first();
+
+        $file = $request->file('photo_id');
+        if ($file) {
+            if (!($file->getClientSize() > 2100000)) {
+
+                if ($file = $request->file('photo_id')) {
+
+                    //-- Delete old image if it exist
+                    if ($user->profile->photo_id) {
+                        unlink(public_path() . $user->profile->photo->path);
+                        $photo_user = Photo::findOrFail($user->profile->photo->id);
+                        if ($photo_user) {
+                            $photo_user->delete();
+                        }
+                    }
+                    $name = time() . "_" . $file->getClientOriginalName();
+                    $file->move('images', $name);
+                    $photo = Photo::create(['path' => $name, 'user_id' => $user->id, 'module_id' => 3]);
+                    $photo_id = $photo->id;
+
+
+                    //-- Update photo ID in profile
+                    $profile->update([
+                        'photo_id'=>(!empty($photo_id))?$photo_id:$profile->photo_id
+                    ]);
+
+                    Session::flash('user_change', 'The user has been successfully edited!');
+                    return redirect($locale . '/users/' . $user->id);
+                }
+            } else {
+                Session::flash('user_change', 'Image size should not exceed 2 MB');
+                return redirect($locale . '/users/' . $id . '/edit/image');
+            }
+        }
+
+    }
+
 
 
 

@@ -28,6 +28,12 @@
                api-key="{{ env('ALGOLIA_SEARCH') }}"
                index-name="movies">
         <ais-input class="form-control" placeholder="Search by title, description or author..."></ais-input>
+        <div class="alert alert-success" role="alert" style="text-align:right;height: 100%; margin-bottom: 20px;">
+            <span style="margin-right: 10%;font-size: 16px;">Searching functionality is realized by implementing <strong>Laravel Scout</strong> & <strong>Algolia</strong></span>
+            <img  height="55"
+                  src="{{"/images/includes/algolia-mark-blue.png"}}"
+                  alt="">
+        </div>
         <ais-results>
             <template scope="{ result }">
                 <div class="commentItem">

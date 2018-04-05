@@ -247,6 +247,23 @@ class BookController extends Controller
         return view('books.edit', compact('book', 'title', 'categories'));
     }
 
+
+
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editImage($id)
+    {
+       $book = Book::findOrFail($id);
+        $title = "Assign image";
+        return view('books.assignImage', compact('book', 'title'));
+    }
+
+
     /**
      * Update the specified resource in storage.
      *
@@ -288,6 +305,58 @@ class BookController extends Controller
         if (file_exists("files/tsv/user_books/user_" . $user->id . ".tsv")) {
             unlink("files/tsv/user_books/user_" . $user->id . ".tsv");
         }
+
+
+        if ($photo_id > 0) {
+            ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
+        }
+
+        Session::flash('book_change', 'New book has been successfully updated!');
+        return redirect($locale.'/books/' . $book->id);
+
+    }
+
+
+
+
+    public function assignImage(Request $request, $id)
+    {
+
+        $book = Book::findOrFail($id);
+        $locale = LaravelLocalization::getCurrentLocale();
+        $user = Auth::user();
+        $photo_id = 0;
+        $photo_chosen = $request['photo_chosen'];
+        $photo_path = '/images/'.$request['photo_path'];
+        $file = $request->file('photo_id');
+        if ($file) {
+            if (!($file->getClientSize() > 2100000)) {
+
+                if ($file = $request->file('photo_id')) {
+                    $name = time() . "_" . $file->getClientOriginalName();
+                    $file->move('images', $name);
+                    $photo = Photo::create(['path' => $name, 'user_id' => $user->id, 'module_id' => 1]);
+                    $photo_id = $photo->id;
+                    $photo_path = '/images/'.$name;
+                    $book->update(['photo_id'=>$photo_id,'photo_path'=>$photo_path]);
+
+                }
+            } else {
+                Session::flash('book_change', 'Image size should not exceed 2 MB');
+                return redirect($locale.'/books/' . $id . '/edit');
+            }
+        }else{
+            if($photo_chosen>0){
+                $photo_id = $photo_chosen;
+                $book->update(['photo_id'=>$photo_id,'photo_path'=>$photo_path]);
+            }
+
+        }
+
+        Session::flash('book_change', 'Book image has been successfully assigned!');
+        //-- Flush 'books' key from redis cache
+        Cache::tags('books')->flush();
+
 
 
         if ($photo_id > 0) {
@@ -481,6 +550,21 @@ class BookController extends Controller
 
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
+
+        return ["status" => $blnStatus];
+    }
+
+
+    public function assignImageAjax(Request $request)
+    {
+        $blnStatus = true;
+        $photo_id = $request['image_id'];
+        $photo_path = $request['image_path'];
+        $book_id = $request['book_id'];
+        $book = Book::findOrFail($book_id);
+
+        $book->update(['photo_id'=>$photo_id,'photo_path'=>$photo_path]);
+
 
         return ["status" => $blnStatus];
     }

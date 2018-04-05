@@ -158,9 +158,10 @@
                                 @foreach($book->photos as $item)
 
                                     @if($countMain<1)
-                                        <td>
-                                            <img style="border-radius: 30px;" width="160" height="160"
-                                                 src="{{asset($item->photo->path)}}" alt=""></td>
+                                            <td>
+                                                <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/movies/'.$book->id)}}">
+                                                    <img style="border-radius: 30px;" width="160" height="160"
+                                                         src="{{asset('images/includes/noImage.jpg')}}" alt=""></a></td>
                                         @php
                                             $countMain++;
                                         @endphp
@@ -168,11 +169,16 @@
                                 @endforeach
                             @else
                                 <td>
+                                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/movies/'.$book->id)}}">
                                     <img style="border-radius: 30px;" width="160" height="160"
-                                         src="{{asset('images/includes/noImage.jpg')}}" alt=""></td>
+                                         src="{{asset('images/includes/noImage.jpg')}}" alt=""></a></td>
                             @endif
                             <td>
-                                <p>@lang('messages.title'): {{$book->title}}</p>
+                                <p>@lang('messages.title'):
+                                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/movies/'.$book->id)}}">
+                                        {{$book->title}}
+                                    </a>
+                                </p>
                                 <p>@lang('messages.author'): {{$book->author}}</p>
                                 <p>@lang('messages.category'): {{$book->category_id!=0?$book->category->name:trans('messages.no_category')}}</p>
                                 <p>@lang('messages.finished_reading'): {{$book->date}}</p>
@@ -473,7 +479,7 @@
                                 }
                                 var strDesciption=data['data'][i]['description'];
                                 if(strDesciption.length > 400) strDesciption = strDesciption.substring(0,400)+" ...";
-                                var booksList = strCheckBox+"<td><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></td><td><p>Title: " + data['data'][i]['title'] + "</p><p>{{trans('messages.author')}}: " + data['data'][i]['author'] + "</p>" + strCategory + "<p>{{trans('messages.finished_reading')}}: " + data['data'][i]['date'] + "</p><p>{{trans('messages.published_year')}}: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td style='width: 200px;'> <p>{{trans('messages.description')}}: <br>" + strDesciption + "</p>"+strEditButton+"</td>";
+                                var booksList = strCheckBox+"<td><a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "'><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></a></td><td><p>{{trans('messages.title')}}: <a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></p><p>{{trans('messages.author')}}: " + data['data'][i]['author'] + "</p>" + strCategory + "<p>{{trans('messages.finished_reading')}}: " + data['data'][i]['date'] + "</p><p>{{trans('messages.published_year')}}: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td style='width: 200px;'> <p>{{trans('messages.description')}}: <br>" + strDesciption + "</p>"+strEditButton+"</td>";
                                 $("<tr id='book_line_full_" + data['data'][i]['id'] + "'>").html(booksList + "</tr>").appendTo('#books_block_full');
                             }
                             arrFilteredItems.push(data['data'][i]['id']);

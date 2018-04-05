@@ -2,23 +2,21 @@
 @section ('content')
     <div>
         <div class="col-sm-5 col-xs-12">
-            <div class="col-sm-6">
-                {{ Form::model($user, ['method' =>'PATCH' , 'action' => ['UserController@updatePassword',$user->id],'files'=>true])}}
+            <div class="col-sm-3">
+                <img height="200"
+                     src="{{(!empty($user->profile->photo_id) && !empty($user->profile->photo->path)) ? $user->profile->photo->path :"/images/includes/noImage.jpg"}}"
+                     class="image-responsive" alt="">
+            </div>
+        </div>
+        <div class="col-sm-5  col-xs-12">
+            <div class="col-sm-6" style="padding-top:50px;">
+                {{ Form::model($user, ['method' =>'PATCH' , 'action' => ['UserController@updateImage',$user->id],'files'=>true])}}
 
                 <div class="group-form">
-                    {!! Form::label('password',trans('messages.old_password').':') !!}
-                    {!! Form::password('old_password', ['class'=>'form-control']) !!}
+                    {!! Form::label('photo_id',trans('messages.photo').':') !!}
+                    {!! Form::file('photo_id') !!}
                 </div>
-                <div class="group-form">
-                    {!! Form::label('password',trans('messages.new_password').':') !!}
-                    {!! Form::password('password', ['class'=>'form-control']) !!}
-                </div>
-                <div class="group-form">
-                    {!! Form::label('password',trans('messages.repeat_new_password').':') !!}
-                    {!! Form::password('password_2', ['class'=>'form-control']) !!}
-                </div>
-                <br>
-                {!! Form::submit(trans('messages.update_password'),['class'=>'btn btn-warning']) !!}
+                {!! Form::submit(trans('messages.update_image'),['class'=>'btn btn-warning']) !!}
                 {!! Form::close() !!}
             </div>
             <div class="col-sm-12">

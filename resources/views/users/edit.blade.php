@@ -5,7 +5,7 @@
             <p>Edit User</p>
             <div class="col-sm-3">
                 <img height="200"
-                     src="{{!empty($user->profile->photo_id) ? $user->profile->photo->path :"/images/includes/noImage.jpg"}}"
+                     src="{{(!empty($user->profile->photo_id) && !empty($user->profile->photo->path)) ? $user->profile->photo->path :"/images/includes/noImage.jpg"}}"
                      class="image-responsive" alt="">
             </div>
         </div>
