@@ -1,5 +1,5 @@
 <a href="#head" data-step="4" data-intro="Use bottom right icon for instant support access" data-position="top"><img
-            src="http://placehold.it/200x100" id="fixedbutton"></a>
+            src="{{asset('images/includes/for_developers.png')}}" width="65" id="fixedbutton" data-toggle="tooltip" title="Information for developers" data-placement="left"></a>
 
 {{--Check if user choose some action previously for tutorial showing--}}
 @if(empty(Auth::user()->setting->show_tutorial))
@@ -180,6 +180,12 @@
             });
         }
 
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
 
