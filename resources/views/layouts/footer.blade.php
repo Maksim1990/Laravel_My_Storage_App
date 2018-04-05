@@ -1,4 +1,4 @@
-<a href="#head" data-step="4" data-intro="Use bottom right icon for instant support access" data-position="top"><img
+<a href="#head" onclick="document.getElementById('id02').style.display='block'" data-step="4" data-intro="Use bottom right icon for instant support access" data-position="top"><img
             src="{{asset('images/includes/for_developers.png')}}" width="65" id="fixedbutton" data-toggle="tooltip" title="Information for developers" data-placement="left"></a>
 
 {{--Check if user choose some action previously for tutorial showing--}}
@@ -80,20 +80,6 @@
         }
     });
 
-    openMail("Borge")
-    function openMail(personName) {
-        var i;
-        var x = document.getElementsByClassName("person");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-        }
-        x = document.getElementsByClassName("test");
-        for (i = 0; i < x.length; i++) {
-            x[i].className = x[i].className.replace(" w3-light-grey", "");
-        }
-        document.getElementById(personName).style.display = "block";
-        event.currentTarget.className += " w3-light-grey";
-    }
 </script>
 
 <script>
