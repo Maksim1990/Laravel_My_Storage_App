@@ -259,6 +259,21 @@ class UserController extends Controller
 
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editImage($id)
+    {
+        $user = User::findOrFail($id);
+        $profile = Profile::where('user_id', $user->id)->get()->first();
+        $title = "Edit " . $user->name . " profile";
+        return view('users.editImage', compact('profile', 'user', 'title'));
+    }
+
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request

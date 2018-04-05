@@ -75,6 +75,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
 
         Route::get('/users/{id}/edit/profile', 'ProfileController@editProfile');
         Route::get('/users/{id}/edit/password', 'UserController@editPassword');
+        Route::get('/users/{id}/edit/image', 'UserController@editImage');
         Route::patch('/users/update/password/{id}','UserController@updatePassword');
 
 

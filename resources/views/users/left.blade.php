@@ -1,7 +1,7 @@
 <div class="w3-center " id="user_left">
 
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit")}}">@lang('messages.edit_profile_data')</a></p>
-    <p><a href="#">Change profile image</a></p>
+    <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit/image")}}">Change profile image</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit/profile")}}">@lang('messages.edit_profile_data')</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit/password")}}">@lang('messages.change_password')</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/favorites/'.$user->id)}}">@lang('messages.see_my_favorites')</a></p>

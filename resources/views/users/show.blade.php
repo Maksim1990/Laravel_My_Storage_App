@@ -15,9 +15,27 @@
     <div class="col-sm-10 col-xs-10 " id="main_profile_block">
         <div class="col-sm-12 col-xs-12" style="margin-bottom: 30px;">
             <div class="col-sm-4 col-xs-12">
-                <img height="200" style="border-radius: 20px;"
-                     src="{{!empty($user->profile->photo_id) ? $user->profile->photo->path :"/images/includes/noImage.jpg"}}"
-                     class="image-responsive" alt="">
+                <div class="w3-center">
+                    @if(!empty($user->profile->photo_id))
+                        <img height="200" style="border-radius: 20px;"
+                             src="{{$user->profile->photo->path }}"
+                             class="image-responsive" alt="">
+                    @else
+                        <div style='border-radius: 20px;'>
+                            <p  id='add_image' class='w3-hover-opacity' style="height:200px;background-repeat: no-repeat;background-size: 250px 250px;background-image:url('{{"/images/includes/noImage.jpg"}}')">
+                                @if($user->id==Auth::id() || Auth::user()->role_id=='1')
+                                    <a href="{{ URL::to('users/' . $user->id.'/edit' ) }}" style='height:100%;text-decoration:none;'>
+                                        <i id='add_image_icon' style='position:relative;top:100px;display:none;font-size:30px;color:gray;' class=" fa fa-plus-circle" aria-hidden="true"></i></a>
+                                @endif
+                            </p>
+                        </div>
+                    @endif
+                </div>
+
+
+
+
+
             </div>
             <div class="col-sm-8 col-xs-12">
                 <p><h1 class="w3-text-green">{{$user->name}} {{$user->profile->lastname?$user->profile->lastname:""}}</h1></p>
@@ -226,5 +244,15 @@
             $(this).find('a').css('color','#4CAF50');
         });
 
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#add_image").hover(function(){
+                    $("#add_image_icon").css('display','inline');
+                },function(){
+                    $("#add_image_icon").css('display','none');
+                }
+            );
+        });
     </script>
 @endsection
