@@ -26,7 +26,7 @@ color:white;"
                 <br><span style="color: gold;font-weight: bold;" class="text-uppercase">{{Auth::user()->setting->subscription_plan}}</span> </a>
 
             <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">
-                <img style="border-radius: 20px;margin-top: -5px;" height="35"
+                <img style="border-radius: 20px;margin-top: -10px;" height="35"
                      src="{{Auth::user()->profile->photo ? Auth::user()->profile->photo->path :"/images/includes/no_user.png"}}"
                      alt="">
             </a>

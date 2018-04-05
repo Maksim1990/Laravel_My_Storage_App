@@ -12,27 +12,27 @@
         <div class="col-sm-5  col-xs-12">
             {{ Form::model($user, ['method' =>'PATCH' , 'action' => ['UserController@update',$user->id],'files'=>true])}}
             <div class="group-form">
-                {!! Form::label('name','User name:') !!}
+                {!! Form::label('name',trans('messages.user_name').':') !!}
                 {!! Form::text('name', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
             </div>
             <div class="group-form">
-                {!! Form::label('email','User email:') !!}
+                {!! Form::label('email',trans('messages.user_email').':') !!}
                 {!! Form::email('email', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
             </div>
             @if(Auth::user()->role_id=="1")
                 <div class="group-form">
-                    {!! Form::label('role_id','Role:') !!}
+                    {!! Form::label('role_id',trans('messages.role').':') !!}
                     {!! Form::select('role_id',$roles,null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
                 </div>
             @endif
             <div class="group-form">
-                {!! Form::label('photo_id','Photo:') !!}
+                {!! Form::label('photo_id',trans('messages.photo').':') !!}
                 {!! Form::file('photo_id') !!}
             </div>
 
             @if(Auth::user()->role_id=="1")
                 <div class="group-form">
-                    {!! Form::label('is_active','Status:') !!}
+                    {!! Form::label('is_active',trans('messages.status').':') !!}
                     {!! Form::select('is_active',[1=>"Active",0=>"Not Active"],null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
                 </div>
             @endif
@@ -40,12 +40,12 @@
 
             <br>
             {{Auth::user()->role_id}}
-            {!! Form::submit('Update User',['class'=>'btn btn-warning']) !!}
+            {!! Form::submit(trans('messages.update_user'),['class'=>'btn btn-warning']) !!}
             @if(Auth::id()==$user->id || (Auth::user()->role_id==1) || (Auth::user()->role_id==2))
                 {!! Form::close() !!}
                 {{ Form::open(['method' =>'DELETE' , 'action' => ['UserController@destroy',$user->id]])}}
 
-                {!! Form::submit('Delete User',['class'=>'btn btn-danger']) !!}
+                {!! Form::submit(trans('messages.delete_user'),['class'=>'btn btn-danger']) !!}
 
                 {!! Form::close() !!}
             @endif

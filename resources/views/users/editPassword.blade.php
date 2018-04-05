@@ -6,26 +6,25 @@
                 {{ Form::model($user, ['method' =>'PATCH' , 'action' => ['UserController@updatePassword',$user->id],'files'=>true])}}
 
                 <div class="group-form">
-                    {!! Form::label('password','Old password:') !!}
+                    {!! Form::label('password',trans('messages.old_password').':') !!}
                     {!! Form::password('old_password', ['class'=>'form-control']) !!}
                 </div>
                 <div class="group-form">
-                    {!! Form::label('password','New password:') !!}
+                    {!! Form::label('password',trans('messages.new_password').':') !!}
                     {!! Form::password('password', ['class'=>'form-control']) !!}
                 </div>
                 <div class="group-form">
-                    {!! Form::label('password','Repeat new password:') !!}
+                    {!! Form::label('password',trans('messages.repeat_new_password').':') !!}
                     {!! Form::password('password_2', ['class'=>'form-control']) !!}
                 </div>
                 <br>
-                {!! Form::submit('Update password',['class'=>'btn btn-warning']) !!}
+                {!! Form::submit(trans('messages.update_password'),['class'=>'btn btn-warning']) !!}
                 {!! Form::close() !!}
             </div>
             <div class="col-sm-12">
                 @include('includes.formErrors')
             </div>
         </div>
-
     </div>
 
 @endsection

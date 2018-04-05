@@ -20,52 +20,52 @@
             </div>
 
             <div class="group-form">
-                {!! Form::label('birthdate','Birthdate:') !!}
+                {!! Form::label('birthdate',trans('messages.birthdate').':') !!}
                 {!!  Form::text('birthdate', null, array('id' => 'datepicker')) !!}
             </div>
 
             <div class="group-form">
-                {!! Form::label('role_id','Role:') !!}
+                {!! Form::label('role_id',trans('messages.role').':') !!}
                 {!! Form::select('role_id', [""=>"Choose Option"]+$roles,null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
             </div>
 
             <div class="group-form">
-                {!! Form::label('email','User email:') !!}
+                {!! Form::label('email',trans('messages.user_email').':') !!}
                 {!! Form::email('email', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
             </div>
 
             <div class="group-form">
-                {!! Form::label('password','Password:') !!}
+                {!! Form::label('password',trans('messages.password').':') !!}
                 {!! Form::password('password', ['class'=>'form-control']) !!}
             </div>
 
             <div class="group-form">
-                {!! Form::label('status','Status:') !!}
+                {!! Form::label('status',trans('messages.status').':') !!}
                 {!! Form::text('status', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
             </div>
 
             <div class="group-form">
-                {!! Form::label('country','Country:') !!}
+                {!! Form::label('country',trans('messages.country').':') !!}
                 {!! Form::text('country', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
             </div>
 
             <div class="group-form">
-                {!! Form::label('city','City:') !!}
+                {!! Form::label('city',trans('messages.city').':') !!}
                 {!! Form::text('city', null, ['class'=>'w3-input w3-hover-light-grey w3-border']) !!}
             </div>
 
             <div class="group-form">
-                {!! Form::label('user_gender','Gender:') !!}
-                <br>{!! Form::radio('user_gender', 'M', true); !!} Male <br>
-                {!! Form::radio('user_gender', 'F'); !!} Female
+                {!! Form::label('user_gender',trans('messages.gender').':') !!}
+                <br>{!! Form::radio('user_gender', 'M', true) !!} @lang('messages.male') <br>
+                {!! Form::radio('user_gender', 'F') !!} @lang('messages.female')
             </div>
 
             <div class="group-form">
-                {!! Form::label('photo_id','Photo:') !!}
+                {!! Form::label('photo_id',trans('messages.photo').':') !!}
                 {!! Form::file('photo_id') !!}
             </div>
             <br/><br/>
-            {!! Form::submit('Add',['class'=>'btn btn-warning']) !!}
+            {!! Form::submit(trans('messages.create'),['class'=>'btn btn-warning']) !!}
 
             {!! Form::close() !!}
         </div>

@@ -35,11 +35,9 @@
     </div>
 </div>
 <div id="books_simple_block" class="col-sm-12 col-xs-12" style="display: none;">
-    hhh
-
         @if(count($user->books)>0)
             @foreach($user->books as $book)
-            <div class="col-sm-4 col-xs-4 w3-center" id="simple_image">
+            <div class="col-sm-6 col-md-4 col-xs-12 w3-center" id="simple_image">
                     @if(count($book->photos)>0)
                         @php $countImage=0; @endphp
                         @foreach($book->photos as $key=>$item)

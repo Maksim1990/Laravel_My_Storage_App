@@ -9,7 +9,7 @@
     @include('users.style')
 @endsection
 @section('content')
-    <div class="col-sm-2 col-lg-2">
+    <div class="hidden-sm col-lg-2 hidden-xs hidden-md">
         @include('users.left')
     </div>
     <div class="col-sm-10 col-xs-10 " id="main_profile_block">
