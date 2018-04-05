@@ -28,9 +28,9 @@
 
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
-                                                          data-toggle="tab">Books</a></li>
+                                                          data-toggle="tab">@lang_u('messages.books')</a></li>
                 <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
-                                           data-toggle="tab">Movies</a>
+                                           data-toggle="tab">@lang_u('messages.movies')</a>
                 </li>
             </ul>
             <div class="tab-content">

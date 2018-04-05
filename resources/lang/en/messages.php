@@ -91,4 +91,13 @@ return [
     'added'=>'Added',
     'no_comments'=>'No available comments',
     'has_no_images'=>'Has no images yet',
+    'see_my_favorites'=>'See my favorites',
+    'votes'=>'votes',
+    'statistics'=>'Statistics',
+    'welcome_to_my'=>'Welcome to My Storage APP',
+    'modal_1'=>'This application allows you to save all books you have read and movies that you have watched',
+    'modal_2'=>'You can track all your items, easily navigate, filter or sort in the big range of your data and as well in the data of other users',
+    'modal_3'=>'Easily import or export your items in appropriate format',
+    'modal_4'=>'Add items to your favorite list and share also your opinions about it',
+    'modal_5'=>'It has never been so easy as now to keep all your data and good memories in one place',
 ];

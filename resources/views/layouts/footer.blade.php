@@ -33,13 +33,27 @@
 
     function myFunc(id) {
         var x = document.getElementById(id);
+
+        //-- Close all other menu links
+        var arrLinks=['Link_block_1','Link_block_2','Link_block_3','Link_block_4'];
+        var index = arrLinks.indexOf(id);
+        if (index >= 0) {
+            arrLinks.splice( index, 1 );
+        }
+        for(var i=0;i<arrLinks.length;i++){
+         $('#'+arrLinks[i]).removeClass("w3-show");
+        }
+
+
+        $('#Link1,#Link2, #Link3,#Link4').removeClass("w3-green");
+
         if (x.className.indexOf("w3-show") == -1) {
             x.className += " w3-show";
-            x.previousElementSibling.className += " w3-red";
+            x.previousElementSibling.className += " w3-green";
         } else {
             x.className = x.className.replace(" w3-show", "");
             x.previousElementSibling.className =
-                x.previousElementSibling.className.replace(" w3-red", "");
+                x.previousElementSibling.className.replace(" w3-green", "");
         }
     }
 

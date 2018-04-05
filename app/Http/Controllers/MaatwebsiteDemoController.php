@@ -74,6 +74,7 @@ class MaatwebsiteDemoController extends Controller
                         $input['description'] = !empty($value->description)?$value->description:"none";
                         $input['publish_year'] = !empty($value->publish_year)?$value->publish_year:"";
                         $input['user_id'] = Auth::id();
+                        $input['category_id'] = 18;
                         $input['active'] = 1;
                         $intImported++;
                     } else {
@@ -113,6 +114,7 @@ class MaatwebsiteDemoController extends Controller
                         $input['description'] = !empty($value->description)?$value->description:"none";
                         $input['movie_created_year'] = !empty($value->movie_created_year)?$value->movie_created_year:"";
                         $input['user_id'] = Auth::id();
+                        $input['category_id'] = 18;
                         $input['active'] = 1;
                         $intImported++;
                     } else {

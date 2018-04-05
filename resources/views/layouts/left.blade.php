@@ -2,7 +2,8 @@
 <nav class="w3-sidebar w3-bar-block w3-collapse w3-white w3-animate-left w3-card" style="z-index:3;width:320px;"
      id="mySidebar">
 
-    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom w3-large">
+    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/')}}" class="w3-bar-item w3-button w3-border-bottom w3-large">
+
         <img data-step="1" data-intro="@lang('messages.click_on_logo')!" data-position="right"
                 src="https://www.w3schools.com/images/w3schools.png" style="width:60%;"></a>
     <a href="javascript:void(0)" onclick="w3_close()" title="@lang('messages.close_sidemenu')"
@@ -17,7 +18,7 @@
                     class="fa fa-inbox w3-margin-right"></i>@lang('messages.my_profile')<i
                     class="fa fa-caret-down w3-margin-left"></i></a>
 
-        <div id="Link_block_1" class="w3-hide w3-animate-left" >
+        <div id="Link_block_1" class="w3-hide w3-animate-left" style="padding-left: 10px;">
             <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom "
                onclick="openMail('Borge');w3_close();" id="firstTab">
                 <div class="w3-container w3-center">
@@ -54,7 +55,7 @@
 
         <a id="Link2" onclick="myFunc('Link_block_2')" href="javascript:void(0)" class="w3-bar-item w3-button"><i
                     class="fa fa-inbox w3-margin-right"></i>@lang_u('messages.books')<i class="fa fa-caret-down w3-margin-left"></i></a>
-        <div id="Link_block_2" class="w3-hide w3-animate-left">
+        <div id="Link_block_2" class="w3-hide w3-animate-left" style="padding-left: 30px;">
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/list/'.Auth::id())}}" class="w3-bar-item w3-button"><i
                         class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.my') @lang_u('messages.books')</a>
             </a> <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/list')}}" class="w3-bar-item w3-button"><i
@@ -67,7 +68,7 @@
 
         <a id="Link3" onclick="myFunc('Link_block_3')" href="javascript:void(0)" class="w3-bar-item w3-button"><i
                     class="fa fa-inbox w3-margin-right"></i>@lang_u('messages.movies')<i class="fa fa-caret-down w3-margin-left"></i></a>
-        <div id="Link_block_3" class="w3-hide w3-animate-left">
+        <div id="Link_block_3" class="w3-hide w3-animate-left" style="padding-left: 30px;">
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/movies/list/'.Auth::id())}}" class="w3-bar-item w3-button"><i
                         class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.my') @lang_u('messages.movies')</a></a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/movies/list')}}" class="w3-bar-item w3-button"><i
@@ -81,7 +82,7 @@
         <a id="Link4" onclick="myFunc('Link_block_4')" href="javascript:void(0)" class="w3-bar-item w3-button"><i
                     class="fa fa-inbox w3-margin-right"></i>@lang('messages.other_functions')<i
                     class="fa fa-caret-down w3-margin-left"></i></a>
-        <div id="Link_block_4" class="w3-hide w3-animate-left">
+        <div id="Link_block_4" class="w3-hide w3-animate-left" style="padding-left: 30px;">
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/import_export')}}" class="w3-bar-item w3-button"><i
                         class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.import_export')</a></a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search')}}" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>@lang('messages.instant_search')</a>
@@ -106,7 +107,7 @@
                         <img style="border-radius: 30px;" width="25" height="25"
                              src="{{asset('images/includes/flags/'.$strImage.'.png')}}" alt="">
                     </a>
-                    <span class="tooltiptext">{{ $properties['native'] }}</span>
+                    <span class="tooltiptext" style="width: 150px;">{{ $properties['native'] }}</span>
                 </div>
 
             @endforeach
@@ -115,7 +116,7 @@
                         <img style="border-radius: 30px; margin-left: 60px;" width="45" height="45"
                              src="{{asset('images/includes/contact-icon.png')}}" alt="">
                     </a>
-                    <span class="tooltiptext" style=" margin-left: -30px;">@lang('messages.contact_as')!</span>
+                    <span class="tooltiptext" style="width: 150px;">@lang('messages.contact_as')!</span>
                 </div>
         </div>
 

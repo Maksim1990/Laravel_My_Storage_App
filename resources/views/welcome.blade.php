@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
+    <link href="https://fonts.googleapis.com/css?family=Caveat+Brush" rel="stylesheet">
     <!-- Styles -->
     <style>
         html, body {
@@ -54,7 +54,6 @@
             vertical-align: middle;
         }
         h2{
-            font-family: arial black;
             font-size: 50px;
             color: white;
         }
@@ -66,7 +65,15 @@
             padding-top: 10%;
             color: white;
         }
+        #box1 h1, #box_desc_1 h2, #box_desc_2 h2 , #box3 h1{
+            font-size:95px;
+            text-transform: uppercase;
+            font-family: 'Caveat Brush', cursive;
 
+        }
+        #box1 h2{
+            font-size: 35px;
+        }
         #box_desc_1 p ,#box_desc_2 p {
             padding: 50px 50px;
             width: 80%;
@@ -122,10 +129,17 @@
         p.shadow:hover {
             box-shadow: 10px 10px 5px whitesmoke;
         }
-
+        .btn-success{
+            padding: 15px 15px;
+            font-size: 30px;
+            width: 200px;
+        }
         @media(max-width:1000px){
-            h1,h2, #box_desc_1, #box_desc_2{
+            #box1 h1,h1,h2, #box_desc_1, #box_desc_2{
                 font-size: 21px;
+            }
+            #box1 h1{
+                font-size: 41px;
             }
             #box_desc_1, #box_desc_2{
                 margin-bottom: 50px;
@@ -147,7 +161,7 @@
 @if (Route::has('login'))
     <div class="top-right links">
         @auth
-            <a href="{{ url('/home') }}">Home</a>
+            <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">My profile</a>
         @else
             <a href="{{ route('login') }}">Login</a>
             <a href="{{ route('register') }}">Register</a>
@@ -155,9 +169,17 @@
     </div>
 @endif
 </div>
-<div id="box1">
+<div id="box1" class="w3-center">
+    <div class="w3-container">
+        <div class="w3-display-container " style="height: 100vh;">
+            <div class="w3-display-middle">
+                <p><h1>Save all books you read and like! </h1><br></p>
+                <p><h2>Let us keep your best memories in one place</h2><br></p>
+                <a class="btn btn-success" href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">Try it now</a>
+            </div>
+        </div>
+    </div>
 
-    <h1>DAFT CREATION</h1>
 </div>
 <div id="box2">
 
@@ -192,7 +214,16 @@
     </div>
 </div>
 <div id="box3">
-    <h1>DAFT CREATION</h1>
+    <div class="w3-container">
+        <div class="w3-display-container w3-center" style="height: 100vh;">
+            <div class="w3-display-middle">
+                <p><h1>Import & export your books</h1><br></p>
+                <p><h2>It has never been so easy to do it before! </h2><br></p>
+                <a class="btn btn-success" href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">Try it now</a>
+            </div>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

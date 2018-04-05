@@ -155,6 +155,7 @@ class BookController extends Controller
 
             $input['user_id'] = $user->id;
             $input['photo_id'] = $photo_id;
+            $input['category_id'] = 18;
             $input['active'] = 1;
 
             $book = Book::create($input);
