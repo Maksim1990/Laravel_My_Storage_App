@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Profile;
+use App\Setting;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -71,6 +72,12 @@ class RegisterController extends Controller
 
         Profile::create([
             'user_id' => $user->id
+        ]);
+
+        //-- Create setting details for new user
+        Setting::create([
+            'user_id' => $user->id,
+            'subscription_plan' => 'Free'
         ]);
 
         return $user;
