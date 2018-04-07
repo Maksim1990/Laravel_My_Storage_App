@@ -23,18 +23,27 @@
                         <th>@lang('messages.module')</th>
                         <th>@lang('messages.name_of_item')</th>
                         <th>@lang('messages.date')</th>
+                        <th></th>
                     </tr>
 
                     @foreach($comments as $comment)
                         <tr id="commentItem_{{$comment->id}}">
                             <td>{!! str_limit($comment->comment, 400) !!}</td>
                             @if($comment->module_id==1)
-                                @php $strModule="Books" @endphp
+                                @php $strModule="Books";
+                                $strType="books";
+                                $commentItemTitle=$arrBooks[$comment->item_id];
+                                @endphp
                                 @elseif($comment->module_id==2)
-                                @php $strModule="Movies" @endphp
+                                @php $strModule="Movies";
+                                $strType="movies";
+                                $commentItemTitle=$arrMovies[$comment->item_id];
+                                @endphp
                                 @endif
                             <td>{{$strModule}}</td>
-                            <td>{{$comment->item_id}}</td>
+                            <td>
+                                <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/'.$strType.'/'.$comment->item_id)}}">
+                                    {{$commentItemTitle}}</a></td>
                             <td>{{$comment->created_at->diffForHumans()}}</td>
                             <td class="w3-center"><a href="#" class="remove"  data-id="{{$comment->id}}"> <i class="fas fa-trash-alt w3-text-red" ></i></a></td>
                         </tr>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Comment;
+use App\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -103,8 +105,8 @@ class CommentController extends Controller
     {
 
         $blnStatus = true;
-        $strStatus = $request['comment_id'];
-        Comment::findOrFail($strStatus)->delete();
+        $intComment = $request['comment_id'];
+        Comment::findOrFail($intComment)->delete();
         return ["status" => $blnStatus];
     }
 
@@ -112,10 +114,23 @@ class CommentController extends Controller
     public function myComments($id){
         $user=Auth::user();
         $comments=Comment::where('user_id',$user->id)->orderBy('id','DESC')->paginate(10);
+        $books=Book::all();
+        $movies=Movie::all();
+
+        $arrMovies=array();
+        foreach ($movies as $movie){
+            $arrMovies[$movie->id]=$movie->title;
+        }
+
+        $arrBooks=array();
+        foreach ($books as $book){
+            $arrBooks[(int)$book->id]=$book->title;
+        }
+
 
 
         $title='My comments';
-        return view('comments.my_comments', compact('title', 'comments'));
+        return view('comments.my_comments', compact('title', 'comments','arrBooks','arrMovies'));
     }
 
 }

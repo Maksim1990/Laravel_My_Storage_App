@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\Category;
+use App\Comment;
 use App\Http\Requests\MovieCreateRequest;
 use App\ImageMovie;
 use App\Movie;
 use App\Photo;
+use App\Rating;
 use App\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -243,6 +245,10 @@ class MovieController extends Controller
             ImageMovie::where('photo_id', $item->photo->id)->delete();
             //  var_dump($item->photo->path);
         }
+
+        Comment::where('module_id', 2)->where('item_id', $movie->id)->delete();
+        Rating::where('module_number', 2)->where('item_number', $movie->id)->delete();
+
         Session::flash('movie_change', 'The movie has been successfully deleted!');
         //-- Flush 'movies' key from redis cache
         Cache::tags('movies')->flush();

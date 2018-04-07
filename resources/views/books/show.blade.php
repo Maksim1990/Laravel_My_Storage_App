@@ -78,7 +78,10 @@
             <div class="col-sm-6 col-xs-12" id="book_details">
                 <p>@lang_u('messages.book') ID: {{$book->id}}</p>
                 <p>@lang_u('messages.title'): {{$book->title}}</p>
-                <p>@lang_u('messages.author') {{$book->author}}</p>
+                <p>@lang_u('messages.author'): {{$book->author}}</p>
+                <p>Added by:
+                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.$book->user->id)}}">
+                        {{$book->user->name}}</a></p>
             </div>
             <div class="col-sm-1 col-xs-12" id="like_block">
                 @if($blnLike)

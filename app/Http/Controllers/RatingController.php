@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
+use App\Movie;
 use App\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,13 +104,37 @@ class RatingController extends Controller
         return ["status" => true];
     }
 
+
+    public function deleteRating(Request $request)
+    {
+
+        $blnStatus = true;
+        $intRating = $request['rating_id'];
+        Rating::findOrFail($intRating)->delete();
+        return ["status" => $blnStatus];
+    }
+
     public function myRatings($id){
         $user=Auth::user();
-        $ratings=Rating::where('user_id',$user->id)->get();
+        $ratings=Rating::where('user_id',$user->id)->orderBy('id','DESC')->get();
+
+
+        $books=Book::all();
+        $movies=Movie::all();
+
+        $arrMovies=array();
+        foreach ($movies as $movie){
+            $arrMovies[$movie->id]=$movie->title;
+        }
+
+        $arrBooks=array();
+        foreach ($books as $book){
+            $arrBooks[(int)$book->id]=$book->title;
+        }
 
 
         $title='My ratings';
-        return view('ratings.my_ratings', compact('title', 'ratings'));
+        return view('ratings.my_ratings', compact('title', 'ratings','arrBooks','arrMovies'));
     }
 
 }

@@ -91,6 +91,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::post('/delete_multiple_movies_ajax', 'MovieController@deleteMultipleMovies');
         Route::post('/add_book_to_favorite_ajax', 'FavoriteController@addBookToFavorite');
         Route::post('/delete_books_comment_ajax', 'CommentController@deleteBookComment');
+        Route::post('/delete_rating_ajax', 'RatingController@deleteRating');
         Route::post('/assign_image_book_ajax', 'BookController@assignImageAjax');
 
         Route::get('/search', function () {

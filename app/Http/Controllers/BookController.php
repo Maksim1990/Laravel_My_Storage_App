@@ -388,6 +388,9 @@ class BookController extends Controller
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
 
+        Comment::where('module_id', 1)->where('item_id', $book->id)->delete();
+        Rating::where('module_number', 1)->where('item_number', $book->id)->delete();
+
         $book->delete();
 
         //-- Remove TSV books file from this user (later will be re-downloaded again)
