@@ -21,6 +21,8 @@ class CreateMoviesTable extends Migration
             $table->string('author')->nullable()->default('none');
             $table->integer('category_id')->default('0');
             $table->string('finished_date')->nullable();
+            $table->integer('photo_id')->nullable();
+            $table->text('photo_path')->nullable();
             $table->string('movie_created_year')->nullable();
             $table->integer('active')->default(0);
             $table->timestamps();

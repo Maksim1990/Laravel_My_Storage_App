@@ -297,13 +297,15 @@
             var token = '{{\Illuminate\Support\Facades\Session::token()}}';
             var image_id = $('#modal_image_show_id').val();
             var url = '{{ URL::to('delete_image_ajax') }}';
-            var confDelete = confirm('Do you want to delete this description?');
+            var module_id=1;
+            var confDelete = confirm('Do you want to delete this image?');
             if (confDelete) {
                 $.ajax({
                     method: 'POST',
                     url: url,
                     data: {
                         image_id: image_id,
+                        module_id:module_id,
                         _token: token
                     },
                     success: function (data) {
@@ -317,6 +319,7 @@
                                 layout: 'topRight',
                                 text: 'Image was successfully deleted!'
                             }).show();
+                            location.reload();
                         }
 
                     }
@@ -333,6 +336,7 @@
                 var urlRating = '{{ URL::to('register_rating_ajax') }}';
                 var current_rating = $('#current_number').html();
                 var item_number = '{{$book->id}}';
+                var module_number=1;
                 $('#current_number').html(+current_rating + +value);
                 $('#ratingSelect').toggleClass('invisible');
                 $.ajax({
@@ -341,6 +345,7 @@
                     dataType: "json",
                     data: {
                         rating_value: value,
+                        module_number:module_number,
                         item_number: item_number,
                         _token: token
                     },

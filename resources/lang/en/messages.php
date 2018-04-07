@@ -120,4 +120,6 @@ return [
     'female'=>'Female',
     'lastname'=>'Lastname',
     'want_assign'=>'Do you want to assign this?',
+    'rating_value'=>'Rate value',
+    'return_back'=>'Return back',
 ];

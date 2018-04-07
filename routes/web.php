@@ -77,9 +77,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::get('/users/{id}/edit/password', 'UserController@editPassword');
         Route::get('/users/{id}/edit/image', 'UserController@editImage');
         Route::get('/books/{id}/edit/image', 'BookController@editImage');
+        Route::get('/movies/{id}/edit/image', 'MovieController@editImage');
         Route::patch('/users/update/password/{id}','UserController@updatePassword');
         Route::patch('/users/update/image/{id}','UserController@updateImage');
         Route::patch('/books/update/image/{id}','BookController@assignImage');
+        Route::patch('/movies/update/image/{id}','MovieController@assignImage');
 
 
         Route::post('/delete_image_ajax', 'PhotoController@deleteImage');
@@ -90,9 +92,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::post('/delete_multiple_books_ajax', 'BookController@deleteMultipleBooks');
         Route::post('/delete_multiple_movies_ajax', 'MovieController@deleteMultipleMovies');
         Route::post('/add_book_to_favorite_ajax', 'FavoriteController@addBookToFavorite');
-        Route::post('/delete_books_comment_ajax', 'CommentController@deleteBookComment');
+        Route::post('/add_movie_to_favorite_ajax', 'FavoriteController@addBookToFavorite');
+        Route::post('/delete_books_comment_ajax', 'CommentController@deleteComment');
+        Route::post('/delete_movies_comment_ajax', 'CommentController@deleteComment');
         Route::post('/delete_rating_ajax', 'RatingController@deleteRating');
         Route::post('/assign_image_book_ajax', 'BookController@assignImageAjax');
+        Route::post('/assign_image_movie_ajax', 'MovieController@assignImageAjax');
 
         Route::get('/search', function () {
             return view('search.search');

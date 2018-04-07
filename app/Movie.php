@@ -11,7 +11,7 @@ class Movie extends Model
 
     protected $fillable = [
         'user_id','title','description','active',
-        'author','finished_date','movie_created_year','category_id'
+        'author','finished_date','movie_created_year','category_id','photo_path','photo_id'
     ];
 
     public $with=['user','photos','category'];

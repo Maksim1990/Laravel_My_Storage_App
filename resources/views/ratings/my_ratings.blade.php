@@ -19,10 +19,9 @@
             @if(count($ratings)>0)
                 <table class="w3-table w3-striped w3-bordered w3-hoverable">
                     <tr>
-
                         <th>@lang('messages.module')</th>
                         <th>@lang('messages.name_of_item')</th>
-                        <th>Rate value</th>
+                        <th>@lang('messages.rating_value')</th>
                         <th>@lang('messages.date')</th>
                         <th></th>
                     </tr>

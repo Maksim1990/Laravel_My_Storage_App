@@ -90,13 +90,14 @@ class RatingController extends Controller
     public function registerRating(Request $request)
     {
         $rating_value = $request['rating_value'];
+        $module_number = $request['module_number'];
         $item_number = $request['item_number'];
         $user = Auth::user();
 
         Rating::create([
             'rating_value'=>$rating_value,
             'user_id'=>$user->id,
-            'module_number'=>1,
+            'module_number'=>$module_number,
             'item_number'=>$item_number
         ]);
 

@@ -101,7 +101,7 @@ class CommentController extends Controller
         ];
     }
 
-    public function deleteBookComment(Request $request)
+    public function deleteComment(Request $request)
     {
 
         $blnStatus = true;
