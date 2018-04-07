@@ -3,6 +3,8 @@
 
 @endsection
 @section('styles')
+    <script src="{{asset('js/jquery.barrating.js')}}" type="text/javascript"></script>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-stars.css') }}">
     <style>
         .tooltip_custom .tooltiptext{
             width: 300px;
@@ -33,7 +35,7 @@
                                 $strType="books";
                                 $ratingItemTitle=$arrBooks[$rating->item_number];
                                 @endphp
-                            @elseif($comment->module_id==2)
+                            @elseif($rating->module_number==2)
                                 @php $strModule="Movies";
                                 $strType="movies";
                                 $ratingItemTitle=$arrMovies[$rating->item_number];
@@ -43,10 +45,25 @@
                             <td>
                                 <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/'.$strType.'/'.$rating->item_number)}}">
                                     {{$ratingItemTitle}}</a></td>
-                            <td>{{$rating->rating_value}}</td>
+                            <td>
+                                <select class="ratingVote_{{ $rating->rating_value }}" name="rating">
+                                    <option class="vote" value="1">1</option>
+                                    <option class="vote" value="2">2</option>
+                                    <option class="vote" value="3">3</option>
+                                    <option class="vote" value="4">4</option>
+                                    <option class="vote" value="5">5</option>
+                                </select>
+                            </td>
                             <td>{{$rating->created_at->diffForHumans()}}</td>
                             <td class="w3-center"><a href="#" class="remove" data-id="{{$rating->id}}" > <i class="fas fa-trash-alt w3-text-red" ></i></a></td>
                         </tr>
+                        <script>
+                            $('.ratingVote_{{ $rating->rating_value }}').barrating('show', {
+                                theme: 'bootstrap-stars',
+                                readonly: false
+                            });
+                            $('.ratingVote_{{ $rating->rating_value }}').barrating('set',{{ $rating->rating_value }});
+                        </script>
                     @endforeach
                 </table>
             @else
@@ -66,12 +83,12 @@
         var token = '{{\Illuminate\Support\Facades\Session::token()}}';
         $(".remove").click(function () {
             var rating_id = $(this).data('id');
-            var urlDeleteComment = '{{ URL::to('delete_rating_ajax') }}';
+            var urlDeleteRating = '{{ URL::to('delete_rating_ajax') }}';
             var blnConfirm = confirm("{{trans('messages.delete_selected_item')}}?");
             if (blnConfirm == true) {
                 $.ajax({
                     method: 'POST',
-                    url: urlDeleteComment,
+                    url: urlDeleteRating,
                     dataType: "json",
                     data: {
                         rating_id: rating_id,
