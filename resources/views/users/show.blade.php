@@ -45,9 +45,9 @@
         <div class="col-sm-12 col-xs-12">
 
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" class="trig1" role="tab"
                                                           data-toggle="tab">@lang_u('messages.books')</a></li>
-                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+                <li role="presentation"><a href="#profile" aria-controls="profile" class="trig2" role="tab"
                                            data-toggle="tab">@lang_u('messages.movies')</a>
                 </li>
             </ul>
@@ -57,7 +57,7 @@
                     @include('users.books_nav')
                 </div>
                 <div role="tabpanel" class="tab-pane " id="profile">
-                    two
+                    @include('users.movies_nav')
                 </div>
             </div>
         </div>
@@ -109,8 +109,8 @@
                 intWidth = 660;
                 $('#books_slider_block').css('display', 'block');
                 $('#books_simple_block').css('display', 'none');
-                $('#movies_slider_block').css('display', 'none');
-                $('#movies_simple_block').css('display', 'block');
+                $('#movies_slider_block').css('display', 'block');
+                $('#movies_simple_block').css('display', 'none');
             }
 
             var arrResult = {intHeight: intHeight, intWidth: intWidth};
@@ -216,26 +216,17 @@
         }
 
     </script>
-    <script src="{{asset('js/jquery.bxslider.js')}}" type="text/javascript"></script>
     <script>
-        $('.bxslider').bxSlider({
-            auto: true,
-            minSlides: 4,
-            maxSlides: 4,
-            slideWidth: 468,
-            slideMargin: 20
-        });
 
-
-        //-- Hide slider dots in case less than 4 images
-        var elements = document.getElementsByClassName('bx-pager-link');
-        if (elements.length > 4) {
-            for (var i in elements) {
-                if (elements.hasOwnProperty(i)) {
-                    elements[i].style.display = 'none';
-                }
-            }
-        }
+        // //-- Hide slider dots in case less than 4 images
+        // var elements = document.getElementsByClassName('bx-pager-link');
+        // if (elements.length > 4) {
+        //     for (var i in elements) {
+        //         if (elements.hasOwnProperty(i)) {
+        //             elements[i].style.display = 'none';
+        //         }
+        //     }
+        // }
 
         //-- Change link text color on hover
         $( '#user_left p' ).mouseover(function() {
@@ -254,5 +245,43 @@
                 }
             );
         });
+    </script>
+    <script src="{{asset('js/jquery.bxslider.js')}}" type="text/javascript"></script>
+    <script>
+
+        //-- Functionality to display TWO bxsliders on one page (in Bootsarap tabs)
+
+        var bx1 = $('.bxslider1').bxSlider({
+            auto: true,
+                controls:true,
+                minSlides: 4,
+                maxSlides: 4,
+                slideWidth: 468,
+                slideMargin: 20
+        });
+
+        var bx2 = $('.bxslider2').bxSlider({
+            auto: true,
+            controls:true,
+            minSlides: 4,
+            maxSlides: 4,
+            slideWidth: 468,
+            slideMargin: 20
+        });
+
+        $('a.trig1').on('click', function(e) {
+            e.preventDefault();
+            setTimeout(function() {
+                bx1.redrawSlider();
+            }, 0);
+        });
+
+        $('a.trig2').on('click', function(e) {
+            e.preventDefault();
+            setTimeout(function() {
+                bx2.redrawSlider();
+            }, 0);
+        });
+
     </script>
 @endsection

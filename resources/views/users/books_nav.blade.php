@@ -1,5 +1,5 @@
 <div class="col-sm-12" id="books_slider_block" style="display: none;">
-    <div class="bxslider">
+    <div class="bxslider1">
         @if(count($user->books)>0)
             @foreach($user->books as $book)
                 <div style="display: inline-block;padding-left: 30px;" class="w3-center">
