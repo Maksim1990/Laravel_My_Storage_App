@@ -89,7 +89,7 @@ class BookController extends Controller
             $strCache=true;
         }
 
-        $title = 'All books';
+        $title = ucfirst(trans('messages.all')).' '.trans('messages.books');
         $arrFilter = [
             'id' => $filterId,
             'title' => $filterTitle,
@@ -159,10 +159,10 @@ class BookController extends Controller
             $input['active'] = 1;
 
             $book = Book::create($input);
-            Session::flash('book_change', 'New book has been successfully created!');
+            Session::flash('book_change', trans('messages.new_books_was_created'));
 
             ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
-            Session::flash('book_change', 'New book has been successfully created!');
+            Session::flash('book_change', trans('messages.new_books_was_created'));
             //-- Flush 'books' key from redis cache
             Cache::tags('books')->flush();
 
@@ -174,7 +174,7 @@ class BookController extends Controller
 
             return redirect('books/' . $book->id);
         } else {
-            Session::flash('book_change', 'Image size should not exceed 2 MB');
+            Session::flash('book_change', trans('messages.image_should_not_exceed'));
             return redirect('books/create');
         }
     }
@@ -289,14 +289,14 @@ class BookController extends Controller
                     $photo_id = $photo->id;
                 }
             } else {
-                Session::flash('book_change', 'Image size should not exceed 2 MB');
+                Session::flash('book_change', trans('messages.image_should_not_exceed'));
                 return redirect($locale.'/books/' . $id . '/edit');
             }
         }
         $input['user_id'] = $user->id;
         $input['active'] = 1;
         $book->update($input);
-        Session::flash('book_change', 'New book has been successfully updated!');
+        Session::flash('book_change', trans('messages.new_books_was_updated'));
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
 
@@ -311,7 +311,7 @@ class BookController extends Controller
             ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
         }
 
-        Session::flash('book_change', 'New book has been successfully updated!');
+        Session::flash('book_change', trans('messages.new_books_was_updated'));
         return redirect("/".$locale.'/books/' . $book->id);
 
     }
@@ -342,7 +342,7 @@ class BookController extends Controller
 
                 }
             } else {
-                Session::flash('book_change', 'Image size should not exceed 2 MB');
+                Session::flash('book_change', trans('messages.image_should_not_exceed'));
                 return redirect($locale.'/books/' . $id . '/edit');
             }
         }else{
@@ -353,7 +353,7 @@ class BookController extends Controller
 
         }
 
-        Session::flash('book_change', 'Book image has been successfully assigned!');
+        Session::flash('book_change', trans('messages.book_image_was_assigned'));
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
 
@@ -363,7 +363,7 @@ class BookController extends Controller
             ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
         }
 
-        Session::flash('book_change', 'New book has been successfully updated!');
+        Session::flash('book_change', trans('messages.new_books_was_updated'));
         return redirect($locale.'/books/' . $book->id);
 
     }
@@ -384,7 +384,7 @@ class BookController extends Controller
             Photo::findOrfail($item->photo->id)->delete();
             ImageBook::where('photo_id', $item->photo->id)->delete();
         }
-        Session::flash('book_change', 'The book has been successfully deleted!');
+        Session::flash('book_change', trans('messages.book_was_deleted'));
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
 

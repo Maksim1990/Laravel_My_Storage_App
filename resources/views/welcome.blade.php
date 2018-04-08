@@ -161,10 +161,10 @@
 @if (Route::has('login'))
     <div class="top-right links">
         @auth
-            <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">My profile</a>
+            <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">@lang('messages.my_profile')</a>
         @else
-            <a href="{{ route('login') }}">Login</a>
-            <a href="{{ route('register') }}">Register</a>
+            <a href="{{ route('login') }}">@lang('messages.login')</a>
+            <a href="{{ route('register') }}">@lang('messages.register')</a>
         @endauth
     </div>
 @endif
@@ -173,9 +173,9 @@
     <div class="w3-container">
         <div class="w3-display-container " style="height: 100vh;">
             <div class="w3-display-middle">
-                <p><h1>Save all books you read and like! </h1><br></p>
-                <p><h2>Let us keep your best memories in one place</h2><br></p>
-                <a class="btn btn-success" href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">Try it now</a>
+                <p><h1>@lang('messages.save_all_books')! </h1><br></p>
+                <p><h2>@lang('messages.lets_keep_memories')</h2><br></p>
+                <a class="btn btn-success" href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">@lang('messages.try_it_now')</a>
             </div>
         </div>
     </div>
@@ -187,13 +187,13 @@
         <div class="col-sm-6 col-xs-12">
             <div id="box_desc_1">
                 <p class=" col-sm-12 col-xs-12 shadow">
-                    Read books and keep them all in one place
+                    @lang('messages.read_books_and_keep')
                 </p>
                 <div class=" col-sm-12 col-xs-12 w3-center" style="padding-left: 10%;margin-bottom: 40px; margin-top: 40px;">
-                    <h2>DREAM</h2>
+                    <h2>@lang('messages.dream')</h2>
                 </div>
                 <p class=" col-sm-12 col-xs-12 shadow">
-                    See what other people read and add it your favorites
+                    @lang('messages.see_what_other_people_read')
                 </p>
 
             </div>
@@ -201,13 +201,13 @@
         <div class="col-sm-5 col-sm-offset-1 col-xs-12" id="box1_head">
             <div id="box_desc_2">
                 <div class=" col-sm-12 col-xs-12 w3-center" style="padding-bottom:30px;">
-                    <h2>MOTIVATE</h2>
+                    <h2>@lang('messages.motivate')</h2>
                 </div>
                 <p class=" col-sm-12 col-xs-12 shadow" id="box2_info">
-                    Read opinions and leave your own comments to interesting books or movies
+                    @lang('messages.read_opinions_and_leave_comments')
                 </p>
                 <div class=" col-sm-12 col-xs-12 w3-center" style="padding-top:30px;">
-                    <h2>INSPIRE</h2>
+                    <h2>@lang('messages.inspire')</h2>
                 </div>
             </div>
         </div>
@@ -217,9 +217,9 @@
     <div class="w3-container">
         <div class="w3-display-container w3-center" style="height: 100vh;">
             <div class="w3-display-middle">
-                <p><h1>Import & export your books</h1><br></p>
-                <p><h2>It has never been so easy to do it before! </h2><br></p>
-                <a class="btn btn-success" href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">Try it now</a>
+                <p><h1>@lang('messages.import_export_books')</h1><br></p>
+                <p><h2>@lang('messages.it_has_not_easy_before')! </h2><br></p>
+                <a class="btn btn-success" href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">@lang('messages.try_it_now')</a>
             </div>
         </div>
     </div>
