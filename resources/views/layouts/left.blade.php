@@ -5,7 +5,7 @@
     <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/')}}" class="w3-bar-item w3-button w3-border-bottom w3-large">
 
         <img data-step="1" data-intro="@lang('messages.click_on_logo')!" data-position="right"
-                src="https://www.w3schools.com/images/w3schools.png" style="width:60%;"></a>
+                src="{{"/images/includes/logo_black.png"}}" style="width:60%;"></a>
     <a href="javascript:void(0)" onclick="w3_close()" title="@lang('messages.close_sidemenu')"
        class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a>
     <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align"
