@@ -37,7 +37,7 @@
                 <div class="w3-center " id="main_left">
                     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.Auth::id()."/edit/profile")}}">@lang('messages.edit_profile_data')</a></p>
                     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.Auth::id()."/edit/password")}}">@lang('messages.change_password')</a></p>
-                    <p><a href="#">@lang('messages.change_profile_image')</a></p>
+                    <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.Auth::id()."/edit/image")}}">@lang('messages.change_profile_image')</a></p>
                     <p><a href="#">@lang('messages.delete_profile')</a></p>
                 </div>
             </div>
