@@ -113,16 +113,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
             return view('search.searchMovies');
         });
 
-        Route::get('/plans', function () {
-            return view('plans.index');
-        });
-
 
         Route::get('/guide', function () {
             return view('guide.index');
         });
 
-
+        Route::get('/plans','SubscriptionController@plans');
         //-- STRIPE block
         Route::post('/register','SubscriptionController@store');
         Route::group(['prefix'=>'subscription','middleware'=>'auth'], function (){
@@ -135,7 +131,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
             Route::get('/new','SubscriptionController@create');
             Route::get('/cancel','SubscriptionController@cancel');
             Route::get('/resume','SubscriptionController@resume');
-            Route::get('/change','SubscriptionController@change');
+            Route::get('/change/{plan}','SubscriptionController@change');
 
             Route::post(
                 'stripe/webhook',

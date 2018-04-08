@@ -145,34 +145,45 @@ class SubscriptionController extends Controller
     public function cancel()
     {
         $user = User::find(Auth::id());
+        $locale = LaravelLocalization::getCurrentLocale();
         //-- If i want immediately stop subscription without ability to resume it again
 //        $user->subscription('main')->cancelNow();
         $user->subscription('main')->cancel();
 
-        return redirect('/subscription');
+        return redirect('/'.$locale.'/plans');
     }
 
     public function resume()
     {
+        $locale = LaravelLocalization::getCurrentLocale();
         $user = User::find(Auth::id());
         $user->subscription('main')->resume();
 
-        return redirect('/subscription');
+        return redirect('/'.$locale.'/plans');
     }
 
-    public function change()
+    public function change($plan)
     {
         $user = User::find(Auth::id());
-
-        $plan=$user->subscription('main');
-        if($plan->stripe_plan=='small'){
-            $plan="large";
-        }else{
-            $plan="small";
-        }
+        $locale = LaravelLocalization::getCurrentLocale();
+//        $plan=$user->subscription('main');
+//        if($plan->stripe_plan=='small'){
+//            $plan="large";
+//        }else{
+//            $plan="small";
+//        }
         $user->subscription('main')->swap($plan);
 
-        return redirect('/subscription');
+        return redirect('/'.$locale.'/plans');
+    }
+
+    public function plans()
+    {
+        $user = User::find(Auth::id());
+        $plan=$user->subscription('main');
+        $title="Subscription plans";
+
+        return view('plans.index', compact('title', 'plan'));
     }
 
 }

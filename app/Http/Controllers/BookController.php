@@ -312,7 +312,7 @@ class BookController extends Controller
         }
 
         Session::flash('book_change', 'New book has been successfully updated!');
-        return redirect($locale.'/books/' . $book->id);
+        return redirect("/".$locale.'/books/' . $book->id);
 
     }
 
