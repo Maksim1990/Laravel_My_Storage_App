@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class LoginController extends Controller
 {
@@ -28,7 +29,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+
+    protected $redirectTo = "/home";
 
     /**
      * Create a new controller instance.
@@ -42,6 +44,7 @@ class LoginController extends Controller
 
     public function socialLogin($social)
     {
+        Session::flash('lang_login', LaravelLocalization::getCurrentLocale());
         return Socialite::driver($social)->redirect();
     }
 
@@ -49,12 +52,19 @@ class LoginController extends Controller
     public  function handleProviderCallback($social){
         $userSocial = Socialite::driver($social)->user();
         $user = User::where(['email' => $userSocial->getEmail()])->first();
+
         if($user){
             Auth::login($user);
             return redirect()->action('HomeController@index');
         }else{
             return view('auth.register',['name' => $userSocial->getName(), 'email' => $userSocial->getEmail()]);
         }
+    }
+
+    public function logout() {
+        Auth::logout();
+        $local=LaravelLocalization::getCurrentLocale();
+        return redirect('/'.$local.'/login');
     }
 
 

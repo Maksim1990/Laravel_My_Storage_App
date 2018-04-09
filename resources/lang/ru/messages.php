@@ -143,4 +143,6 @@ return [
     'book_was_deleted'=>'Книга успешно удалена!',
     'book_image_was_assigned'=>'Главное изображение к данной книги успешно назначено!',
     'image_should_not_exceed'=>'Размер изображения не должен превышать 2 MB',
+    'confirm_password'=>'Подтвердить пароль',
+    'login_with'=>'Войти с помощью',
 ];

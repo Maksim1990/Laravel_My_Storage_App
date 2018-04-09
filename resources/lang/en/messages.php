@@ -144,4 +144,6 @@ return [
     'book_was_deleted'=>'Book has been successfully deleted!',
     'book_image_was_assigned'=>'Book image has been successfully assigned!',
     'image_should_not_exceed'=>'Image size should not exceed 2 MB',
+    'confirm_password'=>'Confirm password',
+    'login_with'=>'Login with',
 ];
