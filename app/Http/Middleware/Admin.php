@@ -23,7 +23,7 @@ class Admin
                 return $next($request);
             }
         }
-        return redirect('/norights');
+        return redirect('/');
 
     }
 }

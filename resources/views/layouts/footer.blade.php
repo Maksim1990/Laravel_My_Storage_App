@@ -2,7 +2,7 @@
             src="{{asset('images/includes/for_developers.png')}}" width="65" id="fixedbutton" data-toggle="tooltip" title="Information for developers" data-placement="left"></a>
 
 {{--Check if user choose some action previously for tutorial showing--}}
-@if(empty(Auth::user()->setting->show_tutorial))
+@if(empty(Auth::user()->setting->show_tutorial) || Auth::user()->setting->show_tutorial=="skip")
 <div id="fixed_tutorial_button">
     <p>@lang('messages.first_time_here')</p>
     <p>@lang('messages.want_to_go_through_tutorial')</p>
@@ -126,9 +126,6 @@
     var token = '{{\Illuminate\Support\Facades\Session::token()}}'
     var urlTutorial = '{{ URL::to('show_tutorial_ajax') }}';
 
-    $('.introjs-skipbutton').click(function () {
-        alert("Test");
-    });
 
     $('#tutorial_yes,#tutorial_skip,#tutorial_never').click(function () {
 

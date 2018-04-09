@@ -120,7 +120,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
 
         Route::get('/plans','SubscriptionController@plans');
         //-- STRIPE block
-        Route::post('/register','SubscriptionController@store');
+        Route::post('/register_plan','SubscriptionController@store');
         Route::group(['prefix'=>'subscription','middleware'=>'auth'], function (){
 
             Route::get('/',[

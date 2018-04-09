@@ -9,10 +9,8 @@
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/comments/'.$user->id)}}">@lang('messages.my')  @lang('messages.comments')</a></p>
     <p><a href="#">@lang('messages.statistics')</a></p>
     <div>
-        {{ Form::open(['method' =>'DELETE' , 'action' => ['UserController@destroy',$user->id]])}}
-
-        {!! Form::submit(trans('messages.delete_profile'),['class'=>'btn btn-danger']) !!}
-
-        {!! Form::close() !!}
+        <a href="#" onclick="document.getElementById('id04').style.display='block'" class="btn btn-danger">
+            @lang('messages.delete_profile')
+        </a>
     </div>
 </div>

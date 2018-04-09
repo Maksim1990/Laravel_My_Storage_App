@@ -14,10 +14,15 @@
 
                 <div class="group-form">
                     {!! Form::label('photo_id',trans('messages.photo').':') !!}
-                    {!! Form::file('photo_id') !!}
+                    {!! Form::file('photo_id',['id'=>'photo_upload']) !!}
                 </div>
-                {!! Form::submit(trans('messages.update_image'),['class'=>'btn btn-warning']) !!}
+                {!! Form::submit(trans('messages.update_image'),['class'=>'btn btn-warning','id'=>'load_image','disabled'=>'disabled']) !!}
                 {!! Form::close() !!}
+            </div>
+            <div class="col-sm-10 col-sm-offset-1 w3-center" id="file_info" style="height: 60px;"></div>
+            <div class="col-sm-12  alert alert-success" style="margin-top: 50px;" role="alert">
+                <strong>@lang('messages.attention')!</strong> @lang('messages.supported_formats') <strong>PNG & JPG</strong>.<br>
+                @lang('messages.image_should_not_exceed')
             </div>
             <div class="col-sm-12">
                 @include('includes.formErrors')
@@ -36,5 +41,24 @@
 
         }).show();
         @endif
+
+        $("#photo_upload").change(function () {
+
+            var val = $(this).val();
+
+            switch (val.substring(val.lastIndexOf('.') + 1).toLowerCase()) {
+                case 'png':
+                case 'jpg':
+                    $('#file_info').html('File ' + val + ' is chosen');
+                    $('#file_info').css('color', 'green');
+                    $('#load_image').prop('disabled', false);
+                    break;
+                default:
+                    $('#file_info').html("{{trans('messages.format_is_not_correct')}}");
+                    $('#file_info').css('color', 'red');
+                    $('#load_image').prop('disabled', true);
+                    break;
+            }
+        });
     </script>
 @endsection

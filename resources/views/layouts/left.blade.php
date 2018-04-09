@@ -38,7 +38,8 @@
                     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.Auth::id()."/edit/profile")}}">@lang('messages.edit_profile_data')</a></p>
                     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.Auth::id()."/edit/password")}}">@lang('messages.change_password')</a></p>
                     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.Auth::id()."/edit/image")}}">@lang('messages.change_profile_image')</a></p>
-                    <p><a href="#">@lang('messages.delete_profile')</a></p>
+                    <p> <a href="#" onclick="document.getElementById('id04').style.display='block'" >
+                        @lang('messages.delete_profile')</a></p>
                 </div>
             </div>
 
@@ -126,4 +127,35 @@
         </div>
 
 </nav>
+
+
+<!-- Modal that pops up when you click on "Delete profile" -->
+<div id="id04" class="w3-modal" style="z-index:4">
+    <div class="w3-modal-content w3-animate-zoom">
+        <div class="w3-container w3-padding w3-green">
+            <h2 class="text-uppercase text-uppercase">@lang('messages.delete_profile')</h2>
+        </div>
+        <div class="w3-panel">
+            <div class="w3-section">
+                <div class="w3-center">
+                    <div id="delete_user_form">
+                        <div>
+                            <p>@lang('messages.want_to_delete_profile')?</p>
+                            <div class="alert alert-warning" role="alert">
+                                <strong>@lang('messages.attention')!</strong> @lang('messages.all_profile_data_will_be_lost').
+                            </div>
+                        </div>
+                        <a class="btn btn-success " style="display: inline;padding: 10px 10px;margin-right: 30px;" onclick="document.getElementById('id04').style.display='none'">@lang('messages.cancel') </a>
+                        {{ Form::open(['method' =>'DELETE' , 'action' => ['UserController@destroy',$user->id]])}}
+
+                        {!! Form::submit(trans('messages.delete_profile'),['class'=>'btn btn-danger']) !!}
+
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 

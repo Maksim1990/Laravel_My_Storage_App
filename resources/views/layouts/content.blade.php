@@ -20,7 +20,7 @@ color:white;"
                onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i
                     class="fas fa-sign-out-alt"></i></a>
            <div id="">
-               @if(Auth::user()->role_id==1 || Auth::user()->role_id==4 || Auth::user()->role_id==3)
+               @if(Auth::user()->role_id==1 || Auth::user()->role_id==4 || Auth::user()->role_id==2)
             <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/plans')}}"
                style="padding-top: 5px;padding-bottom: 2px" id="current_plan_link">
                 <span style="text-transform: capitalize;font-size: 12px;">@lang('messages.current_plan')</span>

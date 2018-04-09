@@ -89,7 +89,7 @@ body a, .pagination > li > a{
     background-color: yellow;
     position: fixed;
     bottom: 0px;
-    right: 50%;
+    right: 45%;
     bottom: 10px;
 }
 
@@ -117,6 +117,10 @@ body a, .pagination > li > a{
 }
 .w3-main{
     margin-left:320px;
+}
+
+#delete_user_form form{
+    display: inline;
 }
 
 @media(max-width:1000px){

@@ -11,6 +11,7 @@ use App\ImageMovie;
 use App\Movie;
 use App\Photo;
 use App\Profile;
+use App\Rating;
 use App\Role;
 use App\Setting;
 use App\User;
@@ -419,9 +420,14 @@ class UserController extends Controller
     {
         $locale = LaravelLocalization::getCurrentLocale();
         $user=User::findOrFail($id);
-        if ($user->profile->photo_id) {
+        if ($user->profile->photo_id && $user->profile->photo->path) {
             unlink(public_path() . $user->profile->photo->path);
             Photo::findOrfail($user->profile->photo->id)->delete();
+            $profile=Profile::where('photo_id',$user->profile->photo->id)->first();
+            $profile->update([
+                'photo_id'=>0,
+            ]);
+            $profile->save();
         }
 
 
@@ -455,6 +461,7 @@ class UserController extends Controller
         Comment::where('user_id',$user->id)->delete();
         //-- Delete profile
         Profile::where('user_id',$user->id)->delete();
+        Rating::where('user_id',$user->id)->delete();
 
 
         //-- Remove TSV books file from this user (later will be re-downloaded again)

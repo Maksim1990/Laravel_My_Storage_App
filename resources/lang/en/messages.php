@@ -146,4 +146,10 @@ return [
     'image_should_not_exceed'=>'Image size should not exceed 2 MB',
     'confirm_password'=>'Confirm password',
     'login_with'=>'Login with',
+    'cancel'=>'Cancel',
+    'want_to_delete_profile'=>'Do you really want to delete your account?',
+    'all_profile_data_will_be_lost'=>'All profile data will be lost',
+    'attention'=>'Attention',
+    'supported_formats'=>'Supported formats are ',
+    'format_is_not_correct'=>'File format is not correct! Please try again',
 ];

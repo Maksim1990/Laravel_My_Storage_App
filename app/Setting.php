@@ -13,7 +13,8 @@ class Setting extends Model
         'event_list',
         'event_list_quantity',
         'movie_list',
-        'movie_list_quantity'
+        'movie_list_quantity',
+        'subscription_plan'
     ];
     public function user(){
         return $this->belongsTo('App\User');

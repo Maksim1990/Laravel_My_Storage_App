@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -30,7 +31,7 @@ class LoginController extends Controller
      * @var string
      */
 
-    protected $redirectTo = "/home";
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -44,7 +45,6 @@ class LoginController extends Controller
 
     public function socialLogin($social)
     {
-        Session::flash('lang_login', LaravelLocalization::getCurrentLocale());
         return Socialite::driver($social)->redirect();
     }
 
@@ -61,11 +61,11 @@ class LoginController extends Controller
         }
     }
 
-    public function logout() {
-        Auth::logout();
-        $local=LaravelLocalization::getCurrentLocale();
-        return redirect('/'.$local.'/login');
-    }
+//    public function logout() {
+//        Auth::logout();
+//        $local=LaravelLocalization::getCurrentLocale();
+//        return redirect('/'.$local.'/login');
+//    }
 
 
 }
