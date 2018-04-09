@@ -1,15 +1,15 @@
 <div class="w3-center " id="user_left">
-    <p><a href="{{URL::to('upload_images/'.$movie->id.'/2')}}">Upload multiple image</a></p>
+    @if($movie->user_id==Auth::id())
+    <p><a href="{{URL::to('upload_images/'.$movie->id.'/2')}}">@lang('messages.upload_multiple_images')</a></p>
     {{--<p><a href="#">Upload single image</a></p>--}}
-    <p><a href="{{URL::to('movies/'.$movie->id."/edit")}}">Edit this book</a></p>
-    <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/movies/'.$movie->id."/edit/image")}}">Change movie main image</a></p>
-    <p>
-        {{ Form::open(['method' =>'DELETE' , 'action' => ['MovieController@destroy',$movie->id]])}}
-
-        {!! Form::submit('Delete movie',['class'=>'btn btn-danger']) !!}
-
-        {!! Form::close() !!}
-    </p>
+    <p><a href="{{URL::to('movies/'.$movie->id."/edit")}}">@lang('messages.edit')</a></p>
+    <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/movies/'.$movie->id."/edit/image")}}">@lang('messages.change_main_image')</a></p>
+    <div>
+        <a href="#" onclick="document.getElementById('id06').style.display='block'" class="btn btn-danger">
+            @lang('messages.delete')
+        </a>
+    </div>
+    @endif
 
 
 

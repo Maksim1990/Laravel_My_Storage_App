@@ -203,7 +203,32 @@
         </div>
     </div>
 
+    <!-- Modal that pops up when you click on "Delete profile" -->
+    <div id="id05" class="w3-modal" style="z-index:4">
+        <div class="w3-modal-content w3-animate-zoom">
+            <div class="w3-container w3-padding w3-green">
+                <h2 class="text-uppercase text-uppercase">@lang('messages.delete')</h2>
+            </div>
+            <div class="w3-panel">
+                <div class="w3-section">
+                    <div class="w3-center">
+                        <div id="delete_user_form">
+                            <div>
+                                <p>@lang('messages.delete_selected_item')?</p>
+                            </div>
+                            <a class="btn btn-success " style="display: inline;padding: 10px 10px;margin-right: 30px;" onclick="document.getElementById('id05').style.display='none'">@lang('messages.cancel') </a>
+                            {{ Form::open(['method' =>'DELETE' , 'action' => ['BookController@destroy',$book->id]])}}
 
+                            {!! Form::submit(trans('messages.delete'),['class'=>'btn btn-danger']) !!}
+
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 @stop
 @section('scripts')

@@ -146,7 +146,7 @@
                             </div>
                         </div>
                         <a class="btn btn-success " style="display: inline;padding: 10px 10px;margin-right: 30px;" onclick="document.getElementById('id04').style.display='none'">@lang('messages.cancel') </a>
-                        {{ Form::open(['method' =>'DELETE' , 'action' => ['UserController@destroy',$user->id]])}}
+                        {{ Form::open(['method' =>'DELETE' , 'action' => ['UserController@destroy',Auth::id()]])}}
 
                         {!! Form::submit(trans('messages.delete_profile'),['class'=>'btn btn-danger']) !!}
 
@@ -158,4 +158,6 @@
         </div>
     </div>
 </div>
+
+
 

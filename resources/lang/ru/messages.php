@@ -151,4 +151,6 @@ return [
     'attention'=>'Внимание',
     'supported_formats'=>'Поддерживаемые форматы ',
     'format_is_not_correct'=>'Нероддерживаемый формат! Пожалуйста, попробуйте снова',
+    'change_main_image'=>'Изменить главное изображение',
+    'upload_multiple_images'=>'Загрузить изображения',
 ];

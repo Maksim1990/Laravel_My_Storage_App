@@ -1,5 +1,5 @@
 <div class="w3-center " id="user_left">
-
+    @if($user->id==Auth::id())
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit")}}">@lang('messages.edit_profile_data')</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit/image")}}">@lang('messages.change_profile_image')</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit/profile")}}">@lang('messages.edit_profile_data')</a></p>
@@ -13,4 +13,5 @@
             @lang('messages.delete_profile')
         </a>
     </div>
+        @endif
 </div>

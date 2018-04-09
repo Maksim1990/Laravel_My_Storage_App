@@ -1,15 +1,16 @@
 <div class="w3-center " id="user_left">
-    <p><a href="{{URL::to('upload_images/'.$book->id.'/1')}}">Upload multiple image</a></p>
+    @if($book->user_id==Auth::id())
+    <p><a href="{{URL::to('upload_images/'.$book->id.'/1')}}">@lang('messages.upload_multiple_images')</a></p>
     {{--<p><a href="#">Upload single image</a></p>--}}
-    <p><a href="{{URL::to('books/'.$book->id."/edit")}}">Edit this book</a></p>
-    <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id."/edit/image")}}">Change book main image</a></p>
-    <p>
-        {{ Form::open(['method' =>'DELETE' , 'action' => ['BookController@destroy',$book->id]])}}
+    <p><a href="{{URL::to('books/'.$book->id."/edit")}}">@lang('messages.edit')</a></p>
+    <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id."/edit/image")}}">@lang('messages.change_main_image')</a></p>
+    <div>
+        <a href="#" onclick="document.getElementById('id05').style.display='block'" class="btn btn-danger">
+            @lang('messages.delete')
+        </a>
+    </div>
+    @endif
 
-        {!! Form::submit('Delete book',['class'=>'btn btn-danger']) !!}
-
-        {!! Form::close() !!}
-    </p>
 
 
 

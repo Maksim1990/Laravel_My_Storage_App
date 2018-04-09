@@ -152,4 +152,6 @@ return [
     'attention'=>'Attention',
     'supported_formats'=>'Supported formats are ',
     'format_is_not_correct'=>'File format is not correct! Please try again',
+    'change_book_main_image'=>'Change book main image',
+    'upload_multiple_images'=>'Upload multiple image',
 ];
