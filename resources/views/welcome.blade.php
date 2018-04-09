@@ -65,8 +65,13 @@
             padding-top: 10%;
             color: white;
         }
+
         #box1 h1, #box_desc_1 h2, #box_desc_2 h2 , #box3 h1{
+            @if(LaravelLocalization::getCurrentLocale()!='ru')
             font-size:95px;
+            @else
+            font-size:55px;
+            @endif
             text-transform: uppercase;
             font-family: 'Caveat Brush', cursive;
 
@@ -118,6 +123,8 @@
             float: right;
         }
 
+
+
         p.shadow {
             width: 284px;
             padding: 10px 10px 20px 10px;
@@ -132,7 +139,7 @@
         .btn-success{
             padding: 15px 15px;
             font-size: 30px;
-            width: 200px;
+            width: 50%;
         }
         @media(max-width:1000px){
             #box1 h1,h1,h2, #box_desc_1, #box_desc_2{
@@ -158,6 +165,7 @@
 <div class="navbar w3-right">
 
 
+    <div  style="float: right;">
 @if (Route::has('login'))
     <div class="top-right links">
         @auth
@@ -168,6 +176,25 @@
         @endauth
     </div>
 @endif
+</div>
+    <div id="lang_block" style="float: right;margin-right: 20px;">
+        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+            @if($localeCode=='th')
+                @php $strImage='th'; @endphp
+            @elseif($localeCode=='fr')
+                @php $strImage='fr'; @endphp
+            @elseif($localeCode=='ru')
+                @php $strImage='ru'; @endphp
+            @else
+                @php $strImage='en'; @endphp
+            @endif
+            <a rel="alternate" style="padding-left: 6px;padding-right: 6px;" class="lang" hreflang="{{ $localeCode }}"
+               href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                <img style="border-radius: 30px;" width="25" height="25"
+                     src="{{asset('images/includes/flags/'.$strImage.'.png')}}" alt="">
+            </a>
+        @endforeach
+    </div>
 </div>
 <div id="box1" class="w3-center">
     <div class="w3-container">
