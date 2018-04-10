@@ -24,7 +24,7 @@ return [
     'view_all_categories'=>'View all categories',
     'instant_search'=>'Instant search',
     'contact_as'=>'Contact us',
-    'choose_your_language'=>'Choose you favorite language',
+    'choose_your_language'=>'Choose your favorite language',
     'navigate_to_all'=>'Navigate to all application sections via instant left menu',
     'click_on_logo'=>'Click on logo image in order to instantly move to the application main page',
     'close_sidemenu'=>'Close Sidemenu',
