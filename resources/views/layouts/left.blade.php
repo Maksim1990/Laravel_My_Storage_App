@@ -63,7 +63,7 @@
                     class="fa fa-inbox w3-margin-right"></i>@lang_u('messages.books')<i class="fa fa-caret-down w3-margin-left"></i></a>
         <div id="Link_block_2" class="w3-hide w3-animate-left" style="padding-left: 30px;">
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/list/'.Auth::id())}}" class="w3-bar-item w3-button"><i
-                        class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.my') @lang_u('messages.books')</a>
+                        class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.my_books')</a>
             </a> <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/list')}}" class="w3-bar-item w3-button"><i
                         class="fa fa-paper-plane w3-margin-right"></i>@lang_u('messages.all') @lang_u('messages.books')</a></a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/create')}}" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>@lang_u('messages.add') @lang_u('messages.books')</a>
@@ -76,7 +76,7 @@
                     class="fa fa-inbox w3-margin-right"></i>@lang_u('messages.movies')<i class="fa fa-caret-down w3-margin-left"></i></a>
         <div id="Link_block_3" class="w3-hide w3-animate-left" style="padding-left: 30px;">
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/movies/list/'.Auth::id())}}" class="w3-bar-item w3-button"><i
-                        class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.my') @lang_u('messages.movies')</a></a>
+                        class="fa fa-paper-plane w3-margin-right"></i>@lang('messages.my_movies')</a></a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/movies/list')}}" class="w3-bar-item w3-button"><i
                         class="fa fa-paper-plane w3-margin-right"></i>@lang_u('messages.all') @lang_u('messages.movies')</a></a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/movies/create')}}" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right">
