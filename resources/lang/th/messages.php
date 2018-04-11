@@ -53,7 +53,7 @@ return [
     'delete'=>'ลบ',
     'selected'=>'เลือก',
     'author'=>'ผู้เขียน',
-    'items_found'=>'รายการที่พบ',
+    'items_found'=>'พบรายการทั้งหมด',
     'delete_selected_items'=>'คุณต้องการลบรายการที่เลือกหรือไม่',
     'delete_selected_item'=>'คุณต้องการลบรายการนี้จริงๆหรือไม่',
     'no_category'=>'ไม่มีหมวดหมู่',
@@ -157,4 +157,5 @@ return [
     'bottom_right_button_for_support_access'=>'ใช้ไอคอนด้านล่างขวาเพื่อเข้าถึงการเข้าถึงได้ทันที',
     'for_developers'=>'สำหรับนักพัฒนาซอฟต์แวร์',
     'contacts'=>'รายชื่อผู้ติดต่อ',
+    'redis_content'=>'เนื้อหาปัจจุบันถูกโหลดจากแคช Redis',
 ];

@@ -60,27 +60,27 @@
         </div>
 
         <a id="Link2" onclick="myFunc('Link_block_2')" href="javascript:void(0)" class="w3-bar-item w3-button"><i
-                    class="fas fa-book w3-margin-right w3-text-green"></i>@lang_u('messages.books')<i class="fa fa-caret-down w3-margin-left"></i></a>
+                    class="fas fa-book w3-margin-right w3-text-green"></i>@lang('messages.books')<i class="fa fa-caret-down w3-margin-left"></i></a>
         <div id="Link_block_2" class="w3-hide w3-animate-left" style="padding-left: 30px;">
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/list/'.Auth::id())}}" class="w3-bar-item w3-button"><i
                         class="fas fa-caret-square-down w3-margin-right"></i>@lang('messages.my_books')</a>
             </a> <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/list')}}" class="w3-bar-item w3-button"><i
-                        class="fas fa-globe w3-margin-right"></i>@lang_u('messages.all') @lang_u('messages.books')</a></a>
-            <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/create')}}" class="w3-bar-item w3-button"><i class="fas fa-plus-circle w3-margin-right"></i>@lang_u('messages.add') @lang_u('messages.books')</a>
+                        class="fas fa-globe w3-margin-right"></i>@lang('messages.all') @lang('messages.books')</a></a>
+            <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/create')}}" class="w3-bar-item w3-button"><i class="fas fa-plus-circle w3-margin-right"></i>@lang('messages.add') @lang('messages.books')</a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/import_books_main')}}" class="w3-bar-item w3-button"><i class="fas fa-upload w3-margin-right"></i>@lang('messages.import_export')
                 @lang('messages.books')</a>
         </div>
 
 
         <a id="Link3" onclick="myFunc('Link_block_3')" href="javascript:void(0)" class="w3-bar-item w3-button"><i
-                    class="fas fa-video w3-margin-right  w3-text-green"></i>@lang_u('messages.movies')<i class="fa fa-caret-down w3-margin-left"></i></a>
+                    class="fas fa-video w3-margin-right  w3-text-green"></i>@lang('messages.movies')<i class="fa fa-caret-down w3-margin-left"></i></a>
         <div id="Link_block_3" class="w3-hide w3-animate-left" style="padding-left: 30px;">
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/movies/list/'.Auth::id())}}" class="w3-bar-item w3-button"><i
                         class="fas fa-caret-square-down w3-margin-right"></i>@lang('messages.my_movies')</a></a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/movies/list')}}" class="w3-bar-item w3-button"><i
-                        class="fas fa-globe w3-margin-right"></i>@lang_u('messages.all') @lang_u('messages.movies')</a></a>
+                        class="fas fa-globe w3-margin-right"></i>@lang('messages.all') @lang('messages.movies')</a></a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/movies/create')}}" class="w3-bar-item w3-button"><i class="fas fa-plus-circle w3-margin-right">
-                </i>@lang_u('messages.add') @lang_u('messages.movies')</a>
+                </i>@lang('messages.add') @lang('messages.movies')</a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/import_movies_main')}}" class="w3-bar-item w3-button"><i class="fas fa-upload w3-margin-right"></i>@lang('messages.import_export')
             @lang('messages.movies')</a>
         </div>

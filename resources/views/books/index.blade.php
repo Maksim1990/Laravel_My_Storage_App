@@ -26,9 +26,9 @@
 @section('content')
     <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
 
-        <h1>@lang_u('messages.all') @lang('messages.books')</h1>
+        <h1>@lang('messages.all') @lang('messages.books')</h1>
         <div class=" w3-left" id="items_found">
-            <p>@lang_u('messages.items_found'): <span id="items_found_span">{{$itemsQuantity}}</span></p>
+            <p>@lang('messages.items_found'): <span id="items_found_span">{{$itemsQuantity}}</span></p>
         </div>
         <div class=" w3-right">
             <div id="actions_block"
@@ -243,7 +243,7 @@
     @if($strCache)
     <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1" id="cache_info">
         <div class="alert alert-success" role="alert">
-            <strong>ATTENTION</strong> Current content was loade from Redis cache
+            <strong class="text-uppercase">@lang('messages.attention')!</strong> @lang('messages.redis_content')
         </div>
     </div>
     @endif
@@ -589,7 +589,7 @@
                 },
                 success: function (data) {
                     if (+data > 0) {
-                        $('#items_found').html('<p>' + "@lang_u('messages.items_found')" + ': <span id="items_found_span">' + data + '</span></p>');
+                        $('#items_found').html('<p>' + "@lang('messages.items_found')" + ': <span id="items_found_span">' + data + '</span></p>');
                     }
                 }
             });
