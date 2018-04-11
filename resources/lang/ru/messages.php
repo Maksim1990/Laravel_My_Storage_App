@@ -163,7 +163,7 @@ return [
     'add_to_favorite'=>'Добавить в Избранные',
     'removed_from_favorite_list'=>'Удалено из Избранных',
     'thank_you_for_voting'=>'Спасибо, что проголосовали!',
-    'people_already_voted'=>'человек уже проголосовало',
+    'people_already_voted'=>'человек уже проголосовал(и)',
     'comment_was_removed'=>'Ваш комментарий был удалён!',
     'image_was_deleted'=>'Изображение было успешно удалено!',
     'want_to_delete_image'=>'Вы действительно хотите удалить данное изображение?',

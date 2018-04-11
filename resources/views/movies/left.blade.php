@@ -45,7 +45,7 @@
         @if(count($ratings)>0)
             <div id="rating_statistics_block">
                 <p id="rating_statistics_message" class="w3-text-green w3-center w3-tiny">
-                    <span id="voteCount" class="w3-medium">{{$countRating}}</span>@lang('messages.thank_you_for_voting')
+                    <span id="voteCount" class="w3-medium">{{$countRating}}</span> @lang('messages.people_already_voted')
                 </p>
             </div>
         @endif
