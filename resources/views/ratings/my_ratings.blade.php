@@ -15,7 +15,7 @@
 
     <div class="col-sm-8 col-sm-offset-1 col-lg-8 col-lg-offset-1" style="padding-top: 150px;">
         <div class="w3-center">
-            <h1 class="text-uppercase">@lang('messages.my') ratings</h1>
+            <h1 class="text-uppercase">@lang('messages.my') @lang('messages.votes')</h1>
         </div>
         <div class="col-sm-12 col-xs-12" style="margin-bottom: 100px;">
             @if(count($ratings)>0)

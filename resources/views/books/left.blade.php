@@ -41,12 +41,12 @@
     </div>
 
     <div id="rating_message_block" class="w3-center">
-        <span id="rating_message" style="display:{{$blnDisplayRateMessage}};" class="w3-text-green">Thank you for voting!</span>
+        <span id="rating_message" style="display:{{$blnDisplayRateMessage}};" class="w3-text-green">@lang('messages.thank_you_for_voting')</span>
     </div>
     @if(count($ratings)>0)
         <div id="rating_statistics_block">
             <p id="rating_statistics_message" class="w3-text-green w3-center w3-tiny">
-                <span id="voteCount" class="w3-medium">{{$countRating}}</span> people already voted
+                <span id="voteCount" class="w3-medium">{{$countRating}}</span>@lang('messages.thank_you_for_voting')
             </p>
         </div>
     @endif

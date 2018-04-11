@@ -76,18 +76,18 @@
             </div>
             </div>
             <div class="col-sm-6 col-xs-12" id="book_details">
-                <p>@lang_u('messages.book') ID: {{$book->id}}</p>
-                <p>@lang_u('messages.title'): {{$book->title}}</p>
-                <p>@lang_u('messages.author'): {{$book->author}}</p>
-                <p>Added by:
+                    <p>@lang('messages.book') ID: {{$book->id}}</p>
+                    <p>@lang('messages.title'): {{$book->title}}</p>
+                    <p>@lang('messages.author'): {{$book->author}}</p>
+                <p>@lang('messages.added_by'):
                     <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.$book->user->id)}}">
                         {{$book->user->name}}</a></p>
             </div>
             <div class="col-sm-1 col-xs-12" id="like_block">
                 @if($blnLike)
-                    @php $strClass="fas";$strStatus="dislike";$txtTooltip='Remove from favorite';  @endphp
+                    @php $strClass="fas";$strStatus="dislike";$txtTooltip=Lang::get('messages.add');  @endphp
                 @else
-                    @php $strClass="far";$strStatus="like";$txtTooltip='Add to favorite'; @endphp
+                    @php $strClass="far";$strStatus="like";$txtTooltip=Lang::get('messages.add_to_favorite'); @endphp
                 @endif
                 <div class="tooltip_custom" id="tooltip_custom">
                     <a href="#" class="like" data-status="{{$strStatus}}"><i
@@ -133,7 +133,7 @@
             <p><input class="w3-input w3-padding-16 w3-border" id="input_comment" type="text"
                       placeholder="@lang('messages.create_comment')"
                       onkeyup="return activateButton(event)">
-                <button class="btn btn-success" disabled="true" id="add_comment">@lang_u('messages.add')</button>
+                <button class="btn btn-success" disabled="true" id="add_comment">@lang('messages.add')</button>
             </p>
 
             <div id="commentBlock" class="col-sm-12 col-lg-12">
@@ -323,7 +323,7 @@
             var image_id = $('#modal_image_show_id').val();
             var url = '{{ URL::to('delete_image_ajax') }}';
             var module_id=1;
-            var confDelete = confirm('Do you want to delete this image?');
+            var confDelete = confirm('{{trans('messages.want_to_delete_image')}}');
             if (confDelete) {
                 $.ajax({
                     method: 'POST',
@@ -342,7 +342,7 @@
                             new Noty({
                                 type: 'success',
                                 layout: 'topRight',
-                                text: 'Image was successfully deleted!'
+                                text: '{{trans('messages.image_was_deleted')}}'
                             }).show();
                             location.reload();
                         }
@@ -386,7 +386,7 @@
                             new Noty({
                                 type: 'success',
                                 layout: 'topRight',
-                                text: 'Successfully rated as ' + value
+                                text: '{{trans('messages.successfully_rated_as')}}' + value
                             }).show();
 
                         }
@@ -424,7 +424,7 @@
                             new Noty({
                                 type: 'success',
                                 layout: 'topRight',
-                                text: 'Your comment was removed!'
+                                text: '{{trans('messages.comment_was_removed')}}'
                             }).show();
 
                         }
@@ -455,13 +455,13 @@
                     if (data['status']) {
 
                         if (strStatus == 'like') {
-                            var strInfo = 'Added to favorite';
-                            var strInfoAjax = 'Remove from favorite';
+                            var strInfo = '{{trans('messages.added_to_favorite')}}';
+                            var strInfoAjax = '{{trans('messages.remove_from_favorite_list')}}';
                             var textStatus = 'dislike';
                             var textClassAdd = 'fas';
                         } else {
-                            var strInfo = 'Removed from favorite';
-                            var strInfoAjax = 'Add to favorite';
+                            var strInfo = '{{trans('messages.removed_from_favorite_list')}}';
+                            var strInfoAjax = '{{trans('messages.add_to_favorite')}}';
                             var textStatus = 'like';
                             var textClassAdd = 'far';
                         }
