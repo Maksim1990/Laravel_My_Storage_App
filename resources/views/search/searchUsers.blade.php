@@ -29,7 +29,7 @@
                index-name="users">
         <ais-input class="form-control" placeholder="Search by name or email..."></ais-input>
         <div class="alert alert-success" role="alert" style="text-align:right;height: 100%; margin-bottom: 20px;">
-            <span style="margin-right: 10%;font-size: 16px;">@lang('messages.algolia_searching_functionality') <strong>Laravel Scout</strong> & <strong>Algolia</strong></span>
+            <span style="margin-right: 20px;">@lang('messages.algolia_searching_functionality') <strong>Laravel Scout</strong> & <strong>Algolia</strong></span>
             <img  height="55"
                   src="{{"/images/includes/algolia-mark-blue.png"}}"
                   alt="">
