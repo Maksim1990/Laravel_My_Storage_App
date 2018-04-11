@@ -229,6 +229,38 @@
         </div>
     </div>
 
+    <!-- Modal that pops up when you click on "Delete profile" -->
+    <div id="id08" class="w3-modal" style="z-index:4">
+        <div class="w3-modal-content w3-animate-zoom">
+            <div class="w3-container w3-padding w3-green">
+                <h2 class="text-uppercase text-uppercase">
+                    <span id="people_voted_modal_int">{{$countRating}}</span> @lang('messages.people_already_voted')</h2>
+            </div>
+            <div class="w3-panel">
+                <div class="w3-section">
+                    <div class="col-sm-12" id="people_voted_modal" style="padding-bottom: 20px;border-bottom: 1px solid darkgray;">
+                        @if(count($ratings)>0)
+                            @foreach($ratings as $rating)
+
+                                <div class="col-sm-1 w3-center">
+                                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.$rating->user->id)}}">
+                                        <img style="border-radius: 20px;margin-top: -5px;" height="35"
+                                             src="{{$rating->user->profile->photo ? $rating->user->profile->photo->path :"/images/includes/no_user.png"}}"
+                                             alt=""><br>
+                                        {{$rating->user->name}} </a></div>
+                            @endforeach
+                        @endif
+                    </div>
+
+                    <div class="col-sm-12" style="padding-bottom: 20px;padding-top: 20px;">
+                        <a class="w3-button w3-green"
+                           onclick="document.getElementById('id08').style.display='none'">@lang('messages.cancel') </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @stop
 @section('scripts')
     <script src="{{asset('js/examples.js')}}" type="text/javascript"></script>
@@ -361,7 +393,6 @@
                 var current_rating = $('#current_number').html();
                 var item_number = '{{$movie->id}}';
                 var module_number=2;
-                $('#current_number').html(+current_rating + +value);
                 $('#ratingSelect').toggleClass('invisible');
                 $.ajax({
                     method: 'POST',
@@ -379,9 +410,27 @@
 
                             $('#ratingSelect').barrating('destroy');
                             $('#rating_message').css('display', 'block');
-
+                            $('#current_number').html(+current_rating + +value);
                             var intRating = $('#voteCount').html();
-                            $('#voteCount').html(+intRating + 1);
+                            if(current_rating>0){
+                                $('#voteCount,#people_voted_modal_int').html(+intRating + 1);
+                            }else{
+                                var strLink="<a href='#' onclick=\"document.getElementById('id08').style.display='block'\">\n" +
+                                    "                <span id=\"voteCount\" class=\"w3-medium\">1</span> {{trans('messages.people_already_voted')}}\n" +
+                                    "                </a>";
+                                $('#rating_statistics_message').html(strLink);
+                                $('#people_voted_modal_int').html(1);
+                            }
+
+
+                            var strImageLink=" <div class=\"col-sm-1 w3-center\">\n" +
+                                "                                    <a href=\"{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::user()->id)}}\">\n" +
+                                "                                        <img style=\"border-radius: 20px;margin-top: -5px;\" height=\"35\"\n" +
+                                "                                             src=\"{{Auth::user()->profile->photo ? $rating->user->profile->photo->path :'/images/includes/no_user.png'}}\"\n" +
+                                "                                             alt=\"\"><br>\n" +
+                                "                                        {{Auth::user()->name}} </a>\n" +
+                                "                                </div>";
+                            $('#people_voted_modal').append(strImageLink);
                             new Noty({
                                 type: 'success',
                                 layout: 'topRight',

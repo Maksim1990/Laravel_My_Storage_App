@@ -11,6 +11,7 @@ use App\ImageBook;
 use App\Photo;
 use App\Rating;
 use App\Setting;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;

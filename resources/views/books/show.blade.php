@@ -59,26 +59,30 @@
         <div class="col-sm-12 col-xs-12" style="margin-bottom: 100px;">
             <div class="col-sm-5 col-xs-12">
                 <div class="w3-center">
-                @if(!empty($book->photo_id) && !empty($book->photo_path))
-                    <img height="150" style="border-radius: 20px;"
-                         src="{{$book->photo_path }}"
-                         class="image-responsive" alt="">
-                @else
-                    <div style='border-radius: 20px;'>
-                        <p  id='add_image' class='w3-hover-opacity' style="height:200px;background-repeat: no-repeat;background-size: 250px 250px;background-image:url('{{"/images/includes/noImage.jpg"}}')">
-                            @if($book->user_id==Auth::id() || Auth::user()->role_id=='1')
-                                <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id."/edit/image")}}" style='height:100%;text-decoration:none;'>
-                                    <i id='add_image_icon' style='position:relative;top:100px;display:none;font-size:30px;color:gray;' class=" fa fa-plus-circle" aria-hidden="true"></i></a>
-                            @endif
-                        </p>
-                    </div>
-                @endif
-            </div>
+                    @if(!empty($book->photo_id) && !empty($book->photo_path))
+                        <img height="150" style="border-radius: 20px;"
+                             src="{{$book->photo_path }}"
+                             class="image-responsive" alt="">
+                    @else
+                        <div style='border-radius: 20px;'>
+                            <p id='add_image' class='w3-hover-opacity'
+                               style="height:200px;background-repeat: no-repeat;background-size: 250px 250px;background-image:url('{{"/images/includes/noImage.jpg"}}')">
+                                @if($book->user_id==Auth::id() || Auth::user()->role_id=='1')
+                                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/books/'.$book->id."/edit/image")}}"
+                                       style='height:100%;text-decoration:none;'>
+                                        <i id='add_image_icon'
+                                           style='position:relative;top:100px;display:none;font-size:30px;color:gray;'
+                                           class=" fa fa-plus-circle" aria-hidden="true"></i></a>
+                                @endif
+                            </p>
+                        </div>
+                    @endif
+                </div>
             </div>
             <div class="col-sm-6 col-xs-12" id="book_details">
-                    <p>@lang('messages.book') ID: {{$book->id}}</p>
-                    <p>@lang('messages.title'): {{$book->title}}</p>
-                    <p>@lang('messages.author'): {{$book->author}}</p>
+                <p>@lang('messages.book') ID: {{$book->id}}</p>
+                <p>@lang('messages.title'): {{$book->title}}</p>
+                <p>@lang('messages.author'): {{$book->author}}</p>
                 <p>@lang('messages.added_by'):
                     <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.$book->user->id)}}">
                         {{$book->user->name}}</a></p>
@@ -111,7 +115,8 @@
                                    data-image-id="{{$item->photo->id}}"
                                    data-image-path="{{$item->photo->path}}"
                                 >
-                                    <img style="border-radius: 30px;" width="160" height="160" id="image_img_{{$item->photo->id}}"
+                                    <img style="border-radius: 30px;" width="160" height="160"
+                                         id="image_img_{{$item->photo->id}}"
                                          src="{{$item->photo->path}}"
                                          alt="">
                                 </a>
@@ -119,7 +124,7 @@
                         @endforeach
                     </div>
                 </div>
-                @else
+            @else
 
                 <div class="col-sm-12 col-xs-12" style="margin-bottom: 80px;">
                     <p class="w3-text-green w3-xlarge">@lang('messages.has_no_images')!</p>
@@ -216,7 +221,8 @@
                             <div>
                                 <p>@lang('messages.delete_selected_item')?</p>
                             </div>
-                            <a class="btn btn-success " style="display: inline;padding: 10px 10px;margin-right: 30px;" onclick="document.getElementById('id05').style.display='none'">@lang('messages.cancel') </a>
+                            <a class="btn btn-success " style="display: inline;padding: 10px 10px;margin-right: 30px;"
+                               onclick="document.getElementById('id05').style.display='none'">@lang('messages.cancel') </a>
                             {{ Form::open(['method' =>'DELETE' , 'action' => ['BookController@destroy',$book->id]])}}
 
                             {!! Form::submit(trans('messages.delete'),['class'=>'btn btn-danger']) !!}
@@ -225,6 +231,39 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal that pops up when you click on "Delete profile" -->
+    <div id="id07" class="w3-modal" style="z-index:4">
+        <div class="w3-modal-content w3-animate-zoom">
+            <div class="w3-container w3-padding w3-green">
+                <h2 class="text-uppercase text-uppercase">
+                    <span  id="people_voted_modal_int">{{$countRating}}</span> @lang('messages.people_already_voted')</h2>
+            </div>
+            <div class="w3-panel">
+                <div class="w3-section">
+                    <div class="col-sm-12" id="people_voted_modal" style="padding-bottom: 20px;border-bottom: 1px solid darkgray;">
+                        @if(count($ratings)>0)
+                            @foreach($ratings as $rating)
+
+                                <div class="col-sm-1 w3-center">
+                                    <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.$rating->user->id)}}">
+                                        <img style="border-radius: 20px;margin-top: -5px;" height="35"
+                                             src="{{$rating->user->profile->photo ? $rating->user->profile->photo->path :"/images/includes/no_user.png"}}"
+                                             alt=""><br>
+                                        {{$rating->user->name}} </a>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+
+                    <div class="col-sm-12" style="padding-bottom: 20px;padding-top: 20px;">
+                        <a class="w3-button w3-green"
+                           onclick="document.getElementById('id07').style.display='none'">@lang('messages.cancel') </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -322,7 +361,7 @@
             var token = '{{\Illuminate\Support\Facades\Session::token()}}';
             var image_id = $('#modal_image_show_id').val();
             var url = '{{ URL::to('delete_image_ajax') }}';
-            var module_id=1;
+            var module_id = 1;
             var confDelete = confirm('{{trans('messages.want_to_delete_image')}}');
             if (confDelete) {
                 $.ajax({
@@ -330,7 +369,7 @@
                     url: url,
                     data: {
                         image_id: image_id,
-                        module_id:module_id,
+                        module_id: module_id,
                         _token: token
                     },
                     success: function (data) {
@@ -361,8 +400,8 @@
                 var urlRating = '{{ URL::to('register_rating_ajax') }}';
                 var current_rating = $('#current_number').html();
                 var item_number = '{{$book->id}}';
-                var module_number=1;
-                $('#current_number').html(+current_rating + +value);
+                var module_number = 1;
+
                 $('#ratingSelect').toggleClass('invisible');
                 $.ajax({
                     method: 'POST',
@@ -370,7 +409,7 @@
                     dataType: "json",
                     data: {
                         rating_value: value,
-                        module_number:module_number,
+                        module_number: module_number,
                         item_number: item_number,
                         _token: token
                     },
@@ -380,9 +419,27 @@
 
                             $('#ratingSelect').barrating('destroy');
                             $('#rating_message').css('display', 'block');
-
+                            $('#current_number').html(+current_rating + +value);
                             var intRating = $('#voteCount').html();
-                            $('#voteCount').html(+intRating + 1);
+                            if (current_rating > 0) {
+                                $('#voteCount,#people_voted_modal_int').html(+intRating + 1);
+                            } else {
+                                var strLink = "<a href='#' onclick=\"document.getElementById('id07').style.display='block'\">\n" +
+                                    "                <span id=\"voteCount\" class=\"w3-medium\">1</span> {{trans('messages.people_already_voted')}}\n" +
+                                    "                </a>";
+                                $('#rating_statistics_message').html(strLink);
+                                $('#people_voted_modal_int').html(1);
+                            }
+
+                            var strImageLink=" <div class=\"col-sm-1 w3-center\">\n" +
+                                "                                    <a href=\"{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::user()->id)}}\">\n" +
+                                "                                        <img style=\"border-radius: 20px;margin-top: -5px;\" height=\"35\"\n" +
+                                "                                             src=\"{{Auth::user()->profile->photo ? $rating->user->profile->photo->path :'/images/includes/no_user.png'}}\"\n" +
+                                "                                             alt=\"\"><br>\n" +
+                                "                                        {{Auth::user()->name}} </a>\n" +
+                                "                                </div>";
+                            $('#people_voted_modal').append(strImageLink);
+
                             new Noty({
                                 type: 'success',
                                 layout: 'topRight',
@@ -511,11 +568,11 @@
 
     </script>
     <script>
-        $(document).ready(function(){
-            $("#add_image").hover(function(){
-                    $("#add_image_icon").css('display','inline');
-                },function(){
-                    $("#add_image_icon").css('display','none');
+        $(document).ready(function () {
+            $("#add_image").hover(function () {
+                    $("#add_image_icon").css('display', 'inline');
+                }, function () {
+                    $("#add_image_icon").css('display', 'none');
                 }
             );
         });

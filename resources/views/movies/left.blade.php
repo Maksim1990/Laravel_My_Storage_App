@@ -42,13 +42,15 @@
         <div id="rating_message_block" class="w3-center">
             <span id="rating_message" style="display:{{$blnDisplayRateMessage}};" class="w3-text-green">@lang('messages.thank_you_for_voting')</span>
         </div>
-        @if(count($ratings)>0)
-            <div id="rating_statistics_block">
-                <p id="rating_statistics_message" class="w3-text-green w3-center w3-tiny">
-                    <span id="voteCount" class="w3-medium">{{$countRating}}</span> @lang('messages.people_already_voted')
-                </p>
-            </div>
-        @endif
+        <div id="rating_statistics_block">
+            <p id="rating_statistics_message" class="w3-text-green w3-center w3-tiny">
+                @if(count($ratings)>0)
+                    <a href="#" onclick="document.getElementById('id08').style.display='block'">
+                        <span id="voteCount" class="w3-medium">{{$countRating}}</span> @lang('messages.people_already_voted')
+                    </a>
+                @endif
+            </p>
+        </div>
 
     </div>
 </div>
