@@ -16,29 +16,29 @@ color:white;"
     <div class="navbar ">
         <div id="navbar_step" class="span6" data-step="2" data-intro="@lang('messages.instant_link_to_menu')"
              data-position='bottom'>
-            <a href="{{ route('logout') }}"
+            <a style="padding-bottom:15px;padding-top:20px;" href="{{ route('logout') }}"
                onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i
                     class="fas fa-sign-out-alt"></i></a>
            <div id="">
                @if(Auth::user()->role_id==1 || Auth::user()->role_id==4 || Auth::user()->role_id==2)
             <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/plans')}}"
-               style="padding-top: 5px;padding-bottom: 2px" id="current_plan_link">
+               style="padding-top: 5px;padding-bottom: 6px" id="current_plan_link">
                 <span style="text-transform: capitalize;font-size: 12px;">@lang('messages.current_plan')</span>
                 <br><span style="color: gold;font-weight: bold;" class="text-uppercase">{{Auth::user()->setting->subscription_plan}}</span> </a>
 
                @else
                    <a href="#"
-                      style="padding-top: 5px;padding-bottom: 2px" id="current_plan_link">
+                      style="padding-top: 5px;padding-bottom: 6px" id="current_plan_link">
                        <span style="text-transform: capitalize;font-size: 12px;">@lang('messages.current_plan')</span>
                        <br><span style="color: gold;font-weight: bold;" class="text-uppercase">{{Auth::user()->setting->subscription_plan}}</span> </a>
 
                @endif
-            <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}">
+            <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}" style="padding-top: 20px;">
                 <img style="border-radius: 20px;margin-top: -10px;" height="35"
                      src="{{Auth::user()->profile->photo ? Auth::user()->profile->photo->path :"/images/includes/no_user.png"}}"
                      alt="">
             </a>
-            <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search')}}"><i class="fas fa-search"></i>
+            <a style="padding-bottom:15px;padding-top:20px;" href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search')}}"><i class="fas fa-search"></i>
                 @lang('messages.search')</a>
            </div>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
