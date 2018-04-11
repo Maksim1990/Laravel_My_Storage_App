@@ -40,6 +40,10 @@
             <div class="col-sm-8 col-xs-12">
                 <p><h1 class="w3-text-green">{{$user->name}} {{$user->profile->lastname?$user->profile->lastname:""}}</h1></p>
                 <p class="w3-text-green w3-center w3-small">Joined {{$user->created_at->diffForHumans()}}</p>
+                <p class="w3-text-left "><span class="w3-text-green">@lang('messages.country'):</span> {{!empty($user->profile->country)?$user->profile->country:"-//-"}}</p>
+                <p class="w3-text-left "><span class="w3-text-green">@lang('messages.city'):</span> {{!empty($user->profile->city)?$user->profile->city:"-//-"}}</p>
+                <p class="w3-text-left "><span class="w3-text-green">@lang('messages.birthdate'):</span> {{!empty($user->profile->birthdate)?$user->profile->birthdate:"-//-"}}</p>
+                <p class="w3-text-left "><span class="w3-text-green">@lang('messages.user_email'):</span> {{!empty($user->email)?$user->email:"-//-"}}</p>
             </div>
         </div>
         <div class="col-sm-12 col-xs-12">
