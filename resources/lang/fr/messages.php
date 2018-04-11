@@ -169,4 +169,5 @@ return [
     'image_was_deleted'=>'L\'image a été supprimée avec succès!',
     'want_to_delete_image'=>'Voulez-vous supprimer cette image?',
     'successfully_rated_as'=>'Avec succès évalué comme ',
+    'books_imported_this_year'=>'Livres importés cette année',
 ];

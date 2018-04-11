@@ -154,6 +154,7 @@ class UserController extends Controller
 
 
         $user = User::findOrFail($id);
+        $blnBooksFromThisYear=false;
         //-- Get all books that user uploaded this year
         $books = Book::where('user_id', $user->id)->whereYear('created_at', 2018)->get();
 
@@ -182,6 +183,7 @@ class UserController extends Controller
 
         //-- Loop through book created date and fill quantity depending on month value
         foreach ($books as $book) {
+            $blnBooksFromThisYear=true;
             $date = $book->created_at;
             $arrDate = explode(" ", $date);
             $arrYMD = explode("-", $arrDate[0]);
@@ -224,7 +226,7 @@ class UserController extends Controller
         }
 
         $title = $user->name . " profile";
-        return view('users.show', compact('arrMonthNames', 'user', 'title'));
+        return view('users.show', compact('arrMonthNames', 'user', 'title','blnBooksFromThisYear'));
 
     }
 

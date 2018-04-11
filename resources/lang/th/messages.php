@@ -168,4 +168,5 @@ return [
     'image_was_deleted'=>'รูปภาพถูกลบเรียบร้อยแล้ว',
     'want_to_delete_image'=>'คุณต้องการลบภาพนี้หรือไม่',
     'successfully_rated_as'=>'ได้รับคะแนนเป็น ',
+    'books_imported_this_year'=>'หนังสือที่นำเข้าในปีนี้',
 ];

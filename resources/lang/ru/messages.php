@@ -168,4 +168,5 @@ return [
     'image_was_deleted'=>'Изображение было успешно удалено!',
     'want_to_delete_image'=>'Вы действительно хотите удалить данное изображение?',
     'successfully_rated_as'=>'Вы проголосовали как ',
+    'books_imported_this_year'=>'Книги, загруженные в этом году',
 ];

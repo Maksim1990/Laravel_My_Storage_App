@@ -65,10 +65,10 @@
                 </div>
             </div>
         </div>
-
+@if($blnBooksFromThisYear)
         <div class="col-sm-12 col-xs-12">
             <div class="w3-center">
-                <h2>{{$user->name}}'s books for these year</h2>
+                <h2>@lang('messages.books_imported_this_year')</h2>
             </div>
             <div class="col-sm-5 col-sm-offset-1 col-xs-12">
                 <div id="user_diagram">
@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-
+@endif
 
 @endsection
 @section('scripts')

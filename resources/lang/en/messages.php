@@ -169,4 +169,5 @@ return [
     'image_was_deleted'=>'Image was successfully deleted!',
     'want_to_delete_image'=>'Do you want to delete this image?',
     'successfully_rated_as'=>'Successfully rated as ',
+    'books_imported_this_year'=>'Books that imported this year',
 ];
