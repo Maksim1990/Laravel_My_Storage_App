@@ -154,4 +154,8 @@ return [
     'format_is_not_correct'=>'Le format de fichier n\'est pas correct! Veuillez réessayer',
     'change_book_main_image'=>'Changer l\'image principale du livre',
     'upload_multiple_images'=>'Importer plusieurs images',
+    'information_for_developers'=>'Informations pour les développeurs',
+    'bottom_right_button_for_support_access'=>'Utilisez l\'icône en bas à droite pour accéder au support instantané',
+    'for_developers'=>'Pour les développeurs',
+    'contacts'=>'Contacts',
 ];

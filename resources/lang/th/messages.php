@@ -153,4 +153,8 @@ return [
     'format_is_not_correct'=>'รูปแบบไฟล์ไม่ถูกต้อง กรุณาลองอีกครั้ง',
     'change_book_main_image'=>'เปลี่ยนภาพหลักของหนังสือ',
     'upload_multiple_images'=>'อัปโหลดภาพหลายภาพ',
+    'information_for_developers'=>'ข้อมูลสำหรับนักพัฒนาซอฟต์แวร์',
+    'bottom_right_button_for_support_access'=>'ใช้ไอคอนด้านล่างขวาเพื่อเข้าถึงการเข้าถึงได้ทันที',
+    'for_developers'=>'สำหรับนักพัฒนาซอฟต์แวร์',
+    'contacts'=>'รายชื่อผู้ติดต่อ',
 ];
