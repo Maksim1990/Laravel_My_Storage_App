@@ -33,7 +33,7 @@
         <div class=" w3-right">
             <div id="actions_block"
                  style="display: none;float: left;font-size: 20px;margin-right: 30px;margin-top: 5px;">
-                <a href="#" class="w3-text-red" id="delete_multiple">@lang_u('messages.delete') @lang('messages.all')
+                <a href="#" class="w3-text-red" id="delete_multiple">@lang('messages.delete') @lang('messages.all')
                     <span id="actions_block_number"></span>
                     @lang('messages.selected') @lang('messages.movies')?</a>
                 <a href="#" id="uncheck_all">@lang('messages.uncheck_all')</a>
