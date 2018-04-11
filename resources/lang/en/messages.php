@@ -154,4 +154,8 @@ return [
     'format_is_not_correct'=>'File format is not correct! Please try again',
     'change_book_main_image'=>'Change book main image',
     'upload_multiple_images'=>'Upload multiple image',
+    'information_for_developers'=>'Information for developers',
+    'bottom_right_button_for_support_access'=>'Use bottom right icon for instant support access',
+    'for_developers'=>'For developers',
+    'contacts'=>'Contacts',
 ];

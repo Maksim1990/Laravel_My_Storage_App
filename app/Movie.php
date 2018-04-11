@@ -14,6 +14,14 @@ class Movie extends Model
         'author','finished_date','movie_created_year','category_id','photo_path','photo_id'
     ];
 
+    public function toSearchableArray()
+    {
+        $record = $this->toArray();
+
+        unset($record['photo_id'], $record['active'], $record['finished_date'],$record['movie_created_year'], $record['category_id'], $record['photo_path']);
+
+        return $record;
+    }
     public $with=['user','photos','category'];
 
     public function user(){

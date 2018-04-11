@@ -30,6 +30,27 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
+    public function toSearchableArray()
+    {
+        $record = $this->toArray();
+
+        unset(
+            $record['password'],
+            $record['account_type'],
+            $record['sns_acc_id'],
+            $record['status'],
+            $record['role_id'],
+            $record['is_active'],
+            $record['stripe_id'],
+            $record['card_brand'],
+            $record['card_last_four'],
+            $record['trial_ends_at']
+        );
+
+        return $record;
+    }
+
     public $with=['setting','profile'];
 
     public function books()

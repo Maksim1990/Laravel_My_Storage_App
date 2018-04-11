@@ -14,6 +14,16 @@ class Book extends Model
         'author','date','category_id','photo_path'
     ];
 
+    public function toSearchableArray()
+    {
+        $record = $this->toArray();
+
+        unset($record['photo_id'], $record['active'], $record['date'], $record['category_id'], $record['photo_path']);
+
+        return $record;
+    }
+
+
     public $with=['user','photos','category'];
 
     public function user(){
