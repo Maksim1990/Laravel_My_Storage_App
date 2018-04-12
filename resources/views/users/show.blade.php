@@ -3,6 +3,7 @@
 @section ('scripts_header')
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
 @endsection
 @section ('styles')
     <link href="{{asset('css/jquery.bxslider.css')}}" rel="stylesheet">
@@ -77,7 +78,7 @@
         </div>
     </div>
 @endif
-
+    @include('includes.modals_adds')
 @endsection
 @section('scripts')
     <script>

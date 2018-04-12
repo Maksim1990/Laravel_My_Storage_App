@@ -170,4 +170,7 @@ return [
     'want_to_delete_image'=>'Voulez-vous supprimer cette image?',
     'successfully_rated_as'=>'Avec succès évalué comme ',
     'books_imported_this_year'=>'Livres importés cette année',
+    'go_to_app'=>'Aller à l\'application',
+    'try_other_apps'=>'Essayer d\'autres applications',
+    'try'=>'Essayer',
 ];

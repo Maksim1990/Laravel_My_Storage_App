@@ -146,6 +146,16 @@
     #user_left p:hover{
         background-color:lightgray;
     }
+    .adds_content{
+        font-family: 'Roboto Condensed', sans-serif;
+        font-size: 22px;
+        font-weight:500 ;
+    }
 
-
+    @media (min-width: 768px) {
+        .col-sm-12 {
+            width: 98%;
+            float: right;
+        }
+    }
 </style>

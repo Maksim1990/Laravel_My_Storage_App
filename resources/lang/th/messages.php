@@ -169,4 +169,7 @@ return [
     'want_to_delete_image'=>'คุณต้องการลบภาพนี้หรือไม่',
     'successfully_rated_as'=>'ได้รับคะแนนเป็น ',
     'books_imported_this_year'=>'หนังสือที่นำเข้าในปีนี้',
+    'go_to_app'=>'ไปที่แอพพลิเคชัน',
+    'try_other_apps'=>'ลองใช้แอพพลิเคชันอื่น ๆ',
+    'try'=>'ลอง',
 ];

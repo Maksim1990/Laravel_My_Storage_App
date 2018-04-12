@@ -170,4 +170,7 @@ return [
     'want_to_delete_image'=>'Do you want to delete this image?',
     'successfully_rated_as'=>'Successfully rated as ',
     'books_imported_this_year'=>'Books that imported this year',
+    'go_to_app'=>'Go to App',
+    'try_other_apps'=>'try other apps',
+    'try'=>'Try',
 ];

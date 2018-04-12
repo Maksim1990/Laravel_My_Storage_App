@@ -14,4 +14,6 @@
         </a>
     </div>
         @endif
+
+        @include('includes.advertise')
 </div>
