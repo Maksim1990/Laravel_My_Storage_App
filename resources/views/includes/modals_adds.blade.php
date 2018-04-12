@@ -73,3 +73,37 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal that pops up when you click on "Help Translate advertisement" -->
+<div id="id0_flat_stock" class="w3-modal" style="z-index:1000">
+    <div class="w3-modal-content w3-animate-zoom">
+        <div class="w3-container w3-padding w3-green">
+            <h2 class="text-uppercase">FLAT STOCK App</h2>
+        </div>
+        <div class="w3-panel">
+            <div class="w3-section">
+                <div class="w3-left-align">
+                    <div class="col-sm-12 col-xs-12 w3-center">
+                        <img height="300" src="{{"/images/adds/add_3.png"}}" alt="">
+                    </div>
+                    <div class="col-sm-12 col-xs-12 w3-center"
+                         style="margin-top: 20px;border-bottom: 1px solid darkgray;">
+                        <p class="adds_content">
+                            FLAT STOCK App was created with the main goal to provide convenient and fast service of searching available rooms for renting around the world.
+                            Application core is mainly based on Laravel 5.5 framework, MongoDB database, Google Maps API service and Laravel Cache in order to provide fast access to content from around the world.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-12 w3-center" style="padding-bottom: 20px;padding-top: 20px;">
+                    <a class="w3-button w3-red" style="float: left;"
+                       onclick="document.getElementById('id0_flat_stock').style.display='none'">@lang('messages.cancel') </a>
+                    <a class="w3-button  w3-light-green"
+                       href="{{URL::to('http://web.discoveringworld.net/projects/flatstock-app/')}}" target="_blank">@lang('messages.description')</a>
+                    <a class="w3-button w3-green" style="float: right;"
+                       href="{{URL::to('http://www.discoveringworld.net/flatstock/')}}" target="_blank">@lang('messages.go_to_app') </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

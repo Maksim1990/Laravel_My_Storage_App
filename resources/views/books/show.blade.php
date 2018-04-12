@@ -52,10 +52,10 @@
     </style>
 @endsection
 @section('content')
-    <div class="col-sm-2 col-lg-2">
+    <div class="hidden-sm col-lg-2 hidden-xs hidden-md">
         @include('books.left')
     </div>
-    <div class="col-sm-8 col-sm-offset-1 col-lg-8 col-lg-offset-1" style="padding-top: 30px;">
+    <div class="col-sm-8 col-sm-offset-2 col-lg-8 col-lg-offset-2 col-xs-12 col-md-12" style="padding-top: 30px;">
         <div class="col-sm-12 col-xs-12" style="margin-bottom: 100px;">
             <div class="col-sm-5 col-xs-12">
                 <div class="w3-center">

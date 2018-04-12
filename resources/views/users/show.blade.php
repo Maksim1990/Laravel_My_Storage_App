@@ -13,7 +13,7 @@
     <div class="hidden-sm col-lg-2 hidden-xs hidden-md">
         @include('users.left')
     </div>
-    <div class="col-sm-10 col-xs-10 " id="main_profile_block">
+    <div class="col-sm-9 col-sm-offset-1 col-xs-10 " id="main_profile_block">
         <div class="col-sm-12 col-xs-12" style="margin-bottom: 30px;">
             <div class="col-sm-4 col-xs-12">
                 <div class="w3-center">
@@ -47,9 +47,9 @@
                 <p class="w3-text-left "><span class="w3-text-green">@lang('messages.user_email'):</span> {{!empty($user->email)?$user->email:"-//-"}}</p>
             </div>
         </div>
-        <div class="col-sm-12 col-xs-12">
+        <div class="col-sm-10 col-sm-offset-1 col-xs-12">
 
-            <ul class="nav nav-tabs" role="tablist">
+            <ul class="nav nav-tabs" style="margin-left: 30px;" role="tablist">
                 <li role="presentation" class="active"><a href="#home" aria-controls="home" class="trig1" role="tab"
                                                           data-toggle="tab">@lang_u('messages.books')</a></li>
                 <li role="presentation"><a href="#profile" aria-controls="profile" class="trig2" role="tab"

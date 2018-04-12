@@ -28,7 +28,7 @@
                         <tr id="module_1_{{$book->id}}">
                             <td>
                                 <div class="tooltip_custom"><i class="fas fa-info-circle w3-text-green"></i>
-                                    <span class="tooltiptext">{!! str_limit($book->description, 400) !!}</span>
+                                    <span class="tooltiptext">{!! str_limit((!empty($book->description)&& $book->description!="none")?$book->description:trans('messages.no_description'), 400) !!}</span>
                                 </div>
                                 <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/'.$book->id)}}">
                                     {{$book->title}}</a></td>

@@ -56,6 +56,7 @@
             </p>
         </div>
 
-
+        @include('includes.advertise')
     </div>
+
 </div>

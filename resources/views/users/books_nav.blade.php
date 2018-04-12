@@ -1,6 +1,7 @@
 <div class="col-sm-12" id="books_slider_block" style="display: none;">
+    @if(count($user->books)>0)
     <div class="bxslider1">
-        @if(count($user->books)>0)
+
             @foreach($user->books as $book)
                 <div style="display: inline-block;padding-left: 30px;" class="w3-center">
                     @if(count($book->photos)>0)
@@ -31,8 +32,11 @@
                     @endif
                 </div>
             @endforeach
-        @endif
     </div>
+                @else
+            <h3 class="w3-text-green">@lang('messages.nothing_found')</h3>
+        @endif
+
 </div>
 <div id="books_simple_block" class="col-sm-12 col-xs-12" style="display: none;">
         @if(count($user->books)>0)
@@ -66,6 +70,8 @@
                     @endif
             </div>
             @endforeach
-        @endif
+    @else
+        <h3 class="w3-text-green">@lang('messages.nothing_found')</h3>
+    @endif
 
 </div>

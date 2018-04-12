@@ -173,4 +173,5 @@ return [
     'go_to_app'=>'Go to App',
     'try_other_apps'=>'try other apps',
     'try'=>'Try',
+    'no_description'=>'No description',
 ];

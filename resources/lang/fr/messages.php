@@ -173,4 +173,5 @@ return [
     'go_to_app'=>'Aller à l\'application',
     'try_other_apps'=>'Essayer d\'autres applications',
     'try'=>'Essayer',
+    'no_description'=>'Pas de description',
 ];

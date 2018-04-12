@@ -11,6 +11,11 @@
         <img  height="80" data-toggle="tooltip" title="@lang('messages.try') HELP TRANSLATE App" data-placement="top"
             src="{{"/images/adds/add_2.png"}}"
               alt=""></a></p>
+    <p style="height: 100px;">
+        <a href="#" onclick="document.getElementById('id0_flat_stock').style.display='block'" class="btn btn-success">
+            <img  height="80" data-toggle="tooltip" title="@lang('messages.try') FLAT STOCK App" data-placement="top"
+                  src="{{"/images/adds/add_3.png"}}"
+                  alt=""></a></p>
 </div>
 
 
