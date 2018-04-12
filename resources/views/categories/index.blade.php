@@ -4,7 +4,7 @@
 @section('content')
     <div class="w3-col m6 l6">
     <div class="col-sm-10 col-sm-offset-1"  style="padding-top: 20px;">
-        <p>@lang_u('messages.add') @lang('messages.category')</p>
+        <p>@lang('messages.add')</p>
 
         {!! Form::open(['method'=>'POST','action'=>'CategoryController@store'])!!}
         <div class="group-form" style="margin-bottom: 20px;">
@@ -12,7 +12,7 @@
             {!! Form::text('name', null, ['class'=>'form-control']) !!}
         </div>
 
-        {!! Form::submit(trans('messages.create')." ".trans('messages.category'),['class'=>'btn btn-success']) !!}
+        {!! Form::submit(trans('messages.create'),['class'=>'btn btn-success']) !!}
 
         {!! Form::close() !!}
 
@@ -31,6 +31,7 @@
                     <th>@lang('messages.name')</th>
                     <th>@lang('messages.created_at')</th>
                     <th>@lang('messages.updated_at')</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,9 +39,16 @@
                     @foreach($categories as $category)
                         <tr>
                             <td>{{$category->id}}</td>
-                            <td><a href="{{ URL::to('/categories/' . $category->id . '/edit') }}">{{$category->name}}</a></td>
+                            <td>
+                                <a href="{{ URL::to('/categories/' . $category->id) }}">{{$category->name}}</a>
+                            </td>
                             <td>{{$category->created_at ? $category->created_at->diffForHumans():"No date"}}</td>
                             <td>{{$category->updated_at ? $category->updated_at->diffForHumans():"No date"}}</td>
+                            <td>
+                                @if($category->user_id==Auth::id())
+                                <a href="{{ URL::to('/categories/' . $category->id . '/edit') }}" class="btn btn-warning">@lang('messages.edit')</a>
+                                    @endif
+                            </td>
                         </tr>
                     @endforeach
                 @endif

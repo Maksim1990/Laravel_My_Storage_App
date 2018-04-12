@@ -105,14 +105,20 @@
                 @if(count($category->books)>0 )
                     <div id="last_book">
                         <p> <i class="fas fa-book"></i> @lang('messages.last_book_was_added')
-                            {{$lastBook->user->name}} {{$lastBook->created_at?$lastBook->created_at->diffForHumans():""}}
+                            <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.$lastBook->user->id)}}" style="padding-top: 20px;">
+                                {{$lastBook->user->name}}
+                            </a>
+                             {{$lastBook->created_at?$lastBook->created_at->diffForHumans():""}}
                         </p>
                     </div>
                 @endif
                 @if(count($category->movies)>0 )
                     <div id="last_movie">
                         <p> <i class="fas fa-video"></i> @lang('messages.last_movie_was_added')
-                            {{$lastMovie->user->name}} {{$lastMovie->created_at?$lastMovie->created_at->diffForHumans():""}}
+                            <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.$lastMovie->user->id)}}" style="padding-top: 20px;">
+                            {{$lastMovie->user->name}}
+                            </a>
+                            {{$lastMovie->created_at?$lastMovie->created_at->diffForHumans():""}}
                         </p>
                     </div>
                 @endif

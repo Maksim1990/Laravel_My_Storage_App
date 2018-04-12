@@ -14,7 +14,7 @@
 
 
 
-        <a id="Link1" onclick="myFunc('Link_block_1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i
+        <a id="Link1" onclick="myFunc('Link_block_1')" href="javascript:void(0)" class="w3-bar-item w3-button text-uppercase"><i
                     class="fas fa-user  w3-text-green w3-margin-right"></i>@lang('messages.my_profile')<i
                     class="fa fa-caret-down w3-margin-left"></i></a>
 
@@ -59,7 +59,7 @@
             </a>
         </div>
 
-        <a id="Link2" onclick="myFunc('Link_block_2')" href="javascript:void(0)" class="w3-bar-item w3-button"><i
+        <a id="Link2" onclick="myFunc('Link_block_2')" href="javascript:void(0)" class="w3-bar-item w3-button text-uppercase"><i
                     class="fas fa-book w3-margin-right w3-text-green"></i>@lang('messages.books')<i class="fa fa-caret-down w3-margin-left"></i></a>
         <div id="Link_block_2" class="w3-hide w3-animate-left" style="padding-left: 30px;">
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/list/'.Auth::id())}}" class="w3-bar-item w3-button"><i
@@ -72,7 +72,7 @@
         </div>
 
 
-        <a id="Link3" onclick="myFunc('Link_block_3')" href="javascript:void(0)" class="w3-bar-item w3-button"><i
+        <a id="Link3" onclick="myFunc('Link_block_3')" href="javascript:void(0)" class="w3-bar-item w3-button text-uppercase"><i
                     class="fas fa-video w3-margin-right  w3-text-green"></i>@lang('messages.movies')<i class="fa fa-caret-down w3-margin-left"></i></a>
         <div id="Link_block_3" class="w3-hide w3-animate-left" style="padding-left: 30px;">
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/movies/list/'.Auth::id())}}" class="w3-bar-item w3-button"><i
@@ -85,7 +85,7 @@
             @lang('messages.movies')</a>
         </div>
 
-        <a id="Link4" onclick="myFunc('Link_block_4')" href="javascript:void(0)" class="w3-bar-item w3-button"><i
+        <a id="Link4" onclick="myFunc('Link_block_4')" href="javascript:void(0)" class="w3-bar-item w3-button text-uppercase"><i
                     class="fab fa-ethereum w3-margin-right  w3-text-green"></i>@lang('messages.other_functions')<i
                     class="fa fa-caret-down w3-margin-left"></i></a>
         <div id="Link_block_4" class="w3-hide w3-animate-left" style="padding-left: 30px;">
