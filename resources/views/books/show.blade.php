@@ -208,7 +208,7 @@
         </div>
     </div>
 
-    <!-- Modal that pops up when you click on "Delete profile" -->
+    <!-- Modal that pops up when you click on "Delete book" -->
     <div id="id05" class="w3-modal" style="z-index:4">
         <div class="w3-modal-content w3-animate-zoom">
             <div class="w3-container w3-padding w3-green">
@@ -218,6 +218,7 @@
                 <div class="w3-section">
                     <div class="w3-center">
                         <div id="delete_user_form">
+                            @if(Auth::user()->role_id!=4)
                             <div>
                                 <p>@lang('messages.delete_selected_item')?</p>
                             </div>
@@ -228,6 +229,12 @@
                             {!! Form::submit(trans('messages.delete'),['class'=>'btn btn-danger']) !!}
 
                             {!! Form::close() !!}
+                            @else
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>{{trans('messages.warning')}}</strong> {{trans('messages.on_testing_account')}}
+                                </div>
+                                <a class="btn btn-success " style="display: inline;padding: 10px 10px;margin-right: 30px;" onclick="document.getElementById('id05').style.display='none'">@lang('messages.cancel') </a>
+                            @endif
                         </div>
                     </div>
 
@@ -236,7 +243,7 @@
         </div>
     </div>
 
-    <!-- Modal that pops up when you click on "Delete profile" -->
+    <!-- Modal that pops up when you click on "Show rating" -->
     <div id="id07" class="w3-modal" style="z-index:4">
         <div class="w3-modal-content w3-animate-zoom">
             <div class="w3-container w3-padding w3-green">
@@ -364,6 +371,7 @@
             var module_id = 1;
             var confDelete = confirm('{{trans('messages.want_to_delete_image')}}');
             if (confDelete) {
+                @if(Auth::user()->role_id!=4)
                 $.ajax({
                     method: 'POST',
                     url: url,
@@ -388,6 +396,17 @@
 
                     }
                 });
+                @else
+                $('#showImage').modal('hide');
+                $('#image_' + image_id).hide();
+                $('#image_img_' + image_id).hide();
+                new Noty({
+                    type: 'error',
+                    layout: 'topRight',
+                    text: '{{trans('messages.warning')}} {{trans('messages.on_testing_account')}}'
+                }).show();
+
+                @endif
             }
 
         });
@@ -465,6 +484,7 @@
             var urlDeleteComment = '{{ URL::to('delete_books_comment_ajax') }}';
             var blnConfirm = confirm("{{trans('messages.delete_selected_item')}}?");
             if (blnConfirm == true) {
+                @if(Auth::user()->role_id!=4)
                 $.ajax({
                     method: 'POST',
                     url: urlDeleteComment,
@@ -487,6 +507,14 @@
                         }
                     }
                 });
+                @else
+                $('#commentItem_' + comment_id).hide();
+                new Noty({
+                    type: 'error',
+                    layout: 'topRight',
+                    text: '{{trans('messages.warning')}} {{trans('messages.on_testing_account')}}'
+                }).show();
+                @endif
             }
         }
 

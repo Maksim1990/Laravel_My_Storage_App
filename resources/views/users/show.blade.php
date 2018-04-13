@@ -14,6 +14,7 @@
         @include('users.left')
     </div>
     <div class="col-sm-9 col-sm-offset-1 col-xs-10 " id="main_profile_block">
+        @include('includes.test_info')
         <div class="col-sm-12 col-xs-12" style="margin-bottom: 30px;">
             <div class="col-sm-4 col-xs-12">
                 <div class="w3-center">

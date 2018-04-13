@@ -140,6 +140,7 @@
             <div class="w3-section">
                 <div class="w3-center">
                     <div id="delete_user_form">
+                        @if(Auth::user()->role_id!=4)
                         <div>
                             <p>@lang('messages.want_to_delete_profile')?</p>
                             <div class="alert alert-warning" role="alert">
@@ -152,6 +153,12 @@
                         {!! Form::submit(trans('messages.delete_profile'),['class'=>'btn btn-danger']) !!}
 
                         {!! Form::close() !!}
+                        @else
+                            <div class="alert alert-danger" role="alert">
+                               <strong>{{trans('messages.warning')}}</strong> {{trans('messages.on_testing_account')}}
+                            </div>
+                            <a class="btn btn-success " style="display: inline;padding: 10px 10px;margin-right: 30px;" onclick="document.getElementById('id04').style.display='none'">@lang('messages.cancel') </a>
+                        @endif
                     </div>
                 </div>
 

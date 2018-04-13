@@ -11,7 +11,7 @@
 @endsection
 @section('content')
 
-    <div class="col-sm-8 col-sm-offset-1 col-lg-8 col-lg-offset-1" style="padding-top: 150px;">
+    <div class="col-sm-8 col-sm-offset-1 col-lg-8 col-lg-offset-1" style="padding-top: 100px;">
         <div class="w3-center">
             <h1 class="text-uppercase">@lang('messages.my') @lang('messages.comments')</h1>
         </div>
@@ -70,6 +70,7 @@
             var urlDeleteComment = '{{ URL::to('delete_books_comment_ajax') }}';
             var blnConfirm = confirm("{{trans('messages.delete_selected_item')}}?");
             if (blnConfirm == true) {
+                @if(Auth::user()->role_id!=4)
                 $.ajax({
                     method: 'POST',
                     url: urlDeleteComment,
@@ -81,17 +82,23 @@
                     async: true,
                     success: function (data) {
                         if (data['status']) {
-
                             $('#commentItem_' + comment_id).hide();
                             new Noty({
                                 type: 'success',
                                 layout: 'topRight',
                                 text: 'Your comment was removed!'
                             }).show();
-
                         }
                     }
                 });
+                @else
+                $('#commentItem_' + comment_id).hide();
+                new Noty({
+                    type: 'error',
+                    layout: 'topRight',
+                    text: '{{trans('messages.warning')}} {{trans('messages.on_testing_account')}}'
+                }).show();
+                @endif
             }
         });
 

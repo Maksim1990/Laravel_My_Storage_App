@@ -25,7 +25,7 @@
 @endsection
 @section('content')
     <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
-
+        @include('includes.test_info')
         <h1>@lang('messages.all') @lang('messages.books')</h1>
         <div class=" w3-left" id="items_found">
             <p>@lang('messages.items_found'): <span id="items_found_span">{{$itemsQuantity}}</span></p>
@@ -90,7 +90,7 @@
                 <th id="sort_title" data-type="title">@lang('messages.title')
                     <span id="sort_title_icon"></span>
                 </th>
-                <th id="sort_author" data-type="author">@lang_u('messages.author')
+                <th id="sort_author" data-type="author">@lang('messages.author')
                     <span id="sort_author_icon"></span>
                 </th>
                 <th></th>
@@ -728,6 +728,7 @@
 
             var blnConfirm = confirm("{{trans('messages.delete_selected_items')}}?");
             if (blnConfirm == true) {
+                @if(Auth::user()->role_id!=4)
                 $.ajax({
                     url: urlDeleteMultipleBooks,
                     type: "post",
@@ -751,6 +752,25 @@
                         }
                     }
                 });
+                @else
+                $('#actions_block').hide();
+                $("input:checked").each(function() {
+                    var intitemsNow = $('#items_found_span').text();
+                    $('#items_found_span').text(+intitemsNow - 1);
+                    var intId=$(this).data('id');
+                    $('#book_line_full_'+intId).hide();
+                    $('#book_line_'+intId).hide();
+                });
+                //-- Truncate JS session of books IDs for this user
+                sessionStorage.removeItem('objSelectedBooksIds_' + '{{Auth::id()}}');
+                sessionStorage.removeItem('selectAllItems_books');
+                new Noty({
+                    type: 'error',
+                    layout: 'topRight',
+                    text: '{{trans('messages.warning')}} {{trans('messages.on_testing_account')}}'
+                }).show();
+
+                @endif
             }
         }
 

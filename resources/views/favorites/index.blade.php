@@ -10,7 +10,7 @@
     </style>
 @endsection
 @section('content')
-    <div class="w3-center col-sm-12  col-lg-12 col-xs-12" style="padding-top: 150px;">
+    <div class="w3-center col-sm-12  col-lg-12 col-xs-12" style="padding-top: 100px;">
         <h1 class="text-uppercase">@lang('messages.my') @lang('messages.favorites')</h1>
     </div>
     <div class="col-sm-6  col-lg-6 col-xs-12">
@@ -89,6 +89,7 @@
             var strStatus = "dislike";
             var blnConfirm = confirm("{{trans('messages.delete_selected_item')}}?");
             if (blnConfirm == true) {
+                @if(Auth::user()->role_id!=4)
                 $.ajax({
                     method: 'POST',
                     url: urlFavorite,
@@ -113,6 +114,14 @@
                         }
                     }
                 });
+                @else
+                $("#module_" + module_id + "_" + item_number).hide();
+                new Noty({
+                    type: 'error',
+                    layout: 'topRight',
+                    text: '{{trans('messages.warning')}} {{trans('messages.on_testing_account')}}'
+                }).show();
+                @endif
             }
         });
 

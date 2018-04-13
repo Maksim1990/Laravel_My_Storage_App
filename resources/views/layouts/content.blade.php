@@ -53,3 +53,4 @@ color:white;"
         @yield('content')
     </div>
 </div>
+

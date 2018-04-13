@@ -179,4 +179,7 @@ return [
     'has'=>'has',
     'book_int'=>'book(s)',
     'movie_int'=>'movie(s)',
+    'warning'=>'Warning!',
+    'on_testing_account'=>'On test account real deleting will not be performed!',
+    'test_account'=>'You are using <strong>Test account</strong>. <br> All deleting functionality is disabled for Test account.',
 ];

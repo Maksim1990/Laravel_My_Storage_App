@@ -179,4 +179,7 @@ return [
     'has'=>'a',
     'book_int'=>'livre(s)',
     'movie_int'=>'film(s)',
+    'warning'=>'Attention!',
+    'on_testing_account'=>'Sur le compte de test, la suppression réelle ne sera pas effectuée!',
+    'test_account'=>'Vous utilisez <strong> Compte de Test</strong>. <br> Toutes les fonctionnalités de suppression sont désactivées pour le Compte de Test.',
 ];
