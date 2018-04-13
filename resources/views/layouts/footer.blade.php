@@ -131,6 +131,7 @@
 
         var show_tutorial = $(this).data('tutorial-action');
         if (show_tutorial) {
+            @if(Auth::user()->role_id!=4)
             $.ajax({
                 method: 'POST',
                 url: urlTutorial,
@@ -161,6 +162,16 @@
                     }
                 }
             });
+            @else
+            $('#fixed_tutorial_button').hide();
+            if (show_tutorial !== "yes") {
+                new Noty({
+                    type: 'error',
+                    layout: 'topRight',
+                    text: '{{trans('messages.warning')}} {{trans('messages.on_testing_account_tutorial')}}'
+                }).show();
+            }
+            @endif
         }
 
     });

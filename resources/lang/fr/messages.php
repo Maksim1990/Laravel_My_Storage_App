@@ -182,4 +182,5 @@ return [
     'warning'=>'Attention!',
     'on_testing_account'=>'Sur le compte de test, la suppression réelle ne sera pas effectuée!',
     'test_account'=>'Vous utilisez <strong> Compte de Test</strong>. <br> Toutes les fonctionnalités de suppression sont désactivées pour le Compte de Test.',
+    'on_testing_account_tutorial'=>'Le menu tutoriel du compte test ne peut pas être désactivé!',
 ];

@@ -182,4 +182,5 @@ return [
     'warning'=>'Warning!',
     'on_testing_account'=>'On test account real deleting will not be performed!',
     'test_account'=>'You are using <strong>Test account</strong>. <br> All deleting functionality is disabled for Test account.',
+    'on_testing_account_tutorial'=>'On test account tutorial menu can\'t be deactivated!',
 ];
