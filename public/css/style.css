@@ -122,7 +122,9 @@ body a, .pagination > li > a{
 #delete_user_form form{
     display: inline;
 }
-
+.bx-wrapper img {
+    height: 100%;
+}
 @media(max-width:1000px){
 
     #title_right{

@@ -7,7 +7,7 @@
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/favorites/'.$user->id)}}">@lang('messages.see_my_favorites')</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/ratings/'.$user->id)}}">@lang('messages.my') @lang('messages.votes')</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/comments/'.$user->id)}}">@lang('messages.my')  @lang('messages.comments')</a></p>
-    <p><a href="#">@lang('messages.statistics')</a></p>
+    <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/statistics')}}">@lang('messages.statistics')</a></p>
     <div>
         <a href="#" onclick="document.getElementById('id04').style.display='block'" class="btn btn-danger">
             @lang('messages.delete_profile')

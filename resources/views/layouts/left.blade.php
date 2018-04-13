@@ -20,7 +20,7 @@
 
         <div id="Link_block_1" class="w3-hide w3-animate-left" style="padding-left: 10px;">
             <a href="javascript:void(0)" class="w3-bar-item w3-button w3-border-bottom "
-               onclick="openMail('Borge');w3_close();" id="firstTab">
+               onclick="w3_close();" id="firstTab">
                 <div class="w3-container w3-center">
                     <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::id())}}" class=" span_custom" data-step="5" data-intro="@lang('messages.navigate_to_all')!" data-position="right">
                         <img style="border-radius: 20px;margin-top: -3px;" height="35"
@@ -93,6 +93,7 @@
                         class="fas fa-upload w3-margin-right"></i>@lang('messages.import_export')</a></a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/search')}}" class="w3-bar-item w3-button"><i class="fas fa-search w3-margin-right"></i>@lang('messages.instant_search')</a>
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/categories')}}" class="w3-bar-item w3-button"><i class="fas fa-location-arrow w3-margin-right"></i>@lang('messages.view_all_categories')</a>
+            <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/statistics')}}" class="w3-bar-item w3-button"><i class="fas fa-clipboard-list w3-margin-right"></i>@lang('messages.statistics')</a>
         </div>
 
         <div id="lang_block" style="position:absolute;bottom:5%;left:10%;">

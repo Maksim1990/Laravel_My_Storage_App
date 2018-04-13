@@ -174,4 +174,9 @@ return [
     'try_other_apps'=>'Essayer d\'autres applications',
     'try'=>'Essayer',
     'no_description'=>'Pas de description',
+    'book_statistics'=>'Statistiques de livres',
+    'movie_statistics'=>'Statistiques de films',
+    'has'=>'a',
+    'book_int'=>'livre(s)',
+    'movie_int'=>'film(s)',
 ];

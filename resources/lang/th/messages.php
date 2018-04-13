@@ -173,4 +173,9 @@ return [
     'try_other_apps'=>'ลองใช้แอพพลิเคชันอื่น ๆ',
     'try'=>'ลอง',
     'no_description'=>'ไม่มีคำอธิบาย',
+    'book_statistics'=>'สถิติหนังสือ',
+    'movie_statistics'=>'สถิติภาพยนตร์',
+    'has'=>'มี',
+    'book_int'=>'หนังสือ',
+    'movie_int'=>'หนัง',
 ];

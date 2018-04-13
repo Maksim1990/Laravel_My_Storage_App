@@ -174,4 +174,9 @@ return [
     'try_other_apps'=>'try other apps',
     'try'=>'Try',
     'no_description'=>'No description',
+    'book_statistics'=>'Book statistics',
+    'movie_statistics'=>'Movie statistics',
+    'has'=>'has',
+    'book_int'=>'book(s)',
+    'movie_int'=>'movie(s)',
 ];

@@ -149,6 +149,8 @@ class MovieController extends Controller
             }
             $input['user_id'] = $user->id;
             $input['category_id'] = 18;
+
+           // unset($input['photo_id']);
             $movie = Movie::create($input);
 
             ImageMovie::create(['movie_id' => $movie->id, 'photo_id' => $photo_id]);

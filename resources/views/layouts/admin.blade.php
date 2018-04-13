@@ -14,7 +14,7 @@
         <title>My Storage APP</title>
     @endif
 
-    <link rel="shortcut icon" href="{{{ asset('/images/favicon/favicon.ico') }}}">
+    <link rel="shortcut icon" href="{{ asset('/images/favicon/favicon.ico') }}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">

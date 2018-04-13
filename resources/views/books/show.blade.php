@@ -268,7 +268,7 @@
             </div>
         </div>
     </div>
-
+    @include('includes.modals_adds')
 @stop
 @section('scripts')
     <script src="{{asset('js/examples.js')}}" type="text/javascript"></script>
