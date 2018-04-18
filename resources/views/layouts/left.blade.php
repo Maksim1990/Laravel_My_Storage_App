@@ -95,6 +95,8 @@
             <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/categories')}}" class="w3-bar-item w3-button"><i class="fas fa-location-arrow w3-margin-right"></i>@lang('messages.view_all_categories')</a>
             <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/statistics')}}" class="w3-bar-item w3-button"><i class="fas fa-clipboard-list w3-margin-right"></i>@lang('messages.statistics')</a>
         </div>
+    <a href="{{URL::to(LaravelLocalization::getCurrentLocale() .'/books/list/1')}}" class="w3-bar-item w3-button text-uppercase"><i
+            class="fas fa-book w3-margin-right  w3-text-green"></i>@lang('messages.maksim_books')</a>
 
         <div id="lang_block" style="position:absolute;bottom:5%;left:10%;">
             @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)

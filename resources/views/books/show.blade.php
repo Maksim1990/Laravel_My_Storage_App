@@ -453,7 +453,7 @@
                             var strImageLink=" <div class=\"col-sm-1 w3-center\">\n" +
                                 "                                    <a href=\"{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/users/'.Auth::user()->id)}}\">\n" +
                                 "                                        <img style=\"border-radius: 20px;margin-top: -5px;\" height=\"35\"\n" +
-                                "                                             src=\"{{Auth::user()->profile->photo ? $rating->user->profile->photo->path :'/images/includes/no_user.png'}}\"\n" +
+                                "                                             src=\"{{Auth::user()->profile->photo ? Auth::user()->profile->photo->path :'/images/includes/no_user.png'}}\"\n" +
                                 "                                             alt=\"\"><br>\n" +
                                 "                                        {{Auth::user()->name}} </a>\n" +
                                 "                                </div>";

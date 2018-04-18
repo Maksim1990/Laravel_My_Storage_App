@@ -58,8 +58,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function () {
         Route::get('import_movies_main', 'MaatwebsiteDemoController@importMoviesMain');
         Route::get('downloadExcel_books/{type}', 'MaatwebsiteDemoController@downloadBooks');
         Route::get('downloadExcel_movies/{type}', 'MaatwebsiteDemoController@downloadMovies');
-        Route::get('import_books', 'MaatwebsiteDemoController@importBooks');
-        Route::get('import_movies', 'MaatwebsiteDemoController@importMovies');
+        Route::post('import_books', 'MaatwebsiteDemoController@importBooks');
+        Route::post('import_movies', 'MaatwebsiteDemoController@importMovies');
         Route::get('/import_export', function () {
             return view('import.index');
         });

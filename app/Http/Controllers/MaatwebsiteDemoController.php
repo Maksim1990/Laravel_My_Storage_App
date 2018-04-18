@@ -71,8 +71,8 @@ class MaatwebsiteDemoController extends Controller
                         $input['title'] = $value->title;
                         $input['author'] = $value->author;
                         $input['date'] = $value->finished_reading_date;
-                        $input['description'] = !empty($value->description)?$value->description:"none";
-                        $input['publish_year'] = !empty($value->publish_year)?$value->publish_year:"";
+                        $input['description'] = !empty($value->description) ? $value->description : "none";
+                        $input['publish_year'] = !empty($value->publish_year) ? $value->publish_year : "";
                         $input['user_id'] = Auth::id();
                         $input['category_id'] = 18;
                         $input['active'] = 1;
@@ -80,11 +80,12 @@ class MaatwebsiteDemoController extends Controller
                     } else {
                         $arrError[$value->id] = "Fields 'author' ,'title' and 'date' for line " . $value->id . " shouldn't be empty";
                     }
-                }
 
-                if(!empty($input)){
-                    Book::create($input);
-                    // dd('Insert Record successfully.');
+
+                    if (!empty($input)) {
+                        Book::create($input);
+                        // dd('Insert Record successfully.');
+                    }
                 }
             }
         }
@@ -111,8 +112,8 @@ class MaatwebsiteDemoController extends Controller
                         $input['title'] = $value->title;
                         $input['author'] = $value->author;
                         $input['finished_date'] = $value->finished_date;
-                        $input['description'] = !empty($value->description)?$value->description:"none";
-                        $input['movie_created_year'] = !empty($value->movie_created_year)?$value->movie_created_year:"";
+                        $input['description'] = !empty($value->description) ? $value->description : "none";
+                        $input['movie_created_year'] = !empty($value->movie_created_year) ? $value->movie_created_year : "";
                         $input['user_id'] = Auth::id();
                         $input['category_id'] = 18;
                         $input['active'] = 1;
@@ -120,11 +121,12 @@ class MaatwebsiteDemoController extends Controller
                     } else {
                         $arrError[$value->id] = "Fields 'author' and 'title' for line " . $value->id . " shouldn't be empty";
                     }
-                }
 
-                if(!empty($input)){
-                    Movie::create($input);
-                    // dd('Insert Record successfully.');
+
+                    if (!empty($input)) {
+                        Movie::create($input);
+                        // dd('Insert Record successfully.');
+                    }
                 }
             }
         }

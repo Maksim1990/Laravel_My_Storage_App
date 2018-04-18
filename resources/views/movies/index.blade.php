@@ -72,9 +72,9 @@
                     @endphp
                 @endif
                 <button class="btn layout {{$styleDetail}}" id='layoutDetail' data-layout="detail"><i
-                            class="fas fa-th-large"></i></button>
+                        class="fas fa-th-large"></i></button>
                 <button class="btn layout {{$styleNormal}}" id='layoutNormal' data-layout="normal"><i
-                            class="fas fa-list"></i></button>
+                        class="fas fa-list"></i></button>
             </div>
 
         </div>
@@ -93,12 +93,15 @@
                 <th id="sort_author" data-type="author">@lang('messages.author')
                     <span id="sort_author_icon"></span>
                 </th>
+                <th id="sort_year" data-type="year">@lang('messages.finished_reading')
+                    <span id="sort_year_icon"></span>
+                </th>
                 <th></th>
             </tr>
             <tr class="w3-gray">
                 @if($idUser>0 && $idUser==Auth::id())
                     <td><p class="tooltip_custom">
-                            <input type="checkbox"  id="select_all_books">
+                            <input type="checkbox" id="select_all_books">
                             <span class="tooltiptext">@lang('messages.select_all_items')</span>
                         </p></td>
                 @endif
@@ -108,6 +111,8 @@
                            value="{{$arrFilter['title']?$arrFilter['title']:""}}"></td>
                 <td><input class="w3-input" id="filter_author" type="text" data-type="author"
                            value="{{$arrFilter['author']?$arrFilter['author']:""}}"></td>
+                <td><input class="w3-input" id="filter_author" type="text" data-type="year"
+                           value="{{$arrFilter['year']?$arrFilter['year']:""}}"></td>
 
                 <td></td>
             </tr>
@@ -129,13 +134,13 @@
                                     {{$book->title}}</a>
                             </td>
                             <td>{{$book->author}}</td>
-
+                            <td>{{$book->date}}</td>
 
                             <td>
                                 @if($book->user_id==Auth::id())
                                     <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/movies/'.$book->id.'/edit ')}}"
                                        id="edit_book_{{$book->id}}"><i
-                                                class="fas fa-edit"></i></a>
+                                            class="fas fa-edit"></i></a>
                                 @endif
                             </td>
                         </tr>
@@ -158,10 +163,10 @@
                                 @foreach($book->photos as $item)
 
                                     @if($countMain<1)
-                                            <td>
-                                                <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/movies/'.$book->id)}}">
-                                                    <img style="border-radius: 30px;" width="160" height="160"
-                                                         src="{{asset('images/includes/noImage.jpg')}}" alt=""></a></td>
+                                        <td>
+                                            <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/movies/'.$book->id)}}">
+                                                <img style="border-radius: 30px;" width="160" height="160"
+                                                     src="{{asset('images/includes/noImage.jpg')}}" alt=""></a></td>
                                         @php
                                             $countMain++;
                                         @endphp
@@ -170,8 +175,8 @@
                             @else
                                 <td>
                                     <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale() .'/movies/'.$book->id)}}">
-                                    <img style="border-radius: 30px;" width="160" height="160"
-                                         src="{{asset('images/includes/noImage.jpg')}}" alt=""></a></td>
+                                        <img style="border-radius: 30px;" width="160" height="160"
+                                             src="{{asset('images/includes/noImage.jpg')}}" alt=""></a></td>
                             @endif
                             <td>
                                 <p>@lang('messages.title'):
@@ -180,9 +185,10 @@
                                     </a>
                                 </p>
                                 <p>@lang('messages.author'): {{$book->author}}</p>
-                                <p>@lang('messages.category'): {{$book->category_id!=0?$book->category->name:trans('messages.no_category')}}</p>
-                                <p>@lang('messages.finished_reading'): {{$book->date}}</p>
-                                <p>@lang('messages.published_year'): {{$book->publish_year}}</p>
+                                <p>@lang('messages.category')
+                                    : {{$book->category_id!=0?$book->category->name:trans('messages.no_category')}}</p>
+                                <p>@lang('messages.finished_reading'): {{$book->date?$book->date:"-//-"}}</p>
+                                <p>@lang('messages.published_year'): {{$book->publish_year?$book->publish_year:"-//-"}}</p>
                                 <p>
                                     @php
                                         $count=0;
@@ -213,11 +219,12 @@
                             <td style="width: 200px;">
                                 <p>@lang('messages.description'): <br>{!! str_limit($book->description, 400) !!}</p>
                             </td>
+                            <td></td>
                             <td>
                                 @if($book->user_id==Auth::id())
                                     <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/movies/'.$book->id.'/edit ')}}"
                                        id="edit_book_{{$book->id}}"><i
-                                                class="fas fa-edit"></i></a>
+                                            class="fas fa-edit"></i></a>
                                 @endif
                             </td>
                         </tr>
@@ -266,7 +273,7 @@
         arrFilteredItems = [];
 
         {{--<i class="fas fa-long-arrow-alt-up"></i>--}}
-        $('#sort_id,#sort_title,#sort_author').click(function () {
+        $('#sort_id,#sort_title,#sort_author,#sort_year').click(function () {
             var strFilterType = $(this).data('type');
 
             //-- Fill in appropriate value into arrSortDetails array
@@ -274,6 +281,7 @@
                 case "id":
                 case "title":
                 case "author":
+                case "year":
                     if (arrSortDetails[0] === strFilterType) {
                         if (arrSortDetails[1] === "up") {
                             arrSortDetails = [];
@@ -294,8 +302,8 @@
                 case "id":
                 case "title":
                 case "author":
-                    $("#sort_id_icon,#sort_author_icon,#sort_title_icon").html("");
-                    $("#sort_id,#sort_author,#sort_title").css("color", "black");
+                    $("#sort_id_icon,#sort_author_icon,#sort_title_icon,#sort_year_icon").html("");
+                    $("#sort_id,#sort_author,#sort_title,#sort_year").css("color", "black");
                     if (arrSortDetails[1] === "up") {
                         $("#sort_" + arrSortDetails[0] + "_icon").html("<i class='fas fa-long-arrow-alt-up'></i>");
                     } else {
@@ -369,8 +377,9 @@
             arrFilter['id'] = "{{$arrFilter['id']?$arrFilter['title']:''}}";
             arrFilter['title'] = "{{$arrFilter['title']?$arrFilter['title']:''}}";
             arrFilter['author'] = "{{$arrFilter['author']?$arrFilter['author']:''}}";
+            arrFilter['year'] = "{{$arrFilter['year']?$arrFilter['year']:''}}";
 
-            $('#filter_id,#filter_title,#filter_author').keyup(function () {
+            $('#filter_id,#filter_title,#filter_author,#filter_year').keyup(function () {
 
                 var strFilterValue = $(this).val();
                 var strFilterType = $(this).data('type');
@@ -400,6 +409,7 @@
                     id: arrFilter['id'],
                     title: arrFilter['title'],
                     author: arrFilter['author'],
+                    year: arrFilter['year'],
                     arrSortDetails: JSON.stringify(arrSortDetails),
                     intQuantity: intQuantity,
                     strLayout: strLayout,
@@ -415,15 +425,15 @@
                     $("#books_block_full").html("");
                     $("#pagination").html("");
 
-                    arrFilteredItems=[];
+                    arrFilteredItems = [];
                     if (data['data'].length > 0) {
 
                         for (var i = 0; i < data['data'].length; i++) {
                             {{--@if(!isset($bookLayout) || !$bookLayout)--}}
-                                    {{--var blnDetailedLayout = false;--}}
-                                    {{--@else--}}
-                                    {{--var blnDetailedLayout = true;--}}
-                                    {{--@endif--}}
+                                {{--var blnDetailedLayout = false;--}}
+                                {{--@else--}}
+                                {{--var blnDetailedLayout = true;--}}
+                                {{--@endif--}}
                             if (strLayout == 'normal') {
                                 var blnDetailedLayout = false;
                             } else {
@@ -434,12 +444,18 @@
                                 var strCheckBox = "";
                                 @if($idUser>0 && $idUser==Auth::id())
                                     strCheckBox = "<td><input type='checkbox' class='selectBook' id='select_book_" + data['data'][i]['id'] + "' data-id='" + data['data'][i]['id'] + "'></td>";
-                                        @endif
-                                var strEditButton="";
-                                if(onlineUserId==data['data'][i]['user_id']){
+                                    @endif
+                                var strEditButton = "";
+                                if (onlineUserId == data['data'][i]['user_id']) {
                                     strEditButton = "<td ><a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
                                 }
-                                var booksList = strCheckBox + "<td>" + data['data'][i]['id'] + "</td><td><a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td>" + strEditButton;
+                                if(!data['data'][i]['date'] || data['data'][i]['date']==undefined){
+
+                                    var strDate="-//-";
+                                }else{
+                                    var strDate= data['data'][i]['date'];
+                                }
+                                var booksList = strCheckBox + "<td>" + data['data'][i]['id'] + "</td><td><a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "' id='edit_book_" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></td><td>" + data['data'][i]['author'] + "</td><td>" + strDate + "</td>" + strEditButton;
                                 $("<tr id='book_line_" + data['data'][i]['id'] + "'>").html(booksList + "</tr>").appendTo('#books_block');
                             } else {
 
@@ -470,16 +486,29 @@
                                 var strCheckBox = "";
                                 @if($idUser>0 && $idUser==Auth::id())
                                     strCheckBox = "<td><input type='checkbox' class='selectBook' id='select_book_" + data['data'][i]['id'] + "' data-id='" + data['data'][i]['id'] + "'></td>";
-                                        @endif
+                                    @endif
                                 var strCategory = "<p>{{trans('messages.category')}}: " + category + "</p>";
 
-                                var strEditButton="";
-                                if(onlineUserId==data['data'][i]['user_id']) {
+                                var strEditButton = "";
+                                if (onlineUserId == data['data'][i]['user_id']) {
                                     var strEditButton = "<td ><a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "/edit ' id='edit_book_" + data['data'][i]['id'] + "'><i class='fas fa-edit'></i></a></td>";
                                 }
-                                var strDesciption=data['data'][i]['description'];
-                                if(strDesciption.length > 400) strDesciption = strDesciption.substring(0,400)+" ...";
-                                var booksList = strCheckBox+"<td><a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "'><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></a></td><td><p>{{trans('messages.title')}}: <a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></p><p>{{trans('messages.author')}}: " + data['data'][i]['author'] + "</p>" + strCategory + "<p>{{trans('messages.finished_reading')}}: " + data['data'][i]['date'] + "</p><p>{{trans('messages.published_year')}}: " + data['data'][i]['publish_year'] + "</p><p>" + smallImages + "</p></td><td style='width: 200px;'> <p>{{trans('messages.description')}}: <br>" + strDesciption + "</p>"+strEditButton+"</td>";
+                                var strDesciption = data['data'][i]['description'];
+                                if (strDesciption.length > 400) strDesciption = strDesciption.substring(0, 400) + " ...";
+
+                                if(!data['data'][i]['date'] || data['data'][i]['date']===undefined){
+                                    var strDate="-//-";
+                                }else{
+                                    var strDate= data['data'][i]['date'];
+                                }
+
+                                if(!data['data'][i]['publish_year'] || data['data'][i]['publish_year']===undefined || data['data'][i]['publish_year']===null ){
+                                    var strPublishYear="-//-";
+                                }else{
+                                    var strPublishYear= data['data'][i]['date'];
+                                }
+
+                                var booksList = strCheckBox + "<td><a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "'><img style='border-radius: 30px;' width='160' height='160' " + mainImage + " alt=''></a></td><td><p>{{trans('messages.title')}}: <a href='/{{LaravelLocalization::getCurrentLocale() }}/movies/" + data['data'][i]['id'] + "'>" + data['data'][i]['title'] + "</a></p><p>{{trans('messages.author')}}: " + data['data'][i]['author'] + "</p>" + strCategory + "<p>{{trans('messages.finished_reading')}}: " + strDate + "</p><p>{{trans('messages.published_year')}}: " + strPublishYear + "</p><p>" + smallImages + "</p></td><td style='width: 200px;'> <p>{{trans('messages.description')}}: <br>" + strDesciption + "</p><td></td>" + strEditButton + "</td>";
                                 $("<tr id='book_line_full_" + data['data'][i]['id'] + "'>").html(booksList + "</tr>").appendTo('#books_block_full');
                             }
                             arrFilteredItems.push(data['data'][i]['id']);
@@ -524,6 +553,9 @@
                         }
                         if (arrFilter['author']) {
                             strPagiantionLinks += "&author=" + arrFilter['author'];
+                        }
+                        if (arrFilter['year']) {
+                            strPagiantionLinks += "&year=" + arrFilter['year'];
                         }
 
 
@@ -584,6 +616,7 @@
                     id: arrFilter['id'],
                     title: arrFilter['title'],
                     author: arrFilter['author'],
+                    year: arrFilter['year'],
                     idUser: idUser,
                     arrSortDetails: JSON.stringify(arrSortDetails),
                     _token: token
@@ -609,16 +642,16 @@
         function MarkSelectedItems(arrFiltered) {
 
             //-- Get all items for specific user
-            var strAllitems='{{$strBooksAll}}';
-            var arrAllItems=strAllitems.split(",");
+            var strAllitems = '{{$strBooksAll}}';
+            var arrAllItems = strAllitems.split(",");
 
             //-- Check if main checkbox was clicked or not
             var blnSelectAll = sessionStorage.getItem('selectAllItems_movies');
 
-            if(blnSelectAll){
-                var arrAlreadySelectedBookIds=arrAllItems;
+            if (blnSelectAll) {
+                var arrAlreadySelectedBookIds = arrAllItems;
                 $('#select_all_books').prop('checked', true);
-            }else{
+            } else {
                 var arrAlreadySelectedBookIds = ReturnStorageSessionArray(sessionStorage.getItem('objSelectedMoviesIds_' + '{{Auth::id()}}'));
             }
 
@@ -636,8 +669,8 @@
                 }
                 var arrAlreadySelectedBookIds = arrTemporary;
 
-            }else if((arrFiltered.constructor === Array) || arrFiltered.length <= 0){
-                arrAlreadySelectedBookIds=[];
+            } else if ((arrFiltered.constructor === Array) || arrFiltered.length <= 0) {
+                arrAlreadySelectedBookIds = [];
             }
 
             if (arrAlreadySelectedBookIds.length > 0) {
@@ -652,7 +685,7 @@
                         objCheckedBookIds[arrAlreadySelectedBookIds[i]] = arrAlreadySelectedBookIds[i];
                         $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
                     } else {
-                        if (arrFilter['title'] === "" && arrFilter['id'] === "" && arrFilter['author'] === "") {
+                        if (arrFilter['title'] === "" && arrFilter['id'] === "" && arrFilter['author'] === "" && arrFilter['year'] === "") {
 
                             $('#actions_block_number').text(intCountItems);
                         } else {
@@ -664,6 +697,7 @@
             } else {
                 $('#actions_block').css('display', 'none');
             }
+            sessionStorage.setItem('objSelectedMoviesIds_' + '{{Auth::id()}}', arrAlreadySelectedBookIds);
         }
 
         //-- Functionality to multiple select of books
@@ -756,12 +790,12 @@
                 @else
                 $('#actions_block').hide();
 
-                $("input:checked").each(function() {
+                $("input:checked").each(function () {
                     var intitemsNow = $('#items_found_span').text();
                     $('#items_found_span').text(+intitemsNow - 1);
-                    var intId=$(this).data('id');
-                    $('#book_line_full_'+intId).hide();
-                    $('#book_line_'+intId).hide();
+                    var intId = $(this).data('id');
+                    $('#book_line_full_' + intId).hide();
+                    $('#book_line_' + intId).hide();
                 });
                 //-- Truncate JS session of books IDs for this user
                 sessionStorage.removeItem('objSelectedMoviesIds_' + '{{Auth::id()}}');
@@ -803,9 +837,13 @@
         function SelectAll() {
 
             if ($("#select_all_books").is(':checked')) {
-                sessionStorage.setItem('selectAllItems_movies',true);
+                sessionStorage.setItem('selectAllItems_movies', true);
                 //-- Mark selected items
-                MarkSelectedItems(false);
+                if (arrFilter['title'] === "" && arrFilter['id'] === "" && arrFilter['author'] === "" && arrFilter['year'] === "") {
+                    MarkSelectedItems(false);
+                }else{
+                    MarkSelectedItems(arrFilteredItems);
+                }
             } else {
                 UncheckAll();
             }

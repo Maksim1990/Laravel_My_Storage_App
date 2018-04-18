@@ -134,19 +134,23 @@ class PhotoController extends Controller
         if($module_id==1){
             ImageBook::where('photo_id', $image->id)->delete();
             $book=Book::where('photo_id',$image->id)->first();
-            $book->update([
-                'photo_id'=>0,
-                'photo_path'=>''
-            ]);
-            $book->save();
-        }elseif ($module_id==2){
+            if($book) {
+                $book->update([
+                    'photo_id' => 0,
+                    'photo_path' => ''
+                ]);
+                $book->save();
+            }
+        }elseif ($module_id==2) {
             ImageMovie::where('photo_id', $image->id)->delete();
-            $movie=Movie::where('photo_id',$image->id)->first();
-            $movie->update([
-                'photo_id'=>0,
-                'photo_path'=>''
-            ]);
-            $movie->save();
+            $movie = Movie::where('photo_id', $image->id)->first();
+            if ($movie) {
+                $movie->update([
+                    'photo_id' => 0,
+                    'photo_path' => ''
+                ]);
+                $movie->save();
+            }
         }
 
 

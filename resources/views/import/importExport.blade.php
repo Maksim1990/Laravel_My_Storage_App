@@ -16,7 +16,7 @@
             <a class="btn btn-success btn-small" style="float:right;" href="{{'/files/templates/import_books_template.xlsx'}}" download="import_books_template">Download template
             </a>
         </div>
-        <form style="border: 4px solid #a1a1a1;margin-top: 15px;padding: 10px;" action="{{ URL::to('importExcel') }}" class="form-horizontal" method="post" enctype="multipart/form-data">
+        <form style="border: 4px solid #a1a1a1;margin-top: 15px;padding: 10px;" action="{{ URL::to('/import_books') }}" class="form-horizontal" method="post" enctype="multipart/form-data">
             {{csrf_field()}}
             <input type="file" id="file1"  name="import_file" />
             <button class="btn btn-primary" id="import_button" disabled>Import File</button>
