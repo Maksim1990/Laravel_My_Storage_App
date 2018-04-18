@@ -174,6 +174,23 @@ class SubscriptionController extends Controller
 //        }
         $user->subscription('main')->swap($plan);
 
+        //-- Get user's settings from cache or from DB
+        $setting = Cache::remember('settings_' . $user->id, 22 * 60, function () use ($user) {
+            return Setting::where('user_id', $user->id)->first();
+        });
+
+        //-- Flush 'books' key from redis cache
+        Cache::forget('settings_' . $user->id);
+
+        if (isset($setting)) {
+            $setting->subscription_plan = $plan;
+            $setting->save();
+        } else {
+            $input['user_id'] = Auth::id();
+            $input['subscription_plan'] = $plan;
+            Setting::create($input);
+        }
+
         return redirect('/'.$locale.'/plans');
     }
 
