@@ -678,19 +678,21 @@
                 for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
                     $('#select_book_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
                     $('#select_book_full_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
-                    @if($idUser>0 && $idUser==Auth::id())
-                    $('#actions_block').css('display', 'block');
-                    @endif
-                    if (!arrFiltered) {
-                        objCheckedBookIds[arrAlreadySelectedBookIds[i]] = arrAlreadySelectedBookIds[i];
-                        $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
-                    } else {
-                        if (arrFilter['title'] === "" && arrFilter['id'] === "" && arrFilter['author'] === "" && arrFilter['year'] === "") {
-
-                            $('#actions_block_number').text(intCountItems);
-                        } else {
-
+                    if(arrFiltered[0]!='0' || arrFiltered!=false) {
+                        @if($idUser>0 && $idUser==Auth::id())
+                        $('#actions_block').css('display', 'block');
+                        @endif
+                        if (!arrFiltered) {
+                            objCheckedBookIds[arrAlreadySelectedBookIds[i]] = arrAlreadySelectedBookIds[i];
                             $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
+                        } else {
+                            if (arrFilter['title'] === "" && arrFilter['id'] === "" && arrFilter['author'] === "" && arrFilter['year'] === "") {
+
+                                $('#actions_block_number').text(intCountItems);
+                            } else {
+
+                                $('#actions_block_number').text(arrAlreadySelectedBookIds.length);
+                            }
                         }
                     }
                 }
