@@ -673,7 +673,7 @@
                 arrAlreadySelectedBookIds = [];
             }
 
-            if (arrAlreadySelectedBookIds.length > 0) {
+            if (arrAlreadySelectedBookIds.length > 0 && arrAlreadySelectedBookIds[0]!=='0') {
 
                 for (var i = 0; i < arrAlreadySelectedBookIds.length; i++) {
                     $('#select_book_' + arrAlreadySelectedBookIds[i]).prop('checked', true);
