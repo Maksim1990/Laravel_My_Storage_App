@@ -26,7 +26,13 @@
 @section('content')
     <div class="col-sm-10 col-sm-offset-1 col-lg-10 col-lg-offset-1">
         @include('includes.test_info')
-        <h1>@lang('messages.all') @lang('messages.books')</h1>
+
+        @if($idUser>0 && $idUser==Auth::id())
+            <h1>@lang('messages.my') @lang('messages.books')</h1>
+        @else
+            <h1>@lang('messages.all') @lang('messages.books')</h1>
+        @endif
+
         <div class=" w3-left" id="items_found">
             <p>@lang('messages.items_found'): <span id="items_found_span">{{$itemsQuantity}}</span></p>
         </div>
