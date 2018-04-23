@@ -82,7 +82,7 @@
         @if(isset($plan->stripe_plan) && !empty($plan->stripe_plan) && !empty($plan->ends_at))
             <div class="alert alert-danger" role="alert">
                 <strong>ATTENTION!</strong> You cancelled <span
-                    class="text-uppercase"><b>{{$plan->stripe_plan}}</b></span> plan. Please be informed that it still
+                        class="text-uppercase"><b>{{$plan->stripe_plan}}</b></span> plan. Please be informed that it still
                 will be valid till
                 <strong>{{$plan->ends_at}}</strong>.<br>In order to resume your current plan you may click
                 <a href="{{ URL::to('subscription/resume' ) }}" style="color: darkred;">Resume subscription</a> button.
@@ -98,9 +98,9 @@
                 @endif
                 <li class="header" style="background-color:{{$strColor}}">Free</li>
                 <li class="grey">$ 0 / month</li>
-                <li>10GB Storage</li>
+                <li>5 New books per month</li>
+                <li>5 New movies per month</li>
                 <li>10 Emails</li>
-                <li>10 Domains</li>
                 <li>1GB Bandwidth</li>
                 <li class="grey">
                     @if(isset($plan->stripe_plan) && !empty($plan->stripe_plan))
@@ -136,9 +136,9 @@
                 @endif
                 <li class="header" style="background-color:{{$strColor}}">Basic</li>
                 <li class="grey">$ 7 / month</li>
-                <li>25GB Storage</li>
+                <li>50 New books per month</li>
+                <li>50 New movies per month</li>
                 <li>25 Emails</li>
-                <li>25 Domains</li>
                 <li>2GB Bandwidth</li>
                 <li class="grey">
                     @if(isset($plan->stripe_plan) && !empty($plan->stripe_plan))
@@ -173,9 +173,9 @@
                 @endif
                 <li class="header" style="background-color:{{$strColor}}">Business</li>
                 <li class="grey">$ 15 / month</li>
-                <li>50GB Storage</li>
+                <li>Unlimited new books per month</li>
+                <li>Unlimited new movies per month</li>
                 <li>50 Emails</li>
-                <li>50 Domains</li>
                 <li>5GB Bandwidth</li>
                 <li class="grey">
                     @if(isset($plan->stripe_plan) && !empty($plan->stripe_plan))
