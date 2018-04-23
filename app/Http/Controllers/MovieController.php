@@ -72,10 +72,10 @@ class MovieController extends Controller
         if (empty($books)) {
             if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor']) || !empty($arrOptions['filterYear'])) {
                 if (!empty($filterId)) {
-                    $books = Movie::where('user_id', Auth::id())->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->where('date', 'like', '%' . $arrOptions['filterYear'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    $books = Movie::where('user_id', Auth::id())->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->where('finished_date', 'like', '%' . $arrOptions['filterYear'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
                     Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
                 } else {
-                    $books = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->where('date', 'like', '%' . $arrOptions['filterYear'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    $books = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->where('finished_date', 'like', '%' . $arrOptions['filterYear'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
                     Movie::tags(['movies'])->put('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
                 }
             } else {
@@ -322,7 +322,7 @@ class MovieController extends Controller
                     $strSortItem = "author";
                     break;
                 case "year":
-                    $strSortItem = "year";
+                    $strSortItem = "finished_date";
                     break;
             }
             $strSortDirection = $arrSortDetails[1] === "up" ? "asc" : "desc";
@@ -378,9 +378,9 @@ class MovieController extends Controller
         }
 
         if (!empty($intId)) {
-            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->where('date', 'like', '%' . $strYear . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
+            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->where('finished_date', 'like', '%' . $strYear . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
         } else {
-            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->where('date', 'like', '%' . $strYear . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
+            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->where('finished_date', 'like', '%' . $strYear . '%')->orderBy($strSortItem, $strSortDirection)->paginate($intQuantity);
         }
 
         return $items;
@@ -402,7 +402,7 @@ class MovieController extends Controller
                     $strSortItem = "author";
                     break;
                 case "year":
-                    $strSortItem = "year";
+                    $strSortItem = "finished_date";
                     break;
             }
             $strSortDirection = $arrSortDetails[1] === "up" ? "asc" : "desc";
@@ -431,9 +431,9 @@ class MovieController extends Controller
         }
 
         if (!empty($intId)) {
-            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->where('date', 'like', '%' . $strYear . '%')->orderBy($strSortItem, $strSortDirection)->get();
+            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('id', $intId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->where('finished_date', 'like', '%' . $strYear . '%')->orderBy($strSortItem, $strSortDirection)->get();
         } else {
-            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->where('date', 'like', '%' . $strYear . '%')->orderBy($strSortItem, $strSortDirection)->get();
+            $items = Movie::where('user_id', $strUserAction,$intUserId)->where('title', 'like', '%' . $strTitle . '%')->where('author', 'like', '%' . $strAuthor . '%')->where('finished_date', 'like', '%' . $strYear . '%')->orderBy($strSortItem, $strSortDirection)->get();
         }
 
         $intCount = count($items);

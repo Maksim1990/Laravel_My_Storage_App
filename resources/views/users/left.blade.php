@@ -3,6 +3,7 @@
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit")}}">@lang('messages.edit_profile_data')</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit/image")}}">@lang('messages.change_profile_image')</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit/profile")}}">@lang('messages.edit_profile_data')</a></p>
+    <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit")}}">@lang('messages.edit') Email</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/users/'.$user->id."/edit/password")}}">@lang('messages.change_password')</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/favorites/'.$user->id)}}">@lang('messages.see_my_favorites')</a></p>
     <p><a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/ratings/'.$user->id)}}">@lang('messages.my') @lang('messages.votes')</a></p>

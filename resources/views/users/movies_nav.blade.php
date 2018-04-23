@@ -8,7 +8,7 @@
                         @foreach($movie->photos as $key=>$item)
 
                             <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/movies/'.$movie->id)}}" >
-                                @if($countImage<1)
+                                @if($countImage<1 && $item->photo)
 
                                     <img style="border-radius: 30px;" width="160" height="160"
                                          src="{{$item->photo->path}}"
@@ -46,7 +46,7 @@
                     @foreach($movie->photos as $key=>$item)
 
                         <a href="{{URL::to('/'.LaravelLocalization::getCurrentLocale().'/movies/'.$movie->id)}}">
-                            @if($countImage<1)
+                            @if($countImage<1 && $item->photo)
 
                                 <img style="border-radius: 30px;" width="160" height="160"
                                      src="{{$item->photo->path}}"
