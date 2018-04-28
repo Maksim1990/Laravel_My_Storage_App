@@ -120,7 +120,13 @@ class BookController extends Controller
             $strBooksAll=implode(",",$arrBooksAll);
         }
 
-        return view('books.index', compact('title', 'books','strCache','arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity', 'idUser','strBooksAll'));
+        if($idUser>0 ){
+            $objUser=User::findOrFail($idUser);
+            $strUser= "(".$objUser->name.")";
+        }else{
+            $strUser="";
+        }
+        return view('books.index', compact('title', 'books','strCache','arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity', 'idUser','strUser','strBooksAll'));
     }
 
     /**

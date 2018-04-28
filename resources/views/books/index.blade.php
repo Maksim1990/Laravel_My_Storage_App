@@ -30,7 +30,7 @@
         @if($idUser>0 && $idUser==Auth::id())
             <h1>@lang('messages.my') @lang('messages.books')</h1>
         @else
-            <h1>@lang('messages.all') @lang('messages.books')</h1>
+            <h1>@lang('messages.all') @lang('messages.books') {{$strUser}}</h1>
         @endif
 
         <div class=" w3-left" id="items_found">
