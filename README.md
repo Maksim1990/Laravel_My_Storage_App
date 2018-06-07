@@ -12,6 +12,7 @@
 > **PASSWORD: testtest**
 
 
+
 **MY STORAGE App** is application that allows easily to add new books or movies details to your personal profile. It is possible easily filter, sort and edit all available data. 
 
 Application is based on Laravel framework and includes also useful functionalities such as Stripe API, Laravel Passport , Laravel Cachier, easy and useful D3.js library for presenting graphs and diagramms.
