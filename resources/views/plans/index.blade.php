@@ -82,7 +82,7 @@
         @if(isset($plan->stripe_plan) && !empty($plan->stripe_plan) && !empty($plan->ends_at))
             <div class="alert alert-danger" role="alert">
                 <strong>ATTENTION!</strong> You cancelled <span
-                        class="text-uppercase"><b>{{$plan->stripe_plan}}</b></span> plan. Please be informed that it still
+                    class="text-uppercase"><b>{{$plan->stripe_plan}}</b></span> plan. Please be informed that it still
                 will be valid till
                 <strong>{{$plan->ends_at}}</strong>.<br>In order to resume your current plan you may click
                 <a href="{{ URL::to('subscription/resume' ) }}" style="color: darkred;">Resume subscription</a> button.

@@ -12,15 +12,15 @@ class BooksTableSeeder extends Seeder
      */
     public function run()
     {
-//        for($i=0;$i<100;$i++){
-//            DB::table('books')->insert([
-//                'user_id' => 1,
-//                'active' => 1,
-//                'title' => str_random(10),
-//                'author' => str_random(10),
-//                'date' => date('Y-m-d H:i:s')
-//            ]);
-//        }
+        for($i=0;$i<100;$i++){
+            DB::table('books')->insert([
+                'user_id' => 1,
+                'active' => 1,
+                'title' => str_random(10),
+                'author' => str_random(10),
+                'date' => date('Y-m-d H:i:s')
+            ]);
+        }
 
     }
 }

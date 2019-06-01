@@ -370,6 +370,7 @@
             var url = '{{ URL::to('delete_image_ajax') }}';
             var module_id = 1;
             var confDelete = confirm('{{trans('messages.want_to_delete_image')}}');
+           
             if (confDelete) {
                 @if(Auth::user()->role_id!=4)
                 $.ajax({

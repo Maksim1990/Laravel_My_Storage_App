@@ -87,21 +87,21 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //return $request;
         $locale = LaravelLocalization::getCurrentLocale();
         $profile=Profile::findOrFail($id);
-        if($profile) {
-            $profile->status = $request['status'];
-            $profile->country = $request['country'];
-            $profile->city = $request['city'];
-            $profile->user_gender = $request['user_gender'];
-            $profile->lastname = $request['lastname'];
-            $profile->birthdate = $request['birthdate'];
-            $profile->save();
+       if($profile){
+        $profile->status=$request['status'];
+        $profile->country=$request['country'];
+        $profile->city=$request['city'];
+        $profile->user_gender=$request['user_gender'];
+        $profile->lastname=$request['lastname'];
+        $profile->birthdate=$request['birthdate'];
+        $profile->save();
 
-            Session::flash('user_change', 'Profile has been successfully updated!');
-            return redirect($locale . '/users/' . $id);
-        }
+        Session::flash('user_change','Profile has been successfully updated!');
+        return redirect($locale .'/users/'.$profile->user_id);
+       }
     }
 
     /**

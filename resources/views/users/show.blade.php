@@ -172,7 +172,7 @@
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             svg.call(tip);
 
-            d3.tsv("{{env('PUBLIC_FULL_PATH')}}/files/tsv/user_books/user_{{$user->id}}.tsv", type, function (error, data) {
+            d3.tsv("{{env('PUBLIC_FULL_PATH')}}files/tsv/user_books/user_{{$user->id}}.tsv", type, function (error, data) {
                 x.domain(data.map(function (d) {
                     return d.letter;
                 }));

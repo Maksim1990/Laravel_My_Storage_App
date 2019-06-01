@@ -11,6 +11,7 @@ use App\Movie;
 use App\Photo;
 use App\Rating;
 use App\Setting;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -19,12 +20,21 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class MovieController extends Controller
 {
+    
+     //-- Redis cache config option for currect controller
+    private $useRedis=false;
+    
+    
+    public function useRedisCache(){
+        return $this->useRedis;
+    }
+    
     /**
      * Display a listing of the resource.
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request,$idUser=0)
+   public function index(Request $request,$idUser=0)
     {
         //\Artisan::call('scout:import', ['model' => App\User::class]);
         $user = Auth::user();
@@ -58,7 +68,11 @@ class MovieController extends Controller
         ];
         //-- Flush 'books' key from redis cache
       //Cache::tags('movies')->flush();
+      if($this->useRedisCache()){
         $books = Cache::tags(['movies'])->get('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser);
+      }else{
+         $books=[]; 
+      }
 
         if (empty($idUser)) {
             $intUserId = 0;
@@ -73,14 +87,20 @@ class MovieController extends Controller
             if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor']) || !empty($arrOptions['filterYear'])) {
                 if (!empty($filterId)) {
                     $books = Movie::where('user_id', Auth::id())->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->where('finished_date', 'like', '%' . $arrOptions['filterYear'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                   if($this->useRedisCache()){
                     Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
+                   }
                 } else {
                     $books = Movie::where('user_id', Auth::id())->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->where('finished_date', 'like', '%' . $arrOptions['filterYear'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                   if($this->useRedisCache()){
                     Movie::tags(['movies'])->put('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
+                   }
                 }
             } else {
                 $books = Movie::where('user_id', $strUserAction, $intUserId)->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                if($this->useRedisCache()){
                 Cache::tags(['movies'])->put('movies_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
+                }
             }
         } else {
             $strCache=true;
@@ -113,13 +133,14 @@ class MovieController extends Controller
         if(count($arrBooksAll)>0){
             $strBooksAll=implode(",",$arrBooksAll);
         }
-
+        
         if($idUser>0 ){
             $objUser=User::findOrFail($idUser);
-            $strUser= "(".$objUser->name.")";
+           $strUser= "(".$objUser->name.")";
         }else{
             $strUser="";
         }
+
         return view('movies.index', compact('title', 'books','strCache', 'arrFilter', 'bookLayout', 'intQuantity', 'itemsQuantity', 'idUser','strUser','strBooksAll'));
 
 
@@ -164,8 +185,12 @@ class MovieController extends Controller
 
             ImageMovie::create(['movie_id' => $movie->id, 'photo_id' => $photo_id]);
             Session::flash('movie_change', 'New movie has been successfully created!');
-            //-- Flush 'movies' key from redis cache
-            Cache::tags('movies')->flush();
+            
+            if($this->useRedisCache()){
+                //-- Flush 'movies' key from redis cache
+                Cache::tags('movies')->flush();
+            }
+            
             return redirect('movies/' . $movie->id);
         } else {
             Session::flash('movie_change', 'Image size should not exceed 2 MB');
@@ -279,8 +304,12 @@ class MovieController extends Controller
 
         ImageMovie::create(['movie_id' => $movie->id, 'photo_id' => $photo_id]);
         Session::flash('movie_change', 'New movie has been successfully updated!');
-        //-- Flush 'movies' key from redis cache
-        Cache::tags('movies')->flush();
+        
+        if($this->useRedisCache()){
+            //-- Flush 'movies' key from redis cache
+            Cache::tags('movies')->flush();
+        }
+        
         return redirect('movies/' . $movie->id);
     }
 
@@ -304,8 +333,12 @@ class MovieController extends Controller
         Rating::where('module_number', 2)->where('item_number', $movie->id)->delete();
 
         Session::flash('movie_change', 'The movie has been successfully deleted!');
-        //-- Flush 'movies' key from redis cache
-        Cache::tags('movies')->flush();
+        
+        if($this->useRedisCache()){
+            //-- Flush 'movies' key from redis cache
+            Cache::tags('movies')->flush();
+        }
+        
         $movie->delete();
 
 
@@ -313,7 +346,7 @@ class MovieController extends Controller
     }
 
 
-    public function filterMovieList(Request $request)
+ public function filterMovieList(Request $request)
     {
         $arrSortDetails = json_decode($request['arrSortDetails']);
         if (count($arrSortDetails) > 0) {
@@ -347,15 +380,16 @@ class MovieController extends Controller
 
         $user = Auth::user();
 
-
-        //-- Get user's settings from cache or from DB
-        $setting = Cache::remember('settings_' . $user->id, 22 * 60, function () use ($user) {
-            return Setting::where('user_id', $user->id)->first();
-        });
-
-        //-- Flush 'books' key from redis cache
-        Cache::forget('settings_' . $user->id);
-
+        if($this->useRedisCache()){
+            //-- Get user's settings from cache or from DB
+            $setting = Cache::remember('settings_' . $user->id, 22 * 60, function () use ($user) {
+                return Setting::where('user_id', $user->id)->first();
+            });
+    
+            //-- Flush 'books' key from redis cache
+            Cache::forget('settings_' . $user->id);
+        }
+        
         if (isset($setting)) {
             $setting->movie_list_quantity = $intQuantity;
             $setting->movie_list = $strLayout;
@@ -367,12 +401,12 @@ class MovieController extends Controller
             Setting::create($input);
         }
 
-
-        //-- Set user setting cache data
-        Cache::put('settings_' . $user->id, $setting, 22 * 60);
-        //-- Flush 'movies' key from redis cache
-        Cache::tags('movies')->flush();
-
+        if($this->useRedisCache()){
+            //-- Set user setting cache data
+            Cache::put('settings_' . $user->id, $setting, 22 * 60);
+            //-- Flush 'movies' key from redis cache
+            Cache::tags('movies')->flush();
+        }
 
         $idUser=$request['idUser'];
         if(empty($idUser)){
@@ -422,10 +456,10 @@ class MovieController extends Controller
         $strAuthor = !empty($request['author']) ? $request['author'] : "";
         $strYear = !empty($request['year']) ? $request['year'] : "";
 
-
-        //-- Flush 'movies' key from redis cache
-        Cache::tags('movies')->flush();
-
+        if($this->useRedisCache()){
+            //-- Flush 'movies' key from redis cache
+            Cache::tags('movies')->flush();
+        }
 
         $idUser=$request['idUser'];
         if(empty($idUser)){
@@ -466,9 +500,10 @@ class MovieController extends Controller
             $book->delete();
         }
 
-
-        //-- Flush 'books' key from redis cache
-        Cache::tags('movies')->flush();
+        if($this->useRedisCache()){
+            //-- Flush 'books' key from redis cache
+            Cache::tags('movies')->flush();
+        }
 
         return ["status" => $blnStatus];
     }
@@ -509,10 +544,10 @@ class MovieController extends Controller
         }
 
         Session::flash('movie_change', 'Book image has been successfully assigned!');
-        //-- Flush 'books' key from redis cache
-        Cache::tags('movies')->flush();
-
-
+        if($this->useRedisCache()){
+            //-- Flush 'books' key from redis cache
+            Cache::tags('movies')->flush();
+        }
 
         if ($photo_id > 0) {
             ImageMovie::create(['movie_id' => $movie->id, 'photo_id' => $photo_id]);

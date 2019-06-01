@@ -71,9 +71,6 @@
             var image_path = $(this).data('image-path');
             var movie_id = '{{$movie->id}}';
 
-            // alert(movie_id);
-            // alert(image_id);
-            // alert(image_path);
             if (image_id) {
                 var blnConfirm = confirm("{{trans('messages.want_assign')}}?");
                 if (blnConfirm == true) {

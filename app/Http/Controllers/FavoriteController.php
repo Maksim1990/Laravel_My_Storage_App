@@ -19,7 +19,6 @@ class FavoriteController extends Controller
         $module_id = $request['module_id'];
         $user=Auth::user();
 
-
         if($strStatus=='like'){
             Favorite::create([
                 'user_id'=>$user->id,

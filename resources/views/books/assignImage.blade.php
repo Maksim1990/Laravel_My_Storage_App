@@ -70,8 +70,6 @@
             var image_id = $(this).data('image-id');
             var image_path = $(this).data('image-path');
             var book_id = '{{$book->id}}';
-            var image_path = image_path.replace('/storageapp','');
-
             if (image_id) {
                 var blnConfirm = confirm("{{trans('messages.want_assign')}}?");
                 if (blnConfirm == true) {

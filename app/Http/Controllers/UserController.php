@@ -205,10 +205,10 @@ class UserController extends Controller
 
 
         //-- =================== Check if TSV file exist for current user
-        if (!file_exists("files/tsv/user_books/user_" . $user->id . ".tsv")) {
+        if (!file_exists(base_path("files/tsv/user_books/user_" . $user->id . ".tsv"))) {
 
             //-- ============== START of exporting user's books in TSV file
-            $fileName = fopen("files/tsv/user_books/user_" . $user->id . ".tsv", "w") or die("Unable to open file!");
+            $fileName = fopen(base_path("/files/tsv/user_books/user_" . $user->id . ".tsv"), "w") or die("Unable to open file!");
 
             //-- Write tsv file header
             $txt = "letter	frequency\n";

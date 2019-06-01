@@ -24,12 +24,20 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class BookController extends Controller
 {
+    //-- Redis cache config option for currect controller
+    private $useRedis=false;
+    
+    
+    public function useRedisCache(){
+        return $this->useRedis;
+    }
+    
     /**
      * Display a listing of the resource.
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $idUser = 0)
+     public function index(Request $request, $idUser = 0)
     {
 
         //\Artisan::call('scout:import', ['model' => App\User::class]);
@@ -64,7 +72,12 @@ class BookController extends Controller
         ];
         //-- Flush 'books' key from redis cache
         //Cache::tags('books')->flush();
-        $books = Cache::tags(['books'])->get('books_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser);
+        if($this->useRedisCache()){
+           $books = Cache::tags(['books'])->get('books_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser); 
+        }else{
+           $books = []; 
+        }
+        
 
         if (empty($idUser)) {
             $intUserId = 0;
@@ -79,14 +92,20 @@ class BookController extends Controller
             if (!empty($arrOptions['filterTitle']) || !empty($arrOptions['filterId']) || !empty($arrOptions['filterAuthor'])|| !empty($arrOptions['filterYear'])) {
                 if (!empty($filterId)) {
                     $books = Book::where('user_id', Auth::id())->where('id', $arrOptions['filterId'])->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->where('date', 'like', '%' . $arrOptions['filterYear'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                    if($this->useRedisCache()){
                     Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
+                    }
                 } else {
                     $books = Book::where('user_id', Auth::id())->where('title', 'like', '%' . $arrOptions['filterTitle'] . '%')->where('author', 'like', '%' . $arrOptions['filterAuthor'] . '%')->where('date', 'like', '%' . $arrOptions['filterYear'] . '%')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                   if($this->useRedisCache()){
                     Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
+                   }
                 }
             } else {
                 $books = Book::where('user_id', $strUserAction, $intUserId)->where('active', '=', '1')->orderBy('id')->paginate($arrOptions['intQuantity']);
+                if($this->useRedisCache()){
                 Cache::tags(['books'])->put('books_' . $arrOptions['currentPage'] . '_' . $arrOptions['intQuantity'] . '_' . $idUser, $books, 22 * 60);
+                }
             }
         } else {
             $strCache=true;
@@ -119,10 +138,12 @@ class BookController extends Controller
         if(count($arrBooksAll)>0){
             $strBooksAll=implode(",",$arrBooksAll);
         }
-
+        
+   
+        
         if($idUser>0 ){
             $objUser=User::findOrFail($idUser);
-            $strUser= "(".$objUser->name.")";
+           $strUser= "(".$objUser->name.")";
         }else{
             $strUser="";
         }
@@ -173,8 +194,11 @@ class BookController extends Controller
 
             ImageBook::create(['book_id' => $book->id, 'photo_id' => $photo_id]);
             Session::flash('book_change', trans('messages.new_books_was_created'));
+            
+            if($this->useRedisCache()){
             //-- Flush 'books' key from redis cache
             Cache::tags('books')->flush();
+            }
 
 
             //-- Remove TSV books file from this user (later will be re-downloaded again)
@@ -307,8 +331,11 @@ class BookController extends Controller
         $input['active'] = 1;
         $book->update($input);
         Session::flash('book_change', trans('messages.new_books_was_updated'));
+        
+        if($this->useRedisCache()){
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
+        }
 
 
         //-- Remove TSV books file from this user (later will be re-downloaded again)
@@ -364,8 +391,11 @@ class BookController extends Controller
         }
 
         Session::flash('book_change', trans('messages.book_image_was_assigned'));
+        
+        if($this->useRedisCache()){
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
+        }
 
 
 
@@ -395,8 +425,11 @@ class BookController extends Controller
             ImageBook::where('photo_id', $item->photo->id)->delete();
         }
         Session::flash('book_change', trans('messages.book_was_deleted'));
+        
+        if($this->useRedisCache()){
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
+        }
 
         Comment::where('module_id', 1)->where('item_id', $book->id)->delete();
         Rating::where('module_number', 1)->where('item_number', $book->id)->delete();
@@ -413,7 +446,7 @@ class BookController extends Controller
     }
 
 
-    public function filterBookList(Request $request)
+ public function filterBookList(Request $request)
     {
         $arrSortDetails = json_decode($request['arrSortDetails']);
         if (count($arrSortDetails) > 0) {
@@ -448,6 +481,7 @@ class BookController extends Controller
         $user = Auth::user();
 
 
+        if($this->useRedisCache()){
         //-- Get user's settings from cache or from DB
         $setting = Cache::remember('settings_' . $user->id, 22 * 60, function () use ($user) {
             return Setting::where('user_id', $user->id)->first();
@@ -455,6 +489,7 @@ class BookController extends Controller
 
         //-- Flush 'books' key from redis cache
         Cache::forget('settings_' . $user->id);
+        }
 
         if (isset($setting)) {
             $setting->book_list_quantity = $intQuantity;
@@ -467,10 +502,12 @@ class BookController extends Controller
             Setting::create($input);
         }
 
+        if($this->useRedisCache()){
         //-- Set user setting cache data
         Cache::put('settings_' . $user->id, $setting, 22 * 60);
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
+        }
 
         $idUser = $request['idUser'];
         if (empty($idUser)) {
@@ -520,8 +557,10 @@ class BookController extends Controller
         $strAuthor = !empty($request['author']) ? $request['author'] : "";
         $strYear = !empty($request['year']) ? $request['year'] : "";
 
+        if($this->useRedisCache()){
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
+        }
 
 
         $idUser = $request['idUser'];
@@ -542,6 +581,7 @@ class BookController extends Controller
         $intCount = count($books);
         return $intCount;
     }
+
 
 
     public function deleteMultipleBooks(Request $request)
@@ -568,9 +608,11 @@ class BookController extends Controller
         if (file_exists("files/tsv/user_books/user_" . $user->id . ".tsv")) {
             unlink("files/tsv/user_books/user_" . $user->id . ".tsv");
         }
-
+        
+        if($this->useRedisCache()){
         //-- Flush 'books' key from redis cache
         Cache::tags('books')->flush();
+        }
 
         return ["status" => $blnStatus];
     }

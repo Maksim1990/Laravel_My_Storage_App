@@ -67,7 +67,7 @@ class PhotoController extends Controller
         $user = Auth::user();
         if (!($file->getClientSize() > 2100000)) {
             $name = time() . "_" . $file->getClientOriginalName();
-            $file->move('images', $name);
+           $file->move('images', $name);
             $photo = Photo::create(['path' => $name, 'user_id' => $user->id, 'module_id' => $module_id]);
             $photo_id = $photo->id;
             if ($module_id == 1) {
@@ -124,32 +124,31 @@ class PhotoController extends Controller
     }
 
 
-
-    public function deleteImage(Request $request)
+ public function deleteImage(Request $request)
     {
         $image_id = $request['image_id'];
         $module_id = $request['module_id'];
         $image = Photo::findOrFail($image_id);
-        unlink(public_path() . $image->path);
+        unlink('/home/discover/public_html'.$image->path);
         if($module_id==1){
             ImageBook::where('photo_id', $image->id)->delete();
             $book=Book::where('photo_id',$image->id)->first();
-            if($book) {
-                $book->update([
-                    'photo_id' => 0,
-                    'photo_path' => ''
-                ]);
-                $book->save();
+            if($book){
+            $book->update([
+                'photo_id'=>0,
+                'photo_path'=>''
+            ]);
+            $book->save();
             }
-        }elseif ($module_id==2) {
+        }elseif ($module_id==2){
             ImageMovie::where('photo_id', $image->id)->delete();
-            $movie = Movie::where('photo_id', $image->id)->first();
-            if ($movie) {
-                $movie->update([
-                    'photo_id' => 0,
-                    'photo_path' => ''
-                ]);
-                $movie->save();
+            $movie=Movie::where('photo_id',$image->id)->first();
+            if($movie){
+            $movie->update([
+                'photo_id'=>0,
+                'photo_path'=>''
+            ]);
+            $movie->save();
             }
         }
 

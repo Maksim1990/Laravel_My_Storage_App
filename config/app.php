@@ -185,8 +185,6 @@ return [
         Scriptotek\GoogleBooks\GoogleBooksServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
-        Themsaid\Langman\LangmanServiceProvider::class,
-        Themsaid\LangmanGUI\LangmanServiceProvider::class
 
     ],
 
