@@ -1,6 +1,10 @@
 **HOT TO INSTALL APP**
 --
-     
+
+* *Copy ``.env`` environment config file and set all required settings in it:*
+
+        cp .env.dist .env
+             
 * *Start app and build required Docker containers:*
 
         docker-compose up -d
@@ -9,10 +13,6 @@
 
         docker exec -it larastorage_php composer install
         
-* *Copy ``.env`` environment config file and set all required settings in it:*
-
-        docker exec -it larastorage_php cp .env.dist .env
-
 * *Generate Laravel application key:*
 
         docker exec -it larastorage_php php artisan key:generate
